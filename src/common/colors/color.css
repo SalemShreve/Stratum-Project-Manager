@@ -1,0 +1,37 @@
+:root {
+    --stratum-blue: #0066FF;
+    --stratum-red: #FF0000;
+    --stratum-green: #00AA00;
+
+    --bg-page: #0F1117;
+    --bg-surface: #161B27;
+    --bg-elevated: #1E2535;
+    --bg-overlay: #252D42;
+
+    --border-subtle: #2D3348;
+    --border-base: #3D4A63;
+    --border-strong: #5A6680;
+
+    --text-primary: #E8EAF0;
+    --text-secondary: #9AA3B2;
+    --text-muted: #546E7A;
+    --text-link: #4A9EFF;
+
+    --accent-blue: #4A9EFF;
+    --accent-green: #3DD68C;
+    --accent-amber: #F5A623;
+    --accent-red: #FF5757;
+    --accent-purple: #A78BFA;
+
+    --bg-blue-tint: #1A2A4A;
+    --bg-green-tint: #1A2E28;
+    --bg-amber-tint: #2E2010;
+    --bg-red-tint: #2E1010;
+    --bg-purple-tint: #231A3A;
+
+    --border-blue: #2D4A7A;
+    --border-green: #1D5E45;
+    --border-amber: #6B4A0A;
+    --border-red: #6B1A1A;
+    --border-purple: #4A3A7A;
+}
