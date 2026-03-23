@@ -52,8 +52,14 @@
         padding: 5px;
     }
 
-    nav-rail-foot {
-
+    .nav-rail-actions,
+    .nav-rail-footer {
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+        width: 100%;
+        padding: 0;
+        margin: 0;
     }
 
     .app-top-bar {
@@ -89,35 +95,38 @@
     </div>
     <div class="app-content">
         <div class="nav-rail" class:extended={isSidebarExtended}>
-            <div></div>
-            <IconButton
-                    kind="transparent"
-                    size="24"
-                    icon="sidebar"
-                    label="Sidebar"
-                    showLabel={isSidebarExtended}
-                    clickAction={() => isSidebarExtended=!isSidebarExtended }/>
-            <IconButton
-                    kind="transparent"
-                    size="24"
-                    icon="home"
-                    label="Home"
-                    showLabel={isSidebarExtended}
-                    clickAction={() => goto("/")}/>
-            <IconButton
-                    kind="transparent"
-                    size="24"
-                    icon="sprint"
-                    label="Analytics"
-                    showLabel={isSidebarExtended}
-                    clickAction={() => goto("/chart")}/>
-            <IconButton
-                    kind="transparent"
-                    size="24"
-                    icon="settings"
-                    label="Settings"
-                    showLabel={isSidebarExtended}
-                    clickAction={() => goto("/settings")}/>
+            <div class="nav-rail-actions">
+                <IconButton
+                        kind="transparent"
+                        size="24"
+                        icon="sidebar"
+                        label="Sidebar"
+                        showLabel={isSidebarExtended}
+                        clickAction={() => isSidebarExtended=!isSidebarExtended }/>
+                <IconButton
+                        kind="transparent"
+                        size="24"
+                        icon="home"
+                        label="Home"
+                        showLabel={isSidebarExtended}
+                        clickAction={() => goto("/")}/>
+                <IconButton
+                        kind="transparent"
+                        size="24"
+                        icon="sprint"
+                        label="Analytics"
+                        showLabel={isSidebarExtended}
+                        clickAction={() => goto("/chart")}/>
+            </div>
+            <div class="nav-rail-footer">
+                <IconButton
+                        kind="transparent"
+                        size="24"
+                        icon="settings"
+                        label="Settings"
+                        showLabel={isSidebarExtended}
+                        clickAction={() => goto("/settings")}/>
+            </div>
         </div>
         <div class="app-child-container">
             {@render children()}
