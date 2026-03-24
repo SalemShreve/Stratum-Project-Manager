@@ -38,7 +38,7 @@
         testId,
     } = $props<{
         clickAction?: () => void;
-        kind: 'normal' | 'toggle' | 'destroy' | 'transparent';
+        kind: 'bright' | 'toggle' | 'destroy' | 'transparent';
         icon: IconEnum;
         size: '16' | '24' | '32';
         toggleIcon?: IconEnum;

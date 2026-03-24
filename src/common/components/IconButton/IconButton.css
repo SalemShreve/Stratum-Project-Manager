@@ -9,7 +9,6 @@
     cursor: pointer;
     border-radius: 10px;
     transition: background 0.2s, color 0.2s, width .2s ease, gap 0.2s ease;
-    color: var(--text-secondary);
 }
 
 .icon-btn.labeled {
@@ -27,18 +26,22 @@
 .icon-btn.transparent {
     border: none;
     background: var(--bg-page);
-}
-
-.icon-btn.normal {
-    padding-left: 7px;
-    background: var(--bg-surface);
     color: var(--text-secondary);
-    border: 1px solid var(--border-base);
 }
 
-.icon-btn.transparent:hover,
-.icon-btn.normal:hover {
+.icon-btn.bright {
+    padding-left: 8px;
+    background: var(--accent-blue);
+    color: var(--text-primary);
+    border: none;
+}
+
+.icon-btn.transparent:hover {
     color: var(--text-primary);
     background: var(--bg-elevated);
     transform: translateY(-1px);
+}
+
+.icon-btn.bright:hover {
+    opacity: 0.85;
 }

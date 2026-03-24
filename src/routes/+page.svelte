@@ -20,7 +20,7 @@
 </style>
 
 <main class="home-container">
-    <IconButton kind="normal" size="24" icon="sprint" clickAction={() => console.log(window.location.pathname)} />
+    <IconButton kind="bright" size="24" icon="settings" clickAction={() => console.log(window.location.pathname)} />
 </main>
 
 

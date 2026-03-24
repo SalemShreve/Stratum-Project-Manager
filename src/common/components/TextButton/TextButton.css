@@ -3,4 +3,29 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
+
+.text-btn.transparent:hover {
+    transform: translateY(-1px);
+}
+
+.text-btn.inline {
+    padding: 6px 10px 6px 10px ;
+    min-height: 24px;
+}
+
+.text-btn.small {}
+
+.text-btn.bright {
+    background: var(--accent-blue);
+    color: var(--text-primary);
+}
+
+.text-btn.bright:hover {
+    opacity: 0.85;
+}
+
+.text-btn.transparent {}

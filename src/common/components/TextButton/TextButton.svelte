@@ -6,29 +6,30 @@
         kind,
         text,
         size,
-        toggleVar,
-        loadingVar,
+        isToggled,
+        isLoading,
         title,
-        label,
         testId,
     } = $props<{
         clickAction?: () => {};
-        kind: 'normal' | 'toggle' | 'destroy' | 'transparent';
+        kind: 'bright'  | 'transparent';
+        size?: 'small' | 'medium' | 'large' | 'inline'
         text: string;
-        toggleVar?: boolean;
-        loadingVar?: boolean;
+        isToggled?: boolean;
+        isLoading?: boolean;
         title?: string;
-        label?: string;
         testId?: string;
     }>();
 
 </script>
 
 <button
-        class="text-btn {kind} {toggleVar}"
+        class="text-btn {kind} {size}"
+        class:toggled={isToggled}
+
         {title}
-        onclick={clickAction}
-        disabled={loadingVar}
+        onclick={() => clickAction?.()}
+        disabled={isLoading}
         data-testid={testId}
 >
     {text}

@@ -3,6 +3,7 @@
     import IconButton from "../common/components/IconButton/IconButton.svelte";
     import {goto} from "$app/navigation";
     import Icon from "../common/components/Icon/Icon.svelte";
+    import TextButton from "../common/components/TextButton/TextButton.svelte";
 
     let { children } = $props();
 
@@ -66,9 +67,11 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         height: 50px;
         min-height: 50px;
-        width: 100%;
+        padding-right: 13px;
+        width: calc(100% - 13px);
         /*border-bottom: 1px solid var(--border-subtle);*/
         margin: 0;
     }
@@ -85,12 +88,23 @@
         width: 100%;
         padding: 10px;
     }
+    .app-bar-search {
+        border: 6px;
+        min-height: 27px;
+        min-width: 100px;
+    }
 </style>
 
 <main class="app-container">
     <div class="app-top-bar">
         <div class="app-bar-icon-container">
             <Icon kind="transparent" icon="stratum" size="24" ></Icon>
+        </div>
+        <div class="app-bar-middle">
+            <input class="app-bar-search" type="text">
+        </div>
+        <div class="app-bar-actions">
+            <TextButton kind="bright" text="+ New Project" size="inline" ></TextButton>
         </div>
     </div>
     <div class="app-content">
