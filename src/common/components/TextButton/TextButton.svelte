@@ -13,7 +13,7 @@
     } = $props<{
         clickAction?: () => {};
         kind: 'bright'  | 'transparent';
-        size?: 'small' | 'medium' | 'large' | 'inline'
+        size: 'small' | 'medium' | 'inline'
         text: string;
         isToggled?: boolean;
         isLoading?: boolean;

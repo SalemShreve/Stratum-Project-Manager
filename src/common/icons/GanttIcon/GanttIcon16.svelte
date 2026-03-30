@@ -1,0 +1,4 @@
+<script>
+</script>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: none; stroke: currentColor;" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="3" x2="2" y2="21"/><line x1="2" y1="21" x2="22" y2="21"/><rect x="4" y="5" width="10" height="3" rx="1.5" fill="var(--text-secondary)" stroke="none"/><rect x="9" y="10" width="13" height="3" rx="1.5" fill="var(--text-secondary)" stroke="none" opacity="0.7"/><rect x="4" y="15" width="7" height="3" rx="1.5" style="fill: none; stroke: currentColor;" opacity="0.45"/></svg>

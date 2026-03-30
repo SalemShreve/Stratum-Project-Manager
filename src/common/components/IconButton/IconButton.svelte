@@ -22,6 +22,12 @@
     import SettingsIcon16 from "../../icons/SettingsIcon/SettingsIcon16.svelte";
     import SettingsIcon24 from "../../icons/SettingsIcon/SettingsIcon24.svelte";
     import SettingsIcon32 from "../../icons/SettingsIcon/SettingsIcon32.svelte";
+    import GanttIcon16 from "../../icons/GanttIcon/GanttIcon16.svelte";
+    import GanttIcon24 from "../../icons/GanttIcon/GanttIcon24.svelte";
+    import GanttIcon32 from "../../icons/GanttIcon/GanttIcon32.svelte";
+    import CalendarIcon16 from "../../icons/CalendarIcon/CalendarIcon16.svelte";
+    import CalendarIcon24 from "../../icons/CalendarIcon/CalendarIcon24.svelte";
+    import CalendarIcon32 from "../../icons/CalendarIcon/CalendarIcon32.svelte";
 
     let {
         clickAction,
@@ -63,6 +69,8 @@
         sidebar: sized(SidebarIcon16, SidebarIcon24,  SidebarIcon32),
         stratum: sized(StratumIcon16, StratumIcon24,  StratumIcon32),
         settings: sized(SettingsIcon16, SettingsIcon24,  SettingsIcon32),
+        gantt: sized(GanttIcon16, GanttIcon24,  GanttIcon32),
+        calendar: sized(CalendarIcon16, CalendarIcon24,  CalendarIcon32),
     };
 </script>
 

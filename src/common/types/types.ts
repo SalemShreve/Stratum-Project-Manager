@@ -5,4 +5,6 @@ export type  IconEnum =
     | 'sidebar'
     | "stratum"
     | 'sprint'
-    | 'settings';
+    | 'settings'
+    | 'gantt'
+    | 'calendar';

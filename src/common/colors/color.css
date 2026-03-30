@@ -34,4 +34,6 @@
     --border-amber: #6B4A0A;
     --border-red: #6B1A1A;
     --border-purple: #4A3A7A;
+
+    --font-mono: 'DM Mono', 'Fira Code', monospace;
 }

@@ -6,26 +6,46 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s, opacity .2s;
+    font-family: var(--font-mono) monospace;
+    font-size: 14px
+}
+
+.text-btn.transparent {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-base);
 }
 
 .text-btn.transparent:hover {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
     transform: translateY(-1px);
 }
-
-.text-btn.inline {
-    padding: 6px 10px 6px 10px ;
-    min-height: 24px;
-}
-
-.text-btn.small {}
 
 .text-btn.bright {
     background: var(--accent-blue);
     color: var(--text-primary);
+    font-weight: 700;
 }
 
 .text-btn.bright:hover {
     opacity: 0.85;
+    transform: translateY(-1px);
 }
 
-.text-btn.transparent {}
+.text-btn.inline {
+    padding: 6px 10px 7px 10px ;
+    height: 30px
+}
+
+.text-btn.inline:hover {
+    transform: none;
+}
+
+.text-btn.small {}
+
+.text-btn.medium {
+    padding: 12px 24px;
+    height: 40px;
+}

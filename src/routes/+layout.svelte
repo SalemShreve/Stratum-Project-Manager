@@ -21,7 +21,6 @@
     :root {
         color: #f6f6f6;
         background-color: var(--bg-page);
-        font-family: "Space Grotesk Variable", sans-serif;
         margin: 0;
     }
     .app-container {
@@ -38,6 +37,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        justify-content: space-between;
         row-gap: 5px;
         padding: 5px 0 5px 5px;
         position: relative;
@@ -127,8 +127,22 @@
                 <IconButton
                         kind="transparent"
                         size="24"
+                        icon="gantt"
+                        label="Gantt"
+                        showLabel={isSidebarExtended}
+                        clickAction={() => goto("/chart")}/>
+                <IconButton
+                        kind="transparent"
+                        size="24"
                         icon="sprint"
-                        label="Analytics"
+                        label="Sprint"
+                        showLabel={isSidebarExtended}
+                        clickAction={() => goto("/chart")}/>
+                <IconButton
+                        kind="transparent"
+                        size="24"
+                        icon="calendar"
+                        label="Calendar"
                         showLabel={isSidebarExtended}
                         clickAction={() => goto("/chart")}/>
             </div>
