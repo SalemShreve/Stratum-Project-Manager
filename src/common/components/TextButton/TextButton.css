@@ -7,7 +7,7 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, transform 0.15s, opacity .2s;
-    font-family: var(--font-mono) monospace;
+    font-family: var(--font-mono);
     font-size: 14px
 }
 
