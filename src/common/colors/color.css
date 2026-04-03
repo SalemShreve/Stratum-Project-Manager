@@ -3,6 +3,17 @@
     --stratum-red: #FF0000;
     --stratum-green: #00AA00;
 
+    --stratum-purple: #7B2FFF;
+    --stratum-orange: #FF6B00;
+    --stratum-yellow: #F5C800;
+    --stratum-teal:   #00AAAA;
+    --stratum-pink:   #FF2D78;
+    --stratum-indigo:   #3D00CC;
+    --stratum-lime:     #7AC800;
+    --stratum-coral:    #FF4D4D;
+    --stratum-sky:      #00AAFF;
+    --stratum-rose:     #CC0066;
+
     --bg-page: #0F1117;
     --bg-surface: #161B27;
     --bg-elevated: #1E2535;
@@ -35,5 +46,5 @@
     --border-red: #6B1A1A;
     --border-purple: #4A3A7A;
 
-    --font-mono: 'DM Mono', 'Fira Code', monospace;
+    --font-mono: monospace;
 }

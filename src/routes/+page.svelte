@@ -1,7 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
-  import IconButton from "../common/components/IconButton/IconButton.svelte";
-  import TextButton from "../common/components/TextButton/TextButton.svelte";
+  import ProjectCard from "../common/components/ProjectDisplay/ProjectCard/ProjectCard.svelte";
 
   let name = $state("");
   let greetMsg = $state("");
@@ -15,17 +14,15 @@
 
 <style>
     .home-container {
-        /*height: 100%;*/
-        /*width: 100%;*/
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
     }
 </style>
 
 <main class="home-container">
-    <IconButton kind="bright" size="24" icon="settings" clickAction={() => console.log(window.location.pathname)} />
-    <IconButton kind="bright" size="24" icon="gantt" clickAction={() => console.log(window.location.pathname)} />
-    <TextButton kind="transparent" text="Transparent Medium" size="medium" ></TextButton>
-    <TextButton kind="bright" text="Bright Medium" size="medium" ></TextButton>
-    <TextButton kind="bright" text="Bright inline" size="inline" ></TextButton>
+    <ProjectCard projectName="First Project" color="orange"></ProjectCard>
+    <ProjectCard projectName="Second Project" color="pink"></ProjectCard>
 </main>
 
 

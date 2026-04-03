@@ -1,0 +1,46 @@
+.taskCard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.task-card-container {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+    transition: background .2s, color .2s;
+}
+
+.task-card-container:hover {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+}
+
+.task-card-container-right::before {
+    position: relative;
+    content: "";
+    z-index: 1;
+    width: 15px;
+    height: 40px;
+    background: var(--project-color);
+}
+
+.task-card-container-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.task-card-container-left {
+    display: flex;
+    gap: 5px;
+    padding-right: 10px;
+}

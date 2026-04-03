@@ -3,7 +3,6 @@
     import IconButton from "../common/components/IconButton/IconButton.svelte";
     import {goto} from "$app/navigation";
     import Icon from "../common/components/Icon/Icon.svelte";
-    import TextButton from "../common/components/TextButton/TextButton.svelte";
 
     let { children } = $props();
 
@@ -98,13 +97,12 @@
 <main class="app-container">
     <div class="app-top-bar">
         <div class="app-bar-icon-container">
-            <Icon kind="transparent" icon="stratum" size="24" ></Icon>
+            <Icon kind="transparent" icon="stratum" size="medium" ></Icon>
         </div>
         <div class="app-bar-middle">
-            <input class="app-bar-search" type="text">
+<!--            <input class="app-bar-search" type="text">-->
         </div>
         <div class="app-bar-actions">
-            <TextButton kind="bright" text="+ New Project" size="inline" ></TextButton>
         </div>
     </div>
     <div class="app-content">
@@ -112,44 +110,44 @@
             <div class="nav-rail-actions">
                 <IconButton
                         kind="transparent"
-                        size="24"
+                        size="medium"
                         icon="sidebar"
                         label="Sidebar"
                         showLabel={isSidebarExtended}
                         clickAction={() => isSidebarExtended=!isSidebarExtended }/>
                 <IconButton
                         kind="transparent"
-                        size="24"
+                        size="medium"
                         icon="home"
                         label="Home"
                         showLabel={isSidebarExtended}
                         clickAction={() => goto("/")}/>
                 <IconButton
                         kind="transparent"
-                        size="24"
+                        size="medium"
                         icon="gantt"
                         label="Gantt"
                         showLabel={isSidebarExtended}
-                        clickAction={() => goto("/chart")}/>
+                        clickAction={() => goto("/gantt")}/>
                 <IconButton
                         kind="transparent"
-                        size="24"
+                        size="medium"
                         icon="sprint"
                         label="Sprint"
                         showLabel={isSidebarExtended}
-                        clickAction={() => goto("/chart")}/>
+                        clickAction={() => goto("/sprints")}/>
                 <IconButton
                         kind="transparent"
-                        size="24"
+                        size="medium"
                         icon="calendar"
                         label="Calendar"
                         showLabel={isSidebarExtended}
-                        clickAction={() => goto("/chart")}/>
+                        clickAction={() => goto("/calendar")}/>
             </div>
             <div class="nav-rail-footer">
                 <IconButton
                         kind="transparent"
-                        size="24"
+                        size="medium"
                         icon="settings"
                         label="Settings"
                         showLabel={isSidebarExtended}
