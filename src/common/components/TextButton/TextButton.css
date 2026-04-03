@@ -43,7 +43,11 @@
     transform: none;
 }
 
-.text-btn.small {}
+.text-btn.small {
+    height: 30px;
+    padding: 6px 12px;
+    flex-shrink: 0;
+}
 
 .text-btn.medium {
     padding: 12px 24px;

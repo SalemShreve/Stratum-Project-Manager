@@ -4,15 +4,20 @@
     import type {ColorEnum} from "../../../types/types";
     import TaskCard from "../TaskCard/TaskCard.svelte";
 
-    let areChildrenHidden = $state(false);
-
     let {
+        id,
         projectName,
         color,
+        isFavorite,
     } = $props<{
+        id: number;
         projectName: string;
         color: ColorEnum;
+        isFavorite: boolean;
     }>();
+
+    let areChildrenHidden = $state(false);
+    let isFavoriteState = $state(isFavorite);
 
 </script>
 
@@ -20,9 +25,9 @@
     <div class="project-card-container" class:children-hidden={!areChildrenHidden}>
         <div class="project-card-container-right"
              style="--project-color: var(--stratum-{color})">
-            <IconButton kind="transparent" icon="chevronright" size="small" clickAction={() => areChildrenHidden = !areChildrenHidden}></IconButton>
-            <span>{projectName}</span>
-            <IconButton kind="transparent" icon="star" size="small"></IconButton>
+            <IconButton kind="transparent" size="small" icon="chevronright" toggleIcon="chevrondown" isToggled={areChildrenHidden} clickAction={() => areChildrenHidden = !areChildrenHidden}></IconButton>
+            <span class="project-card-name" title={projectName} >{projectName}</span>
+            <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => isFavoriteState = !isFavoriteState} ></IconButton>
         </div>
         <div class="project-card-container-left">
             <IconButton kind="transparent" size="small" icon="add" />
@@ -33,8 +38,8 @@
 
     {#if areChildrenHidden}
         <div class="task-container">
-            <TaskCard taskName="First Task" color={color}></TaskCard>
-            <TaskCard taskName="Second Task" color={color}></TaskCard>
+            <TaskCard id={11} isFavorite={true} taskName="First Task" color={color}></TaskCard>
+            <TaskCard id={12} isFavorite={false} taskName="Second Task" color={color}></TaskCard>
         </div>
     {/if}
 </div>

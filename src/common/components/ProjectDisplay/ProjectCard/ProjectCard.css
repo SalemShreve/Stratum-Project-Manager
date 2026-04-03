@@ -57,3 +57,13 @@
     margin-top: 5px;
     margin-left: 17px;
 }
+
+.task-container > :last-child {
+    border-bottom-radius: 6px;
+}
+
+.project-card-name {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -26,6 +26,7 @@
         display: flex;
         flex-direction: column;
         margin: 0;
+        overflow: hidden;
     }
     .app-content {
         display: flex;
@@ -85,7 +86,7 @@
         border-top: 1px solid var(--border-subtle);
         border-top-left-radius: 8px;
         width: 100%;
-        padding: 10px;
+        padding: 0 0 10px 10px;
     }
     .app-bar-search {
         border: 6px;

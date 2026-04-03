@@ -43,6 +43,9 @@ import StarIcon32 from "../icons/StarIcon/StarIcon32.svelte";
 import StarFilledIcon16 from "../icons/StarFilledIcon/StarFilledIcon16.svelte";
 import StarFilledIcon24 from "../icons/StarFilledIcon/StarFilledIcon24.svelte";
 import StarFilledIcon32 from "../icons/StarFilledIcon/StarFilledIcon32.svelte";
+import ChevronDown16 from "../icons/ChevronDownIcon/ChevronDown16.svelte";
+import ChevronDown24 from "../icons/ChevronDownIcon/ChevronDown24.svelte";
+import ChevronDown32 from "../icons/ChevronDownIcon/ChevronDown32.svelte";
 
 export type  IconEnum =
     | 'edit'
@@ -58,6 +61,7 @@ export type  IconEnum =
     | 'close'
     | 'trash'
     | 'chevronright'
+    | 'chevrondown'
     | 'star'
     | 'starfilled';
 
@@ -76,8 +80,7 @@ export type ColorEnum =
     | 'lime'
     | 'coral'
     | 'sky'
-    | 'rose'
-    | 'amber';
+    | 'rose';
 
 export async function getIcon(size: SizeEnum, icon: IconEnum) {
     const iconMap: Record<string, any> = {
@@ -94,6 +97,7 @@ export async function getIcon(size: SizeEnum, icon: IconEnum) {
         close: sized(size,CloseIcon16, CloseIcon24, CloseIcon32),
         trash: sized(size,TrashIcon16, TrashIcon24, TrashIcon32),
         chevronright: sized(size,ChevronRightIcon16, ChevronRightIcon24, ChevronRightIcon32),
+        chevrondown: sized(size, ChevronDown16,ChevronDown24,ChevronDown32),
         star: sized(size,StarIcon16, StarIcon24, StarIcon32),
         starfilled: sized(size,StarFilledIcon16, StarFilledIcon24, StarFilledIcon32),
     };
