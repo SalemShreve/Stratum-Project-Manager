@@ -31,7 +31,7 @@
 
 .text-btn.bright:hover {
     opacity: 0.85;
-    transform: translateY(-1px);
+    /*transform: translateY(-1px);*/
 }
 
 .text-btn.inline {

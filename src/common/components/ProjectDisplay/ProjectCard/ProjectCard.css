@@ -58,6 +58,7 @@
     margin-left: 17px;
 }
 
+/*TODO not working*/
 .task-container > :last-child {
     border-bottom-radius: 6px;
 }
