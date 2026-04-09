@@ -22,8 +22,6 @@
         background-color: var(--bg-page);
         margin: 0;
 
-        /*scrollbar-width: thin;*/
-        /*scrollbar-color: var(--border-base) transparent;*/
     }
     .app-container {
         display: flex;
@@ -34,7 +32,7 @@
     .app-content {
         display: flex;
         width: 100dvw;
-        height: calc(100dvh - 50px);
+        height: 100dvh
     }
     .nav-rail {
         display: flex;
@@ -66,47 +64,17 @@
         margin: 0;
     }
 
-    .app-top-bar {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        height: 50px;
-        min-height: 50px;
-        padding-right: 13px;
-        width: calc(100% - 13px);
-        /*border-bottom: 1px solid var(--border-subtle);*/
-        margin: 0;
-    }
-    .app-bar-icon-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 50px;
-    }
     .app-child-container {
         border-left: 1px solid var(--border-subtle);
-        border-top: 1px solid var(--border-subtle);
-        border-top-left-radius: 8px;
         width: 100%;
-        /*padding: 0 0 10px 10px;*/
     }
 </style>
 
 <main class="app-container">
-    <div class="app-top-bar">
-        <div class="app-bar-icon-container">
-            <Icon kind="transparent" icon="stratum" size="medium" ></Icon>
-        </div>
-        <div class="app-bar-middle">
-<!--            <input class="app-bar-search" type="text">-->
-        </div>
-        <div class="app-bar-actions">
-        </div>
-    </div>
     <div class="app-content">
         <div class="nav-rail" class:extended={isSidebarExtended}>
             <div class="nav-rail-actions">
+                <Icon kind="transparent" icon="stratum" size="medium" ></Icon>
                 <IconButton
                         kind="transparent"
                         size="medium"
