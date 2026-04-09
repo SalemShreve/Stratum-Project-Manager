@@ -8,7 +8,7 @@
     cursor: pointer;
     transition: background 0.2s, color 0.2s, transform 0.15s, opacity .2s;
     font-family: var(--font-mono);
-    font-size: 14px
+    font-size: 14px;
 }
 
 .text-btn.transparent {
@@ -31,7 +31,6 @@
 
 .text-btn.bright:hover {
     opacity: 0.85;
-    /*transform: translateY(-1px);*/
 }
 
 .text-btn.inline {
@@ -47,6 +46,10 @@
     height: 30px;
     padding: 6px 12px;
     flex-shrink: 0;
+}
+
+.text-btn.medium:hover {
+    transform: translateY(-1px);
 }
 
 .text-btn.medium {

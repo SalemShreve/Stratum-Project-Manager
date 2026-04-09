@@ -7,8 +7,14 @@
     max-height: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-right: 10px;
+    padding-left: 10px;
+    padding-right: 2px;
     font-family: var(--font-mono);
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-subtle) transparent;
 }
 
 .settings-section {
@@ -69,6 +75,8 @@
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     padding-left: 10px;
+    min-height: 27px;
+    max-height: 27px;
 }
 
 .db-form-grid input:focus {

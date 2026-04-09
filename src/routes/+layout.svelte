@@ -21,6 +21,9 @@
         color: #f6f6f6;
         background-color: var(--bg-page);
         margin: 0;
+
+        /*scrollbar-width: thin;*/
+        /*scrollbar-color: var(--border-base) transparent;*/
     }
     .app-container {
         display: flex;
@@ -86,12 +89,7 @@
         border-top: 1px solid var(--border-subtle);
         border-top-left-radius: 8px;
         width: 100%;
-        padding: 0 0 10px 10px;
-    }
-    .app-bar-search {
-        border: 6px;
-        min-height: 27px;
-        min-width: 100px;
+        /*padding: 0 0 10px 10px;*/
     }
 </style>
 

@@ -59,9 +59,9 @@
 }
 
 /*TODO not working*/
-.task-container > :last-child {
-    border-bottom-radius: 6px;
-}
+/*.task-container > :last-child {*/
+/*    border-bottom-radius: 6px;*/
+/*}*/
 
 .project-card-name {
     max-width: 200px;
