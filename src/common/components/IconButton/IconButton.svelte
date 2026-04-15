@@ -12,6 +12,7 @@
         isToggled,
         isLoading,
         showLabel,
+        hasBorder,
         title,
         label,
         testId,
@@ -25,6 +26,7 @@
         isLoading?: boolean;
         isSelected?: boolean;
         showLabel?: boolean;
+        hasBorder?: boolean;
         title?: string;
         label?: string;
         testId?: string;
@@ -47,6 +49,7 @@
         class:selected={isSelected}
         class:toggled={isToggled}
         class:labeled={showLabel}
+        class:bordered={hasBorder}
 
         {title}
         onclick={() => clickAction?.()}

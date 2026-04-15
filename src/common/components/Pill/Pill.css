@@ -1,0 +1,43 @@
+.pill {
+    position: relative;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-elevated);
+    color: var(--text-muted);
+    text-align: center;
+    max-height: 15px;
+}
+
+
+.pill.low {
+    background: var(--bg-green-tint);
+    color: var(--accent-green);
+    border-color: var(--border-green);
+}
+
+.pill.medium {
+    background: var(--bg-amber-tint);
+    color: var(--accent-amber);
+    border-color: var(--border-amber);
+}
+
+.pill.high {
+    background: var(--bg-red-tint);
+    color: var(--accent-red);
+    border-color: var(--border-red);
+}
+
+.pill:hover {
+    .pill-tooltip {
+        visibility: visible;
+    }
+}
+
+.pill-tooltip{
+    position: absolute;
+    top: 150%;
+    left: 50%;
+    visibility: hidden;
+}

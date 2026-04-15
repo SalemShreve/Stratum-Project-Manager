@@ -48,6 +48,7 @@
     display: flex;
     gap: 5px;
     padding-right: 10px;
+    align-items: center;
 }
 
 .task-container {
@@ -67,4 +68,26 @@
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-title-tooltip {
+    content: '';
+    position: absolute;
+    visibility: hidden;
+    top: 85%;
+    left: 30%;
+}
+
+.project-card-name:hover {
+    .project-title-tooltip {
+        visibility: visible;
+    }
+}
+
+.actions-divider {
+    width: 1px;
+    height: 25px;
+    background: var(--border-subtle);
+    margin: 0 4px;
 }

@@ -3,8 +3,23 @@
   import ProjectCard from "../common/components/ProjectDisplay/ProjectCard/ProjectCard.svelte";
   import TextButton from "../common/components/TextButton/TextButton.svelte";
   import IconButton from "../common/components/IconButton/IconButton.svelte";
+  import Chip from "../common/components/Chip/Chip.svelte";
+  import "./Home.css"
+  import {mapProjectToProps, type Project} from "../common/types/types";
 
   let isNewProjectModalOpen = $state(false);
+  let sort = $state<'all' | 'starred' | 'created' | 'deadline'>('all');
+  let filter = $state< 'active' | 'low' | 'medium' | 'high' >();
+
+  let projects = $state<Project[]>([]);
+
+  async function loadProjects() {
+      projects = await invoke<Project[]>("get_projects");
+  }
+
+  $effect(() => {
+      loadProjects();
+  });
 </script>
 
 <style>
@@ -20,43 +35,35 @@
         scrollbar-width: thin;
         scrollbar-color: var(--border-subtle) transparent;
     }
-
-    .home-container-topbar{
-        display: flex;
-        justify-content: space-between;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        position: sticky;
-        z-index: 2;
-        top: 0;
-        backdrop-filter: blur(2px);
-        background: rgba(15, 17, 23, 0.82);
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .home-container-content {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        padding-top: 10px;
-    }
 </style>
 
 <main class="home-container">
-    <div class="home-container-topbar">
-        <div class="home-container-topbar-right-actions">
-            <IconButton icon="trash" kind="transparent" size="medium"></IconButton>
+    <div class="home-topbar">
+        <div class="home-actionsbar">
+            <IconButton icon="trash" kind="transparent" size="medium" hasBorder={true}></IconButton>
+            <TextButton kind="bright" size="medium" text="+ New Project"> </TextButton>
         </div>
-        <div class="home-container-topbar-left-actions">
-            <TextButton kind="bright" size="medium" text="+ New Project" />
+        <div class="home-filterbar">
+            <div class="filter-right">
+                <Chip text="All" active={sort === 'all'} clickAction={() => sort = 'all'}> </Chip>
+                <Chip text="★ Starred" starred active={sort === 'starred'} clickAction={() => sort = 'starred'}> </Chip>
+                <Chip text="Date Created" active={sort === 'created'} clickAction={() => sort = 'created'}> </Chip>
+                <Chip text="Deadline" active={sort === 'deadline'} clickAction={() => sort = 'deadline'}> </Chip>
+                <div class="divider"></div>
+                <Chip text="Active" active={filter === 'active'} clickAction={() => filter = 'active'}> </Chip>
+                <Chip text="Low" priority="low" active={filter === 'low'} clickAction={() => filter = 'low'}> </Chip>
+                <Chip text="Medium" priority="medium" active={filter === 'medium'} clickAction={() => filter = 'medium'}> </Chip>
+                <Chip text="High" priority="high" active={filter === 'high'} clickAction={() => filter = 'high'}> </Chip>
+            </div>
+            <div class="filter-search">
+                <input type="search">
+            </div>
         </div>
     </div>
     <div class="home-container-content">
-        <ProjectCard id={1} isFavorite={true} projectName="First Project" color="orange"></ProjectCard>
-        <ProjectCard id={2} isFavorite={true} projectName="Second Project" color="pink"></ProjectCard>
-        <ProjectCard id={3} isFavorite={false} projectName="Third Project" color="indigo"></ProjectCard>
-        <ProjectCard id={4} isFavorite={false} projectName="Portal Refresh" color="lime"></ProjectCard>
-        <ProjectCard id={5} isFavorite={false} projectName="Speed Test System" color="blue"></ProjectCard>
-        <ProjectCard id={6} isFavorite={false} projectName="aksdjkhasjkdhahsdhjhasdhasdasdghasdjasdasdjhasdasdgasdg" color="purple"></ProjectCard>
+        {#each projects as project}
+            {@const props = mapProjectToProps(project)}
+            <ProjectCard {...props} />
+        {/each}
     </div>
 </main>

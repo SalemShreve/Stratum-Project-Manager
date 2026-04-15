@@ -108,3 +108,58 @@ export async function getIcon(size: SizeEnum, icon: IconEnum) {
 export async function sized(size: SizeEnum, s16: any, s24: any, s32: any) {
     return size === 'small' ? s16 : size === 'large' ? s32 : s24;
 }
+
+export interface Project {
+    id: string;
+    name: string;
+    color: string;
+    favorite: number;
+    datecreated: string;
+    deadline: string;
+    minutesworked: number;
+    priority: "low" | "medium" | "high";
+    createdby: string;
+}
+
+export function mapProjectToProps(project: Project) {
+    return {
+        id:           project.id,
+        projectName:  project.name,
+        color:        project.color as ColorEnum,
+        isFavorite:   project.favorite === 1,
+        dateCreated:  new Date(project.datecreated),
+        deadline:     new Date(project.deadline),
+        minutesWorked:project.minutesworked,
+        priority:     project.priority,
+        createdBy:    project.createdby,
+    };
+}
+
+export interface Task {
+    id: string,
+    parentprojectid: string,
+    parenttaskid: string,
+    name: string,
+    favorite: number,
+    datecreated: string,
+    deadline: string,
+    laststarted: string,
+    minutesworked: number,
+    priority: "low" | "medium" | "high";
+}
+
+export function mapTaskToProps(task: Task, color: ColorEnum) {
+    return {
+        id: task.id,
+        parentprojectid: task.parentprojectid,
+        parenttaskid: task.parenttaskid,
+        name: task.name,
+        color: color,
+        favorite: task.favorite,
+        datecreated: new Date(task.datecreated),
+        deadline: new Date(task.deadline),
+        laststarted: task.laststarted,
+        minutesworked: task.minutesworked,
+        priority: task.priority
+    };
+}

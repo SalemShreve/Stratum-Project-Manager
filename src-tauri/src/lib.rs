@@ -63,18 +63,21 @@ fn create_task(app: tauri::AppHandle, parent_id: String, parent_project_id: Stri
 }
 
 #[tauri::command]
-fn get_projects(app: tauri::AppHandle, ){
-
+fn get_projects(app: tauri::AppHandle, ) -> Result<Vec<db::queries::Project>, String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::get_projects(db_path)
 }
 
 #[tauri::command]
-fn get_project_tasks(app: tauri::AppHandle, project_id: String){
-
+fn get_project_tasks(app: tauri::AppHandle, parent_project_id: String) -> Result<Vec<db::queries::Task>, String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::get_project_tasks(db_path, parent_project_id)
 }
 
 #[tauri::command]
-fn get_child_tasks(parent_id: String){
-
+fn get_child_tasks(app: tauri::AppHandle, parent_task_id: String) -> Result<Vec<db::queries::Task>, String>{
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::get_child_tasks(db_path, parent_task_id)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -85,7 +88,10 @@ pub fn run() {
             db_init,
             db_teardown,
             db_wipe,
-            db_check_exists
+            db_check_exists,
+            get_projects,
+            get_project_tasks,
+            get_child_tasks
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

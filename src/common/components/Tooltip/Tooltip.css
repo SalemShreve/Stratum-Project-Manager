@@ -1,0 +1,10 @@
+.tooltip {
+    color: var(--text-secondary);
+    background-color: var(--bg-overlay);
+    border: 1px solid var(--border-base);
+    width: fit-content;
+    padding: 3px 6px;
+    border-radius: 20px;
+    font-size: 10px;
+
+}

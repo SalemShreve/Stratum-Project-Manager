@@ -1,0 +1,64 @@
+.chip {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    background: transparent;
+    font-family: var(--font-mono);
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    max-height: 24px;
+    width: fit-content;
+    line-height: 1;
+}
+
+.chip:hover {
+    cursor: pointer;
+}
+
+.chip.active {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border-color: var(--border-base);
+}
+
+.chip.active.starred {
+    background: var(--bg-amber-tint);
+    color: var(--accent-amber);
+    border-color: var(--border-amber);
+}
+
+.chip.active.low {
+    background: var(--bg-green-tint);
+    color: var(--accent-green);
+    border-color: var(--border-green);
+}
+
+.chip.active.medium {
+    background: var(--bg-amber-tint);
+    color: var(--accent-amber);
+    border-color: var(--border-amber);
+}
+
+.chip.active.high {
+    background: var(--bg-red-tint);
+    color: var(--accent-red);
+    border-color: var(--border-red);
+}
+
+.chip.disabled,
+.chip:disabled {
+    color: var(--text-muted);
+    border-color: var(--border-subtle);
+    background: transparent;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.chip.disabled:hover,
+.chip:disabled:hover {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border-subtle);
+}

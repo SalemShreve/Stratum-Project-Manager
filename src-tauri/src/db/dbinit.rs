@@ -3,34 +3,32 @@ use duckdb::Connection;
 use tauri::Manager;
 
 pub const SCHEMA_SQL: &str = r#"
-    CREATE TABLE IF NOT EXISTS users (
-        id   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        name VARCHAR NOT NULL
-    );
+    CREATE TYPE IF NOT EXISTS priority_level AS ENUM ('low', 'medium', 'high');
 
     CREATE TABLE IF NOT EXISTS projects (
-        id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        name        VARCHAR NOT NULL,
-        color       VARCHAR NOT NULL,
-        favorite    TINYINT DEFAULT 0,
-        datecreated DATE DEFAULT current_date,
-        deadline    DATE NOT NULL,
+        id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name          VARCHAR NOT NULL,
+        color         VARCHAR NOT NULL,
+        favorite      TINYINT DEFAULT 0,
+        datecreated   DATE DEFAULT current_date,
+        deadline      DATE NOT NULL,
         minutesworked INTEGER DEFAULT 0,
-        createdby   UUID REFERENCES users(id)
+        priority      priority_level NOT NULL,
     );
 
     CREATE TABLE IF NOT EXISTS tasks (
         id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        parentprojectid UUID REFERENCES projects(id),
-        parentid        UUID,
+        parentprojectid UUID REFERENCES projects(id) NOT NULL,
+        parenttaskid    UUID REFERENCES tasks(id),
         name            VARCHAR NOT NULL,
         favorite        TINYINT DEFAULT 0,
-        active          TINYINT DEFAULT 0,
+        datecreated     DATE DEFAULT current_date,
+        deadline        DATE NOT NULL,
         laststarted     TIMESTAMP,
         minutesworked   INTEGER DEFAULT 0,
+        priority        priority_level NOT NULL
     );
 "#;
-
 pub fn check_db_initialized(db_path: &str) -> bool {
     if !Path::new(db_path).exists() {
         return false;
