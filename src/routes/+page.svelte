@@ -6,10 +6,17 @@
   import Chip from "../common/components/Chip/Chip.svelte";
   import "./Home.css"
   import {mapProjectToProps, type Project} from "../common/types/types";
+  import NewProjectModal from "../common/components/Modal/NewProjectModal/NewProjectModal.svelte";
+  import {appState} from "../state/appState.svelte";
+  import NewTaskModal from "../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
 
   let isNewProjectModalOpen = $state(false);
-  let sort = $state<'all' | 'starred' | 'created' | 'deadline'>('all');
-  let filter = $state< 'active' | 'low' | 'medium' | 'high' >();
+
+  let sort = $state<'none' | 'starred' | 'created' | 'deadline'>('none');
+  let activeFilter = $state(false)
+  let lowFilter = $state(false)
+  let mediumFilter = $state(false)
+  let highFilter = $state(false)
 
   let projects = $state<Project[]>([]);
 
@@ -38,22 +45,28 @@
 </style>
 
 <main class="home-container">
+    <NewProjectModal bind:isNewProjectModalOpen ></NewProjectModal>
+    <NewTaskModal></NewTaskModal>
     <div class="home-topbar">
         <div class="home-actionsbar">
-            <IconButton icon="trash" kind="transparent" size="medium" hasBorder={true}></IconButton>
-            <TextButton kind="bright" size="medium" text="+ New Project"> </TextButton>
+            <h1 style="font-family: var(--font-mono); margin: 0; color: var(--text-primary)">Projects</h1>
+            <TextButton kind="bright" size="medium" text="+ New Project" clickAction={() => isNewProjectModalOpen = true}> </TextButton>
         </div>
         <div class="home-filterbar">
             <div class="filter-right">
-                <Chip text="All" active={sort === 'all'} clickAction={() => sort = 'all'}> </Chip>
+                <IconButton kind="transparent" size="small" icon="expandall" toggleIcon="collapseall" isToggled={appState.allExpanded} clickAction={() => appState.allExpanded = !appState.allExpanded}></IconButton>
+                <div class="divider"></div>
+                <span class="text-label">Sort</span>
+                <Chip text="None" active={sort === 'none'} clickAction={() => sort = 'none'}> </Chip>
                 <Chip text="★ Starred" starred active={sort === 'starred'} clickAction={() => sort = 'starred'}> </Chip>
                 <Chip text="Date Created" active={sort === 'created'} clickAction={() => sort = 'created'}> </Chip>
                 <Chip text="Deadline" active={sort === 'deadline'} clickAction={() => sort = 'deadline'}> </Chip>
                 <div class="divider"></div>
-                <Chip text="Active" active={filter === 'active'} clickAction={() => filter = 'active'}> </Chip>
-                <Chip text="Low" priority="low" active={filter === 'low'} clickAction={() => filter = 'low'}> </Chip>
-                <Chip text="Medium" priority="medium" active={filter === 'medium'} clickAction={() => filter = 'medium'}> </Chip>
-                <Chip text="High" priority="high" active={filter === 'high'} clickAction={() => filter = 'high'}> </Chip>
+                <span class="text-label">Filter</span>
+                <Chip text="Active" active={activeFilter} clickAction={() => activeFilter = !activeFilter}> </Chip>
+                <Chip text="Low" priority="low" active={lowFilter} clickAction={() => lowFilter = !lowFilter}> </Chip>
+                <Chip text="Medium" priority="medium" active={mediumFilter} clickAction={() => mediumFilter = !mediumFilter}> </Chip>
+                <Chip text="High" priority="high" active={highFilter} clickAction={() => highFilter = !highFilter}> </Chip>
             </div>
             <div class="filter-search">
                 <input type="search">

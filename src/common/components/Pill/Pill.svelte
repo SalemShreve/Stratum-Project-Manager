@@ -5,15 +5,17 @@
     let {
         text,
         state,
-        label
+        label,
+        kind
     } = $props<{
         text: string;
         state?: "low" | "medium" | "high"
         label?: string;
+        kind?: "content" | "container";
     }>();
 </script>
 
-<div class="pill {state}" >
+<div class="pill {state} {kind}" >
     {text}
     {#if label}
         <span class="pill-tooltip">

@@ -27,24 +27,36 @@
     color: var(--text-primary);
 }
 
-.project-card-container-right::before {
+.project-card-container-left::before {
     position: relative;
     content: "";
     z-index: 1;
     width: 15px;
     height: 40px;
+    min-width: 15px;
     border-radius: 5px 0 0 5px;
     background: var(--project-color);
 }
 
-.project-card-container-right {
+.project-card-container-left {
     position: relative;
     display: flex;
     align-items: center;
     gap: 5px;
+    width: 350px;
+    max-width: 350px;
+    padding-right: 10px;
 }
 
-.project-card-container-left {
+.project-card-container-middle {
+    display: flex;
+    justify-content: flex-start;
+    flex: 1;
+    gap: 10px;
+    text-wrap: nowrap;
+}
+
+.project-card-container-right {
     display: flex;
     gap: 5px;
     padding-right: 10px;
@@ -65,7 +77,6 @@
 /*}*/
 
 .project-card-name {
-    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -85,9 +96,37 @@
     }
 }
 
-.actions-divider {
+.divider {
     width: 1px;
     height: 25px;
     background: var(--border-subtle);
     margin: 0 4px;
+}
+
+.metadata-createdby,
+.metadata-priority,
+.metadata-timeworked,
+.metadata-deadline,
+.metadata-createddate {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.metadata-createddate {
+    width: 160px;
+}
+
+.metadata-deadline {
+    width: 130px;
+}
+
+.metadata-timeworked {
+    width: 80px;
+}
+
+.metadata-priority {
+    width: 60px;
 }

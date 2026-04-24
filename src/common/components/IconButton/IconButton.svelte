@@ -4,6 +4,7 @@
 
     let {
         clickAction,
+        hoverAction,
         kind,
         icon,
         toggleIcon,
@@ -18,6 +19,7 @@
         testId,
     } = $props<{
         clickAction?: () => void;
+        hoverAction?: () => void;
         kind: 'toggle' | 'transparent';
         icon: IconEnum;
         toggleIcon?: IconEnum;
@@ -53,6 +55,8 @@
 
         {title}
         onclick={() => clickAction?.()}
+        onmouseenter={() => hoverAction?.()}
+
         disabled={isLoading}
         data-testid={testId}
 >

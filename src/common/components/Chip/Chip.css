@@ -11,6 +11,7 @@
     max-height: 24px;
     width: fit-content;
     line-height: 1;
+    text-wrap: nowrap;
 }
 
 .chip:hover {

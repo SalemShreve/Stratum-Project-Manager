@@ -23,7 +23,7 @@
     color: var(--text-primary);
 }
 
-.task-card-container-right::before {
+.task-card-container-left::before {
     position: relative;
     content: "";
     z-index: 1;
@@ -32,15 +32,24 @@
     background: var(--project-color);
 }
 
-.task-card-container-right {
+.task-card-container-left {
     position: relative;
     display: flex;
     align-items: center;
     gap: 5px;
+    width: 300px;
+    max-width: 300px;
+    padding-right: 5px;
 }
 
-.task-card-container-left {
+.task-card-container-right {
     display: flex;
     gap: 5px;
     padding-right: 10px;
+}
+
+.task-card-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

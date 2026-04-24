@@ -1,14 +1,13 @@
 use duckdb::Connection;
-
 #[derive(serde::Serialize)]
 pub struct Project {
     id: String,
     name: String,
     color: String,
-    favorite: i32,
+    favorite: u32,
     datecreated: String,
     deadline: String,
-    minutesworked: i32,
+    minutesworked: u32,
     priority: String,
 }
 
@@ -16,12 +15,13 @@ pub struct Project {
 pub struct Task {
     id: String,
     parentprojectid: String,
-    parenttaskid: Option<String>,
+    parentid: String,
     name: String,
-    favorite: i32,
+    favorite: u8,
     datecreated: String,
-    deadline: String,
+    estimateddays: u16,
     laststarted: Option<String>,
+    active: u8,
     minutesworked: String,
     priority: String,
 }
@@ -39,8 +39,8 @@ pub fn get_projects(db_path: String) -> Result<Vec<Project>, String>{
             CAST(datecreated AS VARCHAR),
             CAST(deadline AS VARCHAR),
             minutesworked,
-            priority,
-        FROM projects;")
+            priority
+        FROM projects_with_time;")
         .map_err(|e| e.to_string())?;
 
     let projects = stmt
@@ -63,7 +63,7 @@ pub fn get_projects(db_path: String) -> Result<Vec<Project>, String>{
     Ok(projects)
 }
 
-pub fn get_project_tasks(db_path: String, parent_project_id: String) -> Result<Vec<Task>, String> {
+pub fn get_project_tasks(db_path: String, parent_id: String) -> Result<Vec<Task>, String> {
     let conn = Connection::open(&db_path)
         .map_err(|e| e.to_string())?;
 
@@ -71,31 +71,33 @@ pub fn get_project_tasks(db_path: String, parent_project_id: String) -> Result<V
         .prepare("SELECT
             id,
             parentprojectid,
-            parenttaskid,
+            parentid,
             name,
             favorite,
             CAST(datecreated AS VARCHAR),
-            CAST(deadline AS VARCHAR),
+            estimateddays,
             CAST(laststarted AS VARCHAR),
+            active,
             CAST(minutesworked AS VARCHAR),
             priority,
         FROM tasks
-        WHERE parentprojectid = $1;")
+        WHERE parentid = $1;")
         .map_err(|e| e.to_string())?;
 
     let tasks = stmt
-        .query_map([&parent_project_id], |row| {
+        .query_map([&parent_id], |row| {
             Ok(Task {
                 id: row.get(0)?,
                 parentprojectid: row.get(1)?,
-                parenttaskid: row.get(2)?,
+                parentid: row.get(2)?,
                 name: row.get(3)?,
                 favorite: row.get(4)?,
                 datecreated: row.get(5)?,
-                deadline: row.get(6)?,
+                estimateddays: row.get(6)?,
                 laststarted: row.get(7)?,
-                minutesworked: row.get(8)?,
-                priority: row.get(9)?,
+                active: row.get(8)? ,
+                minutesworked: row.get(0)?,
+                priority: row.get(10)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -105,45 +107,30 @@ pub fn get_project_tasks(db_path: String, parent_project_id: String) -> Result<V
     Ok(tasks)
 }
 
-pub fn get_child_tasks(db_path: String, parent_task_id: String) -> Result<Vec<Task>, String>{
+pub fn create_project(db_path: String, name: String, color: String, deadline: String, priority: String ) -> Result<(), String>{
     let conn = Connection::open(&db_path)
         .map_err(|e| e.to_string())?;
 
     let mut stmt = conn
-        .prepare("SELECT
-            id,
-            parentprojectid,
-            parenttaskid,
-            name,
-            favorite,
-            CAST(datecreated AS VARCHAR),
-            CAST(deadline AS VARCHAR),
-            CAST(laststarted AS VARCHAR),
-            CAST(minutesworked AS VARCHAR),
-            priority,
-        FROM tasks
-        WHERE parenttaskid = $1;")
+        .prepare("INSERT INTO projects (name, color, deadline, priority) VALUES ($1, $2, $3, $4);")
         .map_err(|e| e.to_string())?;
 
-    let tasks = stmt
-        .query_map([&parent_task_id], |row| {
-            Ok(Task {
-                id: row.get(0)?,
-                parentprojectid: row.get(1)?,
-                parenttaskid: row.get(2)?,
-                name: row.get(3)?,
-                favorite: row.get(4)?,
-                datecreated: row.get(5)?,
-                deadline: row.get(6)?,
-                laststarted: row.get(7)?,
-                minutesworked: row.get(8)?,
-                priority: row.get(9)?,
-            })
-        })
-        .map_err(|e| e.to_string())?
-        .collect::<Result<Vec<_>, _>>()
+    stmt.execute([&name, &color, &deadline, &priority])
         .map_err(|e| e.to_string())?;
 
-    Ok(tasks)
+    Ok(())
+}
 
+pub fn create_task(db_path: String, parent_id: String, parent_project_id: String, name: String, estimated_days: u16, priority: String ) -> Result<(), String>{
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("INSERT INTO tasks ( parentid, parentprojectid, name, estimateddays, priority) VALUES ($1, $2, $3, $4, $5);")
+        .map_err(|e| e.to_string())?;
+
+    stmt.execute([ &parent_id, &parent_project_id, &name, &estimated_days.to_string(), &priority])
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
 }

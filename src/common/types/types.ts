@@ -46,6 +46,9 @@ import StarFilledIcon32 from "../icons/StarFilledIcon/StarFilledIcon32.svelte";
 import ChevronDown16 from "../icons/ChevronDownIcon/ChevronDown16.svelte";
 import ChevronDown24 from "../icons/ChevronDownIcon/ChevronDown24.svelte";
 import ChevronDown32 from "../icons/ChevronDownIcon/ChevronDown32.svelte";
+import Check16 from "../icons/CheckIcon/Check16.svelte";
+import ExpandAll16 from "../icons/ExpandAllIcon/ExpandAll16.svelte";
+import CollapseAll16 from "../icons/CollapseAllIcon/CollapseAll16.svelte";
 
 export type  IconEnum =
     | 'edit'
@@ -63,43 +66,41 @@ export type  IconEnum =
     | 'chevronright'
     | 'chevrondown'
     | 'star'
-    | 'starfilled';
+    | 'starfilled'
+    | 'check'
+    | 'expandall'
+    | 'collapseall';
 
 export type SizeEnum = 'small' | 'medium' | 'large';
 
-export type ColorEnum =
-    'red'
-    | 'green'
-    | 'blue'
-    | 'purple'
-    | 'orange'
-    | 'yellow'
-    | 'teal'
-    | 'pink'
-    | 'indigo'
-    | 'lime'
-    | 'coral'
-    | 'sky'
-    | 'rose';
+export const COLOR_VALUES = [
+    'red', 'green', 'blue', 'purple', 'orange', 'yellow',
+    'teal', 'pink', 'indigo', 'lime', 'coral', 'sky', 'rose'
+] as const;
+
+export type ColorEnum = typeof COLOR_VALUES[number];
 
 export async function getIcon(size: SizeEnum, icon: IconEnum) {
     const iconMap: Record<string, any> = {
-        search: sized(size, SearchIcon16, SearchIcon24, SearchIcon32),
-        home: sized(size,HomeIcon16, HomeIcon24, HomeIcon32),
-        edit: sized(size,EditIcon16, EditIcon24, EditIcon32),
-        sprint: sized(size,SprintIcon16, SprintIcon24, SprintIcon32),
-        sidebar: sized(size,SidebarIcon16, SidebarIcon24,  SidebarIcon32),
-        stratum: sized(size,StratumIcon16, StratumIcon24,  StratumIcon32),
-        settings: sized(size,SettingsIcon16, SettingsIcon24,  SettingsIcon32),
-        gantt: sized(size,GanttIcon16, GanttIcon24,  GanttIcon32),
-        calendar: sized(size,CalendarIcon16, CalendarIcon24,  CalendarIcon32),
-        add: sized(size,AddIcon16, AddIcon24, AddIcon32),
-        close: sized(size,CloseIcon16, CloseIcon24, CloseIcon32),
-        trash: sized(size,TrashIcon16, TrashIcon24, TrashIcon32),
+        search:       sized(size, SearchIcon16, SearchIcon24, SearchIcon32),
+        home:         sized(size,HomeIcon16, HomeIcon24, HomeIcon32),
+        edit:         sized(size,EditIcon16, EditIcon24, EditIcon32),
+        sprint:       sized(size,SprintIcon16, SprintIcon24, SprintIcon32),
+        sidebar:      sized(size,SidebarIcon16, SidebarIcon24,  SidebarIcon32),
+        stratum:      sized(size,StratumIcon16, StratumIcon24,  StratumIcon32),
+        settings:     sized(size,SettingsIcon16, SettingsIcon24,  SettingsIcon32),
+        gantt:        sized(size,GanttIcon16, GanttIcon24,  GanttIcon32),
+        calendar:     sized(size,CalendarIcon16, CalendarIcon24,  CalendarIcon32),
+        add:          sized(size,AddIcon16, AddIcon24, AddIcon32),
+        close:        sized(size,CloseIcon16, CloseIcon24, CloseIcon32),
+        trash:        sized(size,TrashIcon16, TrashIcon24, TrashIcon32),
         chevronright: sized(size,ChevronRightIcon16, ChevronRightIcon24, ChevronRightIcon32),
-        chevrondown: sized(size, ChevronDown16,ChevronDown24,ChevronDown32),
-        star: sized(size,StarIcon16, StarIcon24, StarIcon32),
-        starfilled: sized(size,StarFilledIcon16, StarFilledIcon24, StarFilledIcon32),
+        chevrondown:  sized(size, ChevronDown16,ChevronDown24,ChevronDown32),
+        star:         sized(size,StarIcon16, StarIcon24, StarIcon32),
+        starfilled:   sized(size,StarFilledIcon16, StarFilledIcon24, StarFilledIcon32),
+        check:        Check16,
+        expandall:    ExpandAll16,
+        collapseall:  CollapseAll16,
     };
 
     return iconMap[icon];
@@ -138,11 +139,13 @@ export function mapProjectToProps(project: Project) {
 export interface Task {
     id: string,
     parentprojectid: string,
-    parenttaskid: string,
+    parentid: string,
     name: string,
+    color: ColorEnum,
     favorite: number,
-    datecreated: string,
-    deadline: string,
+    datecreated: Date,
+    estimateddays: number,
+    active: boolean,
     laststarted: string,
     minutesworked: number,
     priority: "low" | "medium" | "high";
@@ -151,15 +154,16 @@ export interface Task {
 export function mapTaskToProps(task: Task, color: ColorEnum) {
     return {
         id: task.id,
-        parentprojectid: task.parentprojectid,
-        parenttaskid: task.parenttaskid,
+        parentProjectId: task.parentprojectid,
+        parentId: task.parentid,
         name: task.name,
         color: color,
-        favorite: task.favorite,
-        datecreated: new Date(task.datecreated),
-        deadline: new Date(task.deadline),
-        laststarted: task.laststarted,
-        minutesworked: task.minutesworked,
+        isFavorite: task.favorite,
+        dateCreated: new Date(task.datecreated),
+        estimatedDays: task.estimateddays,
+        active: task.active,
+        lastStarted: task.laststarted,
+        minutesWorked: task.minutesworked,
         priority: task.priority
     };
 }

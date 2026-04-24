@@ -12,23 +12,49 @@ pub const SCHEMA_SQL: &str = r#"
         favorite      TINYINT DEFAULT 0,
         datecreated   DATE DEFAULT current_date,
         deadline      DATE NOT NULL,
-        minutesworked INTEGER DEFAULT 0,
-        priority      priority_level NOT NULL,
+        priority      priority_level NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS tasks (
         id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         parentprojectid UUID REFERENCES projects(id) NOT NULL,
-        parenttaskid    UUID REFERENCES tasks(id),
+        parentid        UUID NOT NULL,
         name            VARCHAR NOT NULL,
         favorite        TINYINT DEFAULT 0,
         datecreated     DATE DEFAULT current_date,
-        deadline        DATE NOT NULL,
+        estimateddays   INTEGER DEFAULT 0,
         laststarted     TIMESTAMP,
+        active          TINYINT DEFAULT 0,
         minutesworked   INTEGER DEFAULT 0,
         priority        priority_level NOT NULL
     );
+
+    CREATE VIEW IF NOT EXISTS projects_with_time AS
+    SELECT
+        p.id,
+        p.name,
+        p.color,
+        p.favorite,
+        CAST(p.datecreated AS VARCHAR) AS datecreated,
+        CAST(p.deadline AS VARCHAR)    AS deadline,
+        p.priority,
+        COALESCE(SUM(t.minutesworked), 0) AS minutesworked
+    FROM projects p
+    LEFT JOIN tasks t
+        ON t.parentprojectid = p.id
+        AND NOT EXISTS (
+            SELECT 1 FROM tasks child WHERE child.parentid = t.id
+        )
+    GROUP BY
+        p.id,
+        p.name,
+        p.color,
+        p.favorite,
+        p.datecreated,
+        p.deadline,
+        p.priority;
 "#;
+
 pub fn check_db_initialized(db_path: &str) -> bool {
     if !Path::new(db_path).exists() {
         return false;

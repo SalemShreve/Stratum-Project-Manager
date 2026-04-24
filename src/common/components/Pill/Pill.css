@@ -8,6 +8,11 @@
     color: var(--text-muted);
     text-align: center;
     max-height: 15px;
+    text-wrap:nowrap;
+}
+
+.pill.container {
+    width: 100%;
 }
 
 

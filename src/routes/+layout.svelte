@@ -1,7 +1,7 @@
 <script>
     import "../common/colors/color.css"
     import IconButton from "../common/components/IconButton/IconButton.svelte";
-    import {goto} from "$app/navigation";
+    import {goto,preloadData,} from "$app/navigation";
     import Icon from "../common/components/Icon/Icon.svelte";
 
     let { children } = $props();
@@ -88,6 +88,7 @@
                         icon="home"
                         label="Home"
                         showLabel={isSidebarExtended}
+                        hoverAction={() => preloadData("/")}
                         clickAction={() => goto("/")}/>
                 <IconButton
                         kind="transparent"
@@ -95,6 +96,7 @@
                         icon="gantt"
                         label="Gantt"
                         showLabel={isSidebarExtended}
+                        hoverAction={() => preloadData("/gantt")}
                         clickAction={() => goto("/gantt")}/>
                 <IconButton
                         kind="transparent"
@@ -102,6 +104,7 @@
                         icon="sprint"
                         label="Sprint"
                         showLabel={isSidebarExtended}
+                        hoverAction={() => preloadData("/sprints")}
                         clickAction={() => goto("/sprints")}/>
                 <IconButton
                         kind="transparent"
@@ -109,6 +112,7 @@
                         icon="calendar"
                         label="Calendar"
                         showLabel={isSidebarExtended}
+                        hoverAction={() => preloadData("/calendar")}
                         clickAction={() => goto("/calendar")}/>
             </div>
             <div class="nav-rail-footer">

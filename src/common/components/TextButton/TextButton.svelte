@@ -11,7 +11,7 @@
         title,
         testId,
     } = $props<{
-        clickAction?: () => {};
+        clickAction?: () => {} | void;
         kind: 'bright'  | 'transparent';
         size: 'small' | 'medium' | 'inline'
         text: string;

@@ -1,6 +1,5 @@
-use std::fs;
 use duckdb::Connection;
-use tauri::webview::cookie::time::Date;
+use std::fs;
 
 mod db;
 
@@ -40,26 +39,21 @@ fn db_wipe(){
 
 
 #[tauri::command]
-fn create_user(app: tauri::AppHandle, user_name: String) -> Result<String, String> {
+fn create_user(app: tauri::AppHandle, user_name: String) {
+
+}
+#[tauri::command]
+fn create_project(app: tauri::AppHandle, project_name: String, color: String, deadline: String, priority: String)  -> Result< (), String > {
     let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::create_project(db_path,project_name,color,deadline,priority)?;
 
-    let query = format!("INSERT INTO users (name) VALUES ('{user_name}');");
-
-    let conn = Connection::open(&db_path)
-        .map_err(|e| e.to_string())?;
-    conn.execute_batch(&query)
-        .map_err(|e| e.to_string())?;
-
-    Ok(db_path)
-}
-#[tauri::command]
-fn create_project(app: tauri::AppHandle, project_name: String, color: String, deadline: Date){
-
+    Ok(())
 }
 
 #[tauri::command]
-fn create_task(app: tauri::AppHandle, parent_id: String, parent_project_id: String, task_name: String ){
-
+fn create_task(app: tauri::AppHandle, parent_id: String, parent_project_id: String, task_name: String, estimated_days: u16, priority: String ) -> Result< (), String > {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::create_task(db_path, parent_id, parent_project_id, task_name, estimated_days, priority)
 }
 
 #[tauri::command]
@@ -69,19 +63,20 @@ fn get_projects(app: tauri::AppHandle, ) -> Result<Vec<db::queries::Project>, St
 }
 
 #[tauri::command]
-fn get_project_tasks(app: tauri::AppHandle, parent_project_id: String) -> Result<Vec<db::queries::Task>, String> {
+fn get_project_tasks(app: tauri::AppHandle, parent_id: String) -> Result<Vec<db::queries::Task>, String> {
     let db_path = db::dbinit::resolve_db_path(&app)?;
-    db::queries::get_project_tasks(db_path, parent_project_id)
-}
-
-#[tauri::command]
-fn get_child_tasks(app: tauri::AppHandle, parent_task_id: String) -> Result<Vec<db::queries::Task>, String>{
-    let db_path = db::dbinit::resolve_db_path(&app)?;
-    db::queries::get_child_tasks(db_path, parent_task_id)
+    db::queries::get_project_tasks(db_path, parent_id)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    std::env::set_var("RUST_BACKTRACE", "1");
+    std::panic::set_hook(Box::new(|info| {
+        // Writes to the terminal where `cargo tauri dev` is running
+        eprintln!("\n=== PANIC ===\n{info}\n");
+        eprintln!("{}", std::backtrace::Backtrace::force_capture());
+    }));
+    
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
@@ -91,7 +86,8 @@ pub fn run() {
             db_check_exists,
             get_projects,
             get_project_tasks,
-            get_child_tasks
+            create_project,
+            create_task,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
