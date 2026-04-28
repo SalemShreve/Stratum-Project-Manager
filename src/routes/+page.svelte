@@ -9,6 +9,8 @@
   import NewProjectModal from "../common/components/Modal/NewProjectModal/NewProjectModal.svelte";
   import {appState} from "../state/appState.svelte";
   import NewTaskModal from "../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
+  import Pill from "../common/components/Pill/Pill.svelte";
+  import {onMount} from "svelte";
 
   let isNewProjectModalOpen = $state(false);
 
@@ -27,6 +29,10 @@
   $effect(() => {
       loadProjects();
   });
+
+  onMount(async () => {
+      appState.allExpanded = false;
+  })
 </script>
 
 <style>
@@ -49,7 +55,10 @@
     <NewTaskModal></NewTaskModal>
     <div class="home-topbar">
         <div class="home-actionsbar">
-            <h1 style="font-family: var(--font-mono); margin: 0; color: var(--text-primary)">Projects</h1>
+            <div class="home-actionsbar-left">
+                <h1 style="font-family: var(--font-mono); margin: 0; color: var(--text-primary)">Projects</h1>
+                <Pill text="{projects.length} Projects"></Pill>
+            </div>
             <TextButton kind="bright" size="medium" text="+ New Project" clickAction={() => isNewProjectModalOpen = true}> </TextButton>
         </div>
         <div class="home-filterbar">

@@ -96,7 +96,7 @@ pub fn get_project_tasks(db_path: String, parent_id: String) -> Result<Vec<Task>
                 estimateddays: row.get(6)?,
                 laststarted: row.get(7)?,
                 active: row.get(8)? ,
-                minutesworked: row.get(0)?,
+                minutesworked: row.get(9)?,
                 priority: row.get(10)?,
             })
         })

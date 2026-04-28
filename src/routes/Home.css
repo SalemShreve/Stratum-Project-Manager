@@ -15,11 +15,17 @@
 .home-actionsbar {
     display: flex;
     flex-direction: row;
-    gap: 5px;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border-subtle);
     padding-bottom: 10px;
+}
+
+.home-actionsbar-left {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
 }
 
 .home-filterbar {

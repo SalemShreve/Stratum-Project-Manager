@@ -13,6 +13,7 @@
     justify-content: space-between;
     background: var(--bg-surface);
     color: var(--text-secondary);
+    border-bottom-left-radius: 6px;
 
     font-family: var(--font-mono);
     transition: background .2s, color .2s;
@@ -29,6 +30,7 @@
     z-index: 1;
     width: 15px;
     height: 40px;
+    min-width: 15px;
     background: var(--project-color);
 }
 
@@ -39,7 +41,7 @@
     gap: 5px;
     width: 300px;
     max-width: 300px;
-    padding-right: 5px;
+    padding-right: 10px;
 }
 
 .task-card-container-right {
@@ -52,4 +54,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.task-card-container-left.expanded::before {
+    border-bottom-left-radius: 6px;
 }

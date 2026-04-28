@@ -120,13 +120,10 @@
             <IconButton kind="transparent" size="small" icon="trash" />
         </div>
     </div>
-
-    {#if areChildrenHidden && children.length > 0}
-        <div class="task-container">
-            {#each children as task}
-                {@const props = mapTaskToProps(task, color)}
-                <TaskCard {...props} />
-            {/each}
-        </div>
-    {/if}
+    <div class="task-container" class:hidden={!areChildrenHidden || children.length === 0} >
+        {#each children as task}
+            {@const props = mapTaskToProps(task, color)}
+            <TaskCard {...props} />
+        {/each}
+    </div>
 </div>

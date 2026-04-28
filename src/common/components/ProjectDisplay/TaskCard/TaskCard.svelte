@@ -36,7 +36,7 @@
     }>();
 
     let areChildrenHidden = $state(appState.allExpanded);
-    let isFavoriteState = $state(isFavorite);
+    let isFavoriteState = $derived(isFavorite);
 
     let children = $state<Task[]>([]);
 
@@ -71,9 +71,13 @@
 
 <div class="task-card">
     <div class="task-card-container">
-        <div class="task-card-container-left" style="--project-color: var(--stratum-{color})">
-            <IconButton kind="transparent" size="small" icon="chevronright" toggleIcon="chevrondown" isToggled={areChildrenHidden} clickAction={() => areChildrenHidden = !areChildrenHidden}></IconButton>
-            <span class="task-card-name">
+        <div class="task-card-container-left" class:expanded={areChildrenHidden && children.length !== 0} style="--project-color: var(--stratum-{color})">
+            {#if children.length !== 0}
+                <IconButton kind="transparent" size="small" icon="chevronright" toggleIcon="chevrondown" isToggled={areChildrenHidden} clickAction={() => areChildrenHidden = !areChildrenHidden}></IconButton>
+                {:else}
+                <span style="width: 5px"></span>
+            {/if}
+            <span class="task-card-name" title={name}>
                 {name}
             </span>
             <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => isFavoriteState = !isFavoriteState} ></IconButton>
@@ -103,6 +107,15 @@
                 </svg>
                 created {formatDate(dateCreated)}
             </div>
+            <div class="divider"></div>
+            <div class="metadata-deadline">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                estimate {estimatedDays} days
+            </div>
         </div>
         <div class="task-card-container-right">
             {#if children.length === 0}
@@ -114,12 +127,10 @@
             <IconButton kind="transparent" size="small" icon="trash" />
         </div>
     </div>
-    {#if areChildrenHidden && children.length > 0}
-        <div class="task-container">
-            {#each children as task}
-                {@const props = mapTaskToProps(task, color)}
-                <TaskCard {...props} />
-            {/each}
-        </div>
-    {/if}
+    <div class="task-container" class:hidden={!areChildrenHidden || children.length === 0} >
+        {#each children as task}
+            {@const props = mapTaskToProps(task, color)}
+            <TaskCard {...props} />
+        {/each}
+    </div>
 </div>

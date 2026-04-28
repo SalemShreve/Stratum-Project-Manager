@@ -9,6 +9,7 @@
     text-align: center;
     max-height: 15px;
     text-wrap:nowrap;
+    font-family: var(--font-mono);
 }
 
 .pill.container {
