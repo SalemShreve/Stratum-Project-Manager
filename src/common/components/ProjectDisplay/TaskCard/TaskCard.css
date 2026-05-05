@@ -14,6 +14,7 @@
     background: var(--bg-surface);
     color: var(--text-secondary);
     border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
 
     font-family: var(--font-mono);
     transition: background .2s, color .2s;
@@ -27,10 +28,14 @@
 .task-card-container.last {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
+}
 
-    .task-card-container-left::before {
-        border-bottom-left-radius: 6px;
-    }
+.task-card-container-left.above-sibling-extended::before {
+    border-top-left-radius: 6px;
+}
+
+.task-card-container-left.last::before {
+    border-bottom-left-radius: 6px;
 }
 
 .task-card-container-left::before {

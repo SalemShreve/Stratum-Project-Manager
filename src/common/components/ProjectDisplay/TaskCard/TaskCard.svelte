@@ -20,6 +20,8 @@
         lastStarted,
         minutesWorked,
         priority,
+        isVisible,
+        isParentLastInDepth
     } = $props<{
         id: string,
         parentProjectId: string,
@@ -33,12 +35,74 @@
         lastStarted: string,
         minutesWorked: number,
         priority: "low" | "medium" | "high";
+        isVisible: boolean,
+        isParentLastInDepth: boolean,
     }>();
 
-    let areChildrenHidden = $state(appState.allExpanded);
+    let areChildrenShown = $state(appState.allExpanded);
     let isFavoriteState = $derived(isFavorite);
+    let isLastCard = $state(false)
+    let isLastInDepth = $state(false)
+    let isSiblingAboveExtended = $state(false)
 
     let children = $state<Task[]>([]);
+
+    let taskEl = $state<HTMLElement>();
+
+    //TODO isSiblingAboveExtended doesnt care when card above in same depth is extended after isVisible not triggered
+
+    function getStateFromSiblings() {
+        if (!taskEl) return;
+
+        const parent = taskEl.parentElement;
+        if (!parent) return [];
+
+        const siblings = Array.from(parent.children)
+
+        siblings.forEach((sibling) => {
+            if (sibling.id === taskEl?.id) {
+                if (siblings.indexOf(sibling) === (siblings.length - 1) && isParentLastInDepth) {
+                    isLastInDepth = true
+                }
+
+                if ( siblings[siblings.indexOf(sibling)-1] ) {
+                   let siblingAbove = siblings[siblings.indexOf(sibling)-1]
+
+
+                    if (siblingAbove.className === "task-card expanded") {
+                        isSiblingAboveExtended = true
+
+                    }
+                }
+            }
+        })
+    }
+
+    function getSiblings() {
+        if (!taskEl) return;
+
+        const parent = taskEl.parentElement;
+        if (!parent) return [];
+
+        const siblings = Array.from(parent.children)
+
+        if (areChildrenShown && children.length != 0 || !isParentLastInDepth ) {
+            isLastCard = false
+        }
+        else if (siblings.length === 1 && !areChildrenShown) {
+            isLastCard = true
+        }
+        else {
+            siblings.forEach((sibling) => {
+                if (sibling.id === taskEl?.id) {
+
+                    if (siblings.indexOf(sibling) === (siblings.length - 1)) {
+                        isLastCard = true
+                    }
+                }
+            })
+        }
+    }
 
     async function loadTaskChildren() {
         children = await invoke<Task[]>("get_project_tasks", { parentId: id });
@@ -59,21 +123,43 @@
         appState.newTaskInfo.isNewTaskModalOpen = true;
     }
 
+    function handleExpandBtnClicked() {
+        areChildrenShown = !areChildrenShown
+        getStateFromSiblings();
+
+        if (areChildrenShown || isParentLastInDepth) {
+            isLastCard = false
+        }
+        else {
+            getSiblings();
+        }
+    }
+
     $effect(() => {
         loadTaskChildren();
     });
 
     $effect(() => {
-        areChildrenHidden = appState.allExpanded;
+        if (children.length === 0) {
+            areChildrenShown = false;
+        }
+        else areChildrenShown = appState.allExpanded;
     });
+
+    $effect(() => {
+        if (isVisible === true) {
+            getStateFromSiblings();
+            getSiblings();
+        }
+    })
 
 </script>
 
-<div class="task-card">
+<div class="task-card" bind:this={taskEl} id={id} class:last={isLastCard} class:expanded={areChildrenShown && children.length !== 0}>
     <div class="task-card-container">
-        <div class="task-card-container-left" class:expanded={areChildrenHidden && children.length !== 0} style="--project-color: var(--stratum-{color})">
+        <div class="task-card-container-left" class:last={isLastCard} class:above-sibling-extended={isSiblingAboveExtended} class:expanded={areChildrenShown && children.length !== 0} style="--project-color: var(--stratum-{color})">
             {#if children.length !== 0}
-                <IconButton kind="transparent" size="small" icon="chevronright" toggleIcon="chevrondown" isToggled={areChildrenHidden} clickAction={() => areChildrenHidden = !areChildrenHidden}></IconButton>
+                <IconButton kind="transparent" size="small" icon="chevronright" toggleIcon="chevrondown" isToggled={areChildrenShown} clickAction={() => handleExpandBtnClicked()}></IconButton>
                 {:else}
                 <span style="width: 5px"></span>
             {/if}
@@ -127,10 +213,10 @@
             <IconButton kind="transparent" size="small" icon="trash" />
         </div>
     </div>
-    <div class="task-container" class:hidden={!areChildrenHidden || children.length === 0} >
+    <div class="task-container" class:hidden={!areChildrenShown || children.length === 0} >
         {#each children as task}
             {@const props = mapTaskToProps(task, color)}
-            <TaskCard {...props} />
+            <TaskCard {...props} isVisible={areChildrenShown} isParentLastInDepth={isLastInDepth} />
         {/each}
     </div>
 </div>
