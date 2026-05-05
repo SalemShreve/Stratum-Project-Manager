@@ -30,10 +30,45 @@
     }>();
 
     let areChildrenHidden = $state(appState.allExpanded);
+    let children = $state<Task[]>([]);
 
     let isFavoriteState = $derived(isFavorite);
 
-    let children = $state<Task[]>([]);
+    let projectCardEl = $state<HTMLElement>();
+
+    function updateLastCard() {
+        if (!projectCardEl) return;
+
+        console.log("RUn");
+
+        // remove all existing last classes
+        projectCardEl.querySelectorAll('.last').forEach(el => el.classList.remove('last'));
+
+        function findLast(container: Element): Element | null {
+            const taskCards = [...container.querySelectorAll(':scope > .task-card')];
+            if (taskCards.length === 0) return null;
+
+            const lastCard = taskCards[taskCards.length - 1];
+            const childContainer = lastCard.querySelector(':scope > .task-container');
+
+            // if child container exists and is not hidden, recurse into it
+            if (childContainer && !childContainer.classList.contains('hidden')) {
+                const deeper = findLast(childContainer);
+                if (deeper) return deeper;
+            }
+
+            return lastCard;
+        }
+
+        const taskContainer = projectCardEl.querySelector(':scope > .task-container');
+        if (!taskContainer || taskContainer.classList.contains('hidden')) return;
+
+        const last = findLast(taskContainer);
+        if (last) {
+            last.querySelector('.task-card-container')?.classList.add('last');
+        }
+    }
+
 
     async function loadProjectChildren() {
         children = await invoke<Task[]>("get_project_tasks", { parentId: id });
@@ -62,9 +97,14 @@
         areChildrenHidden = appState.allExpanded;
     });
 
+    $effect(() => {
+        areChildrenHidden;
+        updateLastCard();
+    });
+
 </script>
 
-<div class="project-card" class:starred={isFavorite}>
+<div class="project-card" class:starred={isFavorite} bind:this={projectCardEl}>
     <div class="project-card-container" class:children-hidden={!areChildrenHidden}>
         <div class="project-card-container-left"
              style="--project-color: var(--stratum-{color})">
