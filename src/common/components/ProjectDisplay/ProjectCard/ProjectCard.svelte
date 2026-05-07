@@ -32,7 +32,7 @@
     let areChildrenShown = $state(appState.allExpanded);
     let children = $state<Task[]>([]);
 
-    let isFavoriteState = $derived(isFavorite);
+    let isFavoriteState = $state(isFavorite);
 
     async function loadProjectChildren() {
         children = await invoke<Task[]>("get_project_tasks", { parentId: id });
@@ -59,10 +59,6 @@
 
     $effect(() => {
         areChildrenShown = appState.allExpanded;
-    });
-
-    $effect(() => {
-        areChildrenShown;
     });
 
 </script>

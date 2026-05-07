@@ -14,7 +14,7 @@
 
   let isNewProjectModalOpen = $state(false);
 
-  let sort = $state<'none' | 'starred' | 'created' | 'deadline'>('none');
+  let sort = $state<'none' | 'starred' | 'created' | 'deadline' | 'name'>('none');
   let activeFilter = $state(false)
   let lowFilter = $state(false)
   let mediumFilter = $state(false)
@@ -27,6 +27,7 @@
   }
 
   $effect(() => {
+      appState.triggerUpdateProjectsList
       loadProjects();
   });
 
@@ -68,6 +69,7 @@
                 <span class="text-label">Sort</span>
                 <Chip text="None" active={sort === 'none'} clickAction={() => sort = 'none'}> </Chip>
                 <Chip text="★ Starred" starred active={sort === 'starred'} clickAction={() => sort = 'starred'}> </Chip>
+                <Chip text="Name" active={sort === 'name'} clickAction={() => sort = 'name'}> </Chip>
                 <Chip text="Date Created" active={sort === 'created'} clickAction={() => sort = 'created'}> </Chip>
                 <Chip text="Deadline" active={sort === 'deadline'} clickAction={() => sort = 'deadline'}> </Chip>
                 <div class="divider"></div>

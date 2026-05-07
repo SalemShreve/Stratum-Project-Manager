@@ -5,5 +5,6 @@ export const appState = $state({
         parentProjectId: '',
         parentId: ''
     },
-    triggerCardStateCheck: 0
+    triggerTaskCardStateCheck: 0,
+    triggerUpdateProjectsList: 0
 })

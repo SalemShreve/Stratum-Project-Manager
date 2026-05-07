@@ -4,6 +4,7 @@
     import {COLOR_VALUES, type ColorEnum, type Task} from "../../../types/types";
     import Chip from "../../Chip/Chip.svelte";
     import {invoke} from "@tauri-apps/api/core";
+    import {appState} from "../../../../state/appState.svelte";
 
     let { isNewProjectModalOpen = $bindable()} = $props();
     let dialog: any = $state();
@@ -18,8 +19,9 @@
 
        if (newProjectName == undefined || newProjectDeadline == undefined || newProjectPriority == undefined || newProjectColor == undefined) {}
 
-        await invoke<Task[]>("create_project", { projectName: newProjectName, color: newProjectColor, deadline: newProjectDeadline, priority: newProjectPriority });
+       await invoke<Task[]>("create_project", { projectName: newProjectName, color: newProjectColor, deadline: newProjectDeadline, priority: newProjectPriority });
 
+       appState.triggerUpdateProjectsList += 1
        handleClose()
    }
 

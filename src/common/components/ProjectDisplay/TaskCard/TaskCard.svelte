@@ -121,7 +121,7 @@
     function handleExpandBtnClicked() {
         areChildrenShown = !areChildrenShown
 
-        appState.triggerCardStateCheck += 1
+        appState.triggerTaskCardStateCheck += 1
 
         getStateFromSiblings();
 
@@ -152,9 +152,7 @@
     })
 
     $effect(() => {
-        appState.triggerCardStateCheck
-
-        console.log(appState.triggerCardStateCheck)
+        appState.triggerTaskCardStateCheck
 
         getStateFromSiblings();
         getSiblings();
