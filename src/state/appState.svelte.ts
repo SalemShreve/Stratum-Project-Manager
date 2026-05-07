@@ -4,5 +4,6 @@ export const appState = $state({
         isNewTaskModalOpen: false,
         parentProjectId: '',
         parentId: ''
-    }
+    },
+    triggerCardStateCheck: 0
 })

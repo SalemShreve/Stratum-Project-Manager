@@ -49,13 +49,11 @@
 
     let taskEl = $state<HTMLElement>();
 
-    //TODO isSiblingAboveExtended doesnt care when card above in same depth is extended after isVisible not triggered
-
     function getStateFromSiblings() {
         if (!taskEl) return;
 
         const parent = taskEl.parentElement;
-        if (!parent) return [];
+        if (!parent) return;
 
         const siblings = Array.from(parent.children)
 
@@ -69,10 +67,7 @@
                    let siblingAbove = siblings[siblings.indexOf(sibling)-1]
 
 
-                    if (siblingAbove.className === "task-card expanded") {
-                        isSiblingAboveExtended = true
-
-                    }
+                    isSiblingAboveExtended = siblingAbove.className === "task-card expanded";
                 }
             }
         })
@@ -82,7 +77,7 @@
         if (!taskEl) return;
 
         const parent = taskEl.parentElement;
-        if (!parent) return [];
+        if (!parent) return;
 
         const siblings = Array.from(parent.children)
 
@@ -125,6 +120,9 @@
 
     function handleExpandBtnClicked() {
         areChildrenShown = !areChildrenShown
+
+        appState.triggerCardStateCheck += 1
+
         getStateFromSiblings();
 
         if (areChildrenShown || isParentLastInDepth) {
@@ -151,6 +149,15 @@
             getStateFromSiblings();
             getSiblings();
         }
+    })
+
+    $effect(() => {
+        appState.triggerCardStateCheck
+
+        console.log(appState.triggerCardStateCheck)
+
+        getStateFromSiblings();
+        getSiblings();
     })
 
 </script>
