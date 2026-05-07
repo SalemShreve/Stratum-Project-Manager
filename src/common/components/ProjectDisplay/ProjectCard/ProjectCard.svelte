@@ -38,6 +38,12 @@
         children = await invoke<Task[]>("get_project_tasks", { parentId: id });
     }
 
+    async function handleFavoriteToggle() {
+        isFavoriteState = !isFavoriteState
+
+        await invoke<Task[]>("set_favorite", { projectId: id, favoriteState: isFavoriteState });
+    }
+
     function formatDate(date: Date): string {
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
@@ -71,7 +77,7 @@
             <span class="project-card-name" title={projectName}>
                 {projectName}
             </span>
-            <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => isFavoriteState = !isFavoriteState} ></IconButton>
+            <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => handleFavoriteToggle()} ></IconButton>
             {#if children.length !== 0}
                 <Pill text="{children.length} Tasks"></Pill>
             {/if}

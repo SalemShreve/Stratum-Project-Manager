@@ -134,3 +134,17 @@ pub fn create_task(db_path: String, parent_id: String, parent_project_id: String
 
     Ok(())
 }
+
+pub fn set_favorite(db_path: String, project_id: String, favorite_state: bool) -> Result<(), String>{
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("UPDATE projects set favorite = $2 WHERE id = $1;")
+        .map_err(|e| e.to_string())?;
+
+    stmt.execute([&project_id, &(favorite_state as u8).to_string()])
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}

@@ -68,6 +68,12 @@ fn get_project_tasks(app: tauri::AppHandle, parent_id: String) -> Result<Vec<db:
     db::queries::get_project_tasks(db_path, parent_id)
 }
 
+#[tauri::command]
+fn set_favorite(app: tauri::AppHandle, project_id: String, favorite_state: bool) -> Result<(), String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::set_favorite(db_path, project_id, favorite_state)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     std::env::set_var("RUST_BACKTRACE", "1");
@@ -88,6 +94,7 @@ pub fn run() {
             get_project_tasks,
             create_project,
             create_task,
+            set_favorite
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
