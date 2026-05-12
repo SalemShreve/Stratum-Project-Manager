@@ -5,6 +5,11 @@ export const appState = $state({
         parentProjectId: '',
         parentId: ''
     },
+    deleteNodeInfo: {
+        isDeleteConfirmModalOpen: false,
+        nodeName: '',
+        nodeId: ''
+    },
     triggerTaskCardStateCheck: 0,
     triggerUpdateProjectsList: 0
 })

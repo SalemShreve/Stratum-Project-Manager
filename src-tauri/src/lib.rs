@@ -51,6 +51,22 @@ fn create_project(app: tauri::AppHandle, project_name: String, color: String, de
 }
 
 #[tauri::command]
+fn delete_project(app: tauri::AppHandle, project_id: String)  -> Result< (), String > {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::delete_project(db_path,project_id)?;
+
+    Ok(())
+}
+
+#[tauri::command]
+fn delete_task(app: tauri::AppHandle, task_id: String)  -> Result< (), String > {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::delete_task(db_path,task_id)?;
+
+    Ok(())
+}
+
+#[tauri::command]
 fn create_task(app: tauri::AppHandle, parent_id: String, parent_project_id: String, task_name: String, estimated_days: u16, priority: String ) -> Result< (), String > {
     let db_path = db::dbinit::resolve_db_path(&app)?;
     db::queries::create_task(db_path, parent_id, parent_project_id, task_name, estimated_days, priority)
@@ -63,9 +79,9 @@ fn get_projects(app: tauri::AppHandle, ) -> Result<Vec<db::queries::Project>, St
 }
 
 #[tauri::command]
-fn get_project_tasks(app: tauri::AppHandle, parent_id: String) -> Result<Vec<db::queries::Task>, String> {
+fn get_node_children(app: tauri::AppHandle, parent_id: String, node_type: u8) -> Result<Vec<db::queries::Task>, String> {
     let db_path = db::dbinit::resolve_db_path(&app)?;
-    db::queries::get_project_tasks(db_path, parent_id)
+    db::queries::get_node_children(db_path, parent_id, node_type)
 }
 
 #[tauri::command]
@@ -91,10 +107,11 @@ pub fn run() {
             db_wipe,
             db_check_exists,
             get_projects,
-            get_project_tasks,
+            get_node_children,
             create_project,
             create_task,
-            set_favorite
+            set_favorite,
+            delete_project
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -35,7 +35,7 @@
     let isFavoriteState = $state(isFavorite);
 
     async function loadProjectChildren() {
-        children = await invoke<Task[]>("get_project_tasks", { parentId: id });
+        children = await invoke<Task[]>("get_node_children", { parentId: id, nodeType: 0 });
     }
 
     async function handleFavoriteToggle() {
@@ -57,6 +57,13 @@
         appState.newTaskInfo.parentProjectId = id
 
         appState.newTaskInfo.isNewTaskModalOpen = true;
+    }
+
+    function handleTrashBtnClicked() {
+        appState.deleteNodeInfo.nodeId = id
+        appState.deleteNodeInfo.nodeName = projectName
+
+        appState.deleteNodeInfo.isDeleteConfirmModalOpen = true;
     }
 
     $effect(() => {
@@ -122,7 +129,7 @@
             <div class="divider"></div>
             <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()} />
             <IconButton kind="transparent" size="small" icon="edit" />
-            <IconButton kind="transparent" size="small" icon="trash" />
+            <IconButton kind="transparent" size="small" icon="trash" clickAction={() => handleTrashBtnClicked()}/>
         </div>
     </div>
     <div class="task-container" class:hidden={!areChildrenShown || children.length === 0} >

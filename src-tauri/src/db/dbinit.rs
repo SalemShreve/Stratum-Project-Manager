@@ -18,7 +18,7 @@ pub const SCHEMA_SQL: &str = r#"
     CREATE TABLE IF NOT EXISTS tasks (
         id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         parentprojectid UUID REFERENCES projects(id) NOT NULL,
-        parentid        UUID NOT NULL,
+        parenttaskid    UUID REFERENCES tasks(id),
         name            VARCHAR NOT NULL,
         favorite        TINYINT DEFAULT 0,
         datecreated     DATE DEFAULT current_date,

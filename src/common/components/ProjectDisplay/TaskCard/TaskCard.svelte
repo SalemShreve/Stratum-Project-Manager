@@ -100,7 +100,7 @@
     }
 
     async function loadTaskChildren() {
-        children = await invoke<Task[]>("get_project_tasks", { parentId: id });
+        children = await invoke<Task[]>("get_node_children", { parentId: id, nodeType: 1 });
     }
 
     function formatDate(date: Date): string {

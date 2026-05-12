@@ -65,7 +65,7 @@
         </div>
         <div class="modal-footer">
             <TextButton kind="bright" size="small" text="Create" clickAction={() => handleSubmit()}></TextButton>
-            <TextButton kind="transparent" size="small" text="Close" clickAction={() => handleClose()}></TextButton>
+            <TextButton kind="transparent" size="small" text="Cancel" clickAction={() => handleClose()}></TextButton>
         </div>
     </div>
 </dialog>

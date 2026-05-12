@@ -15,7 +15,7 @@ pub struct Project {
 pub struct Task {
     id: String,
     parentprojectid: String,
-    parentid: String,
+    parenttaskid: String,
     name: String,
     favorite: u8,
     datecreated: String,
@@ -63,15 +63,18 @@ pub fn get_projects(db_path: String) -> Result<Vec<Project>, String>{
     Ok(projects)
 }
 
-pub fn get_project_tasks(db_path: String, parent_id: String) -> Result<Vec<Task>, String> {
+pub fn get_node_children(db_path: String, parent_id: String, node_type: u8) -> Result<Vec<Task>, String> {
     let conn = Connection::open(&db_path)
         .map_err(|e| e.to_string())?;
 
-    let mut stmt = conn
-        .prepare("SELECT
+    let mut stmt;
+
+    if node_type == 0 {
+        stmt = conn
+            .prepare("SELECT
             id,
             parentprojectid,
-            parentid,
+            parenttaskid,
             name,
             favorite,
             CAST(datecreated AS VARCHAR),
@@ -81,15 +84,33 @@ pub fn get_project_tasks(db_path: String, parent_id: String) -> Result<Vec<Task>
             CAST(minutesworked AS VARCHAR),
             priority,
         FROM tasks
-        WHERE parentid = $1;")
-        .map_err(|e| e.to_string())?;
+        WHERE parentprojectid = $1;")
+            .map_err(|e| e.to_string())?;
+    } else {
+        stmt = conn
+            .prepare("SELECT
+            id,
+            parentprojectid,
+            parenttaskid,
+            name,
+            favorite,
+            CAST(datecreated AS VARCHAR),
+            estimateddays,
+            CAST(laststarted AS VARCHAR),
+            active,
+            CAST(minutesworked AS VARCHAR),
+            priority,
+        FROM tasks
+        WHERE parenttaskid = $1;")
+            .map_err(|e| e.to_string())?;
+    }
 
     let tasks = stmt
         .query_map([&parent_id], |row| {
             Ok(Task {
                 id: row.get(0)?,
                 parentprojectid: row.get(1)?,
-                parentid: row.get(2)?,
+                parenttaskid: row.get(2)?,
                 name: row.get(3)?,
                 favorite: row.get(4)?,
                 datecreated: row.get(5)?,
@@ -116,6 +137,34 @@ pub fn create_project(db_path: String, name: String, color: String, deadline: St
         .map_err(|e| e.to_string())?;
 
     stmt.execute([&name, &color, &deadline, &priority])
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+pub fn delete_project(db_path: String, project_id: String) -> Result<(), String>{
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("DELETE FROM projects WHERE id = $1;")
+        .map_err(|e| e.to_string())?;
+
+    stmt.execute([&project_id])
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+pub fn delete_task(db_path: String, task_id: String) -> Result<(), String>{
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("DELETE FROM tasks WHERE id = $1;")
+        .map_err(|e| e.to_string())?;
+
+    stmt.execute([&task_id])
         .map_err(|e| e.to_string())?;
 
     Ok(())

@@ -11,6 +11,7 @@
   import NewTaskModal from "../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
   import Pill from "../common/components/Pill/Pill.svelte";
   import {onMount} from "svelte";
+  import DeleteConfirmModal from "../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
 
   let isNewProjectModalOpen = $state(false);
 
@@ -54,6 +55,7 @@
 <main class="home-container">
     <NewProjectModal bind:isNewProjectModalOpen ></NewProjectModal>
     <NewTaskModal></NewTaskModal>
+    <DeleteConfirmModal></DeleteConfirmModal>
     <div class="home-topbar">
         <div class="home-actionsbar">
             <div class="home-actionsbar-left">
