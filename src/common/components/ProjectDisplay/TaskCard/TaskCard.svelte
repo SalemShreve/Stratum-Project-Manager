@@ -28,7 +28,7 @@
         parentId: string,
         name: string,
         color: ColorEnum,
-        isFavorite: number,
+        isFavorite: boolean,
         dateCreated: Date,
         estimatedDays: number,
         active: boolean,

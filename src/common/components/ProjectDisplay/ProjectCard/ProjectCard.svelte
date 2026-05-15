@@ -41,6 +41,8 @@
     async function handleFavoriteToggle() {
         isFavoriteState = !isFavoriteState
 
+        console.log(isFavoriteState)
+
         await invoke<Task[]>("set_favorite", { projectId: id, favoriteState: isFavoriteState });
     }
 
@@ -55,6 +57,7 @@
     function handleNewTaskBtnClicked() {
         appState.newTaskInfo.parentId = id
         appState.newTaskInfo.parentProjectId = id
+        appState.newTaskInfo.parentTaskId = undefined
 
         appState.newTaskInfo.isNewTaskModalOpen = true;
     }

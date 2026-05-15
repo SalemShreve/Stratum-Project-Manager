@@ -25,6 +25,7 @@
 
   async function loadProjects() {
       projects = await invoke<Project[]>("get_projects");
+      console.log(projects);
   }
 
   $effect(() => {

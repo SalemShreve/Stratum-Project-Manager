@@ -2,7 +2,6 @@
     import "./DeleteConfirmModal.css"
     import TextButton from "../../TextButton/TextButton.svelte";
     import {type Task} from "../../../types/types";
-    import Chip from "../../Chip/Chip.svelte";
     import {invoke} from "@tauri-apps/api/core";
     import {appState} from "../../../../state/appState.svelte";
 
@@ -19,8 +18,8 @@
     function handleClose () {
         appState.deleteNodeInfo.isDeleteConfirmModalOpen = false;
 
-        appState.deleteNodeInfo.nodeId = ''
-        appState.deleteNodeInfo.nodeName = ''
+        appState.deleteNodeInfo.nodeId = undefined
+        appState.deleteNodeInfo.nodeName = undefined
 
 
         dialog.close();

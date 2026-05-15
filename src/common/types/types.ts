@@ -114,7 +114,7 @@ export interface Project {
     id: string;
     name: string;
     color: string;
-    favorite: number;
+    favorite: boolean;
     datecreated: string;
     deadline: string;
     minutesworked: number;
@@ -127,7 +127,7 @@ export function mapProjectToProps(project: Project) {
         id:           project.id,
         projectName:  project.name,
         color:        project.color as ColorEnum,
-        isFavorite:   project.favorite === 1,
+        isFavorite:   project.favorite,
         dateCreated:  new Date(project.datecreated),
         deadline:     new Date(project.deadline),
         minutesWorked:project.minutesworked,
@@ -142,7 +142,7 @@ export interface Task {
     parentid: string,
     name: string,
     color: ColorEnum,
-    favorite: number,
+    favorite: boolean,
     datecreated: Date,
     estimateddays: number,
     active: boolean,

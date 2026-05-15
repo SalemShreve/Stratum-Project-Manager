@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="stratumpo.duckdb" uuid="6e30bec4-d9dc-489e-89f2-3deffb2c3ed3">
-      <driver-ref>duckdb</driver-ref>
+    <data-source source="LOCAL" name="stratumprojectorganizer.db" uuid="d407e7fc-2088-45be-860e-da3f389cd4c6">
+      <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.duckdb.DuckDBDriver</jdbc-driver>
-      <jdbc-url>jdbc:duckdb:C:\Users\sshreve\AppData\Local\StratumPO\stratumpo.duckdb</jdbc-url>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$USER_HOME$/AppData/Local/StratumProjectOrganizer/stratumprojectorganizer.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

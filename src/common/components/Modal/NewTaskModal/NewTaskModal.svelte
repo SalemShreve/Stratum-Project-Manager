@@ -13,7 +13,7 @@
     let newTaskPriority = $state<undefined | 'low' | 'medium' | 'high'>(undefined);
 
    async function handleSubmit () {
-        await invoke<Task[]>("create_task", {parentId: appState.newTaskInfo.parentId, parentProjectId: appState.newTaskInfo.parentProjectId,  taskName: newTaskName,  estimatedDays: newTaskEstimate, priority: newTaskPriority });
+        await invoke<Task[]>("create_task", {parentId: appState.newTaskInfo.parentId, parentProjectId: appState.newTaskInfo.parentProjectId, parentTaskId: appState.newTaskInfo.parentTaskId,  taskName: newTaskName,  estimatedDays: newTaskEstimate, priority: newTaskPriority });
 
        handleClose()
    }
@@ -21,8 +21,9 @@
     function handleClose () {
         appState.newTaskInfo.isNewTaskModalOpen = false;
 
-        appState.newTaskInfo.parentId = ''
-        appState.newTaskInfo.parentProjectId = ''
+        appState.newTaskInfo.parentId = undefined
+        appState.newTaskInfo.parentProjectId = undefined
+        appState.newTaskInfo.parentTaskId = undefined
 
         newTaskName = undefined;
         newTaskEstimate = undefined;
