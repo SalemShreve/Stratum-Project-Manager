@@ -1,33 +1,34 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use duckdb::Connection;
 use tauri::Manager;
 
 pub const SCHEMA_SQL: &str = r#"
-    CREATE TYPE IF NOT EXISTS priority_level AS ENUM ('low', 'medium', 'high');
+    PRAGMA foreign_keys = ON;
 
     CREATE TABLE IF NOT EXISTS projects (
-        id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        name          VARCHAR NOT NULL,
-        color         VARCHAR NOT NULL,
-        favorite      TINYINT DEFAULT 0,
-        datecreated   DATE DEFAULT current_date,
-        deadline      DATE NOT NULL,
-        priority      priority_level NOT NULL
-    );
+        id            TEXT PRIMARY KEY,
+        name          TEXT NOT NULL,
+        color         TEXT NOT NULL,
+        favorite      INTEGER NOT NULL DEFAULT 0 CHECK (favorite IN (0, 1)),
+        datecreated   TEXT NOT NULL DEFAULT (CURRENT_DATE),
+        deadline      TEXT NOT NULL,
+        priority      TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high'))
+        );
 
     CREATE TABLE IF NOT EXISTS tasks (
-        id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        parentprojectid UUID REFERENCES projects(id) NOT NULL,
-        parenttaskid    UUID REFERENCES tasks(id),
-        name            VARCHAR NOT NULL,
-        favorite        TINYINT DEFAULT 0,
-        datecreated     DATE DEFAULT current_date,
-        estimateddays   INTEGER DEFAULT 0,
-        laststarted     TIMESTAMP,
-        active          TINYINT DEFAULT 0,
-        minutesworked   INTEGER DEFAULT 0,
-        priority        priority_level NOT NULL
-    );
+        id              TEXT PRIMARY KEY,
+        parentprojectid TEXT NOT NULL REFERENCES projects(id),
+        parenttaskid    TEXT REFERENCES tasks(id),
+        parentid        TEXT NOT NULL,
+        name            TEXT NOT NULL,
+        favorite        INTEGER NOT NULL DEFAULT 0 CHECK (favorite IN (0, 1)),
+        datecreated     TEXT NOT NULL DEFAULT (CURRENT_DATE),
+        estimateddays   INTEGER NOT NULL DEFAULT 0,
+        laststarted     TEXT,
+        active          INTEGER NOT NULL DEFAULT 0 CHECK (active IN (0, 1)),
+        minutesworked   INTEGER NOT NULL DEFAULT 0,
+        priority        TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high'))
+        );
 
     CREATE VIEW IF NOT EXISTS projects_with_time AS
     SELECT
@@ -35,16 +36,14 @@ pub const SCHEMA_SQL: &str = r#"
         p.name,
         p.color,
         p.favorite,
-        CAST(p.datecreated AS VARCHAR) AS datecreated,
-        CAST(p.deadline AS VARCHAR)    AS deadline,
+        p.datecreated,
+        p.deadline,
         p.priority,
         COALESCE(SUM(t.minutesworked), 0) AS minutesworked
     FROM projects p
-    LEFT JOIN tasks t
-        ON t.parentprojectid = p.id
-        AND NOT EXISTS (
-            SELECT 1 FROM tasks child WHERE child.parentid = t.id
-        )
+             LEFT JOIN tasks t
+             ON t.parentprojectid = p.id
+             AND NOT EXISTS ( SELECT 1 FROM tasks child WHERE child.parenttaskid = t.id )
     GROUP BY
         p.id,
         p.name,
@@ -62,7 +61,7 @@ pub fn check_db_initialized(db_path: &str) -> bool {
     let Ok(conn) = Connection::open(db_path) else {
         return false;
     };
-    let tables = ["users", "projects", "tasks"];
+    let tables = ["projects", "tasks"];
     tables.iter().all(|t| {
         conn.query_row(
             "SELECT count(*) FROM information_schema.tables WHERE table_name = ?",
@@ -74,8 +73,9 @@ pub fn check_db_initialized(db_path: &str) -> bool {
     })
 }
 
-/// Resolves to: C:\Users\<user>\AppData\Local\StratumPO\stratumpo.duckdb
-pub fn resolve_db_path(app: &tauri::AppHandle) -> Result<String, String> {
+/// Resolves to: C:\Users\<user>\AppData\Local\StratumPO\stratumprojectorganizer.db
+
+pub fn resolve_db_path(app: &tauri::AppHandle) -> Result<PathBuf, String> {
     let local_data_dir = app
         .path()
         .app_local_data_dir()
@@ -84,13 +84,10 @@ pub fn resolve_db_path(app: &tauri::AppHandle) -> Result<String, String> {
     let stratum_dir = local_data_dir
         .parent()
         .unwrap_or(&local_data_dir)
-        .join("StratumPO");
+        .join("StratumProjectOrganizer");
 
     std::fs::create_dir_all(&stratum_dir)
-        .map_err(|e| format!("Could not create StratumPO directory: {e}"))?;
+        .map_err(|e| format!("Could not create StratumProjectOrganizer directory: {e}"))?;
 
-    Ok(stratum_dir
-        .join("stratumpo.duckdb")
-        .to_string_lossy()
-        .into_owned())
+    Ok(stratum_dir.join("stratumprojectorganizer.db"))
 }

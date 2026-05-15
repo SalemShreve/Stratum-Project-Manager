@@ -1,33 +1,49 @@
--- SQLite schema converted from MySQL model
--- Users table
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(45)
-);
+PRAGMA foreign_keys = ON;
 
--- Projects table
 CREATE TABLE IF NOT EXISTS projects (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nameproject VARCHAR(100),
-    color VARCHAR(45),
-    favorite TINYINT DEFAULT 0,
-    datecreated DATE,
-    deadline DATE,
-    timeworked VARCHAR(45),
-    createdby INTEGER,
-    FOREIGN KEY (createdby) REFERENCES users(id)
-);
+    id            TEXT PRIMARY KEY,
+    name          TEXT NOT NULL,
+    color         TEXT NOT NULL,
+    favorite      INTEGER NOT NULL DEFAULT 0 CHECK (favorite IN (0, 1)),
+    datecreated   TEXT NOT NULL DEFAULT (CURRENT_DATE),
+    deadline      TEXT NOT NULL,
+    priority      TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high'))
+    );
 
--- Tasks table
 CREATE TABLE IF NOT EXISTS tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    parentprojectid INTEGER,
-    parentid INTEGER,
-    nametask VARCHAR(45),
-    favorite TINYINT DEFAULT 0,
-    active TINYINT DEFAULT 0,
-    laststarted,DATETIME,
-    timeworked,VARCHAR(45),
-    taskscolnVARCHAR(45),
-    FOREIGN KEY (parentprojectid) REFERENCES projects(id)
-);
+    id              TEXT PRIMARY KEY,
+    parentprojectid TEXT NOT NULL REFERENCES projects(id),
+    parenttaskid    TEXT REFERENCES tasks(id),
+    parentid        TEXT NOT NULL,
+    name            TEXT NOT NULL,
+    favorite        INTEGER NOT NULL DEFAULT 0 CHECK (favorite IN (0, 1)),
+    datecreated     TEXT NOT NULL DEFAULT (CURRENT_DATE),
+    estimateddays   INTEGER NOT NULL DEFAULT 0,
+    laststarted     TEXT,
+    active          INTEGER NOT NULL DEFAULT 0 CHECK (active IN (0, 1)),
+    minutesworked   INTEGER NOT NULL DEFAULT 0,
+    priority        TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high'))
+    );
+
+CREATE VIEW IF NOT EXISTS projects_with_time AS
+SELECT
+    p.id,
+    p.name,
+    p.color,
+    p.favorite,
+    p.datecreated,
+    p.deadline,
+    p.priority,
+    COALESCE(SUM(t.minutesworked), 0) AS minutesworked
+FROM projects p
+         LEFT JOIN tasks t
+         ON t.parentprojectid = p.id
+         AND NOT EXISTS ( SELECT 1 FROM tasks child WHERE child.parenttaskid = t.id )
+GROUP BY
+    p.id,
+    p.name,
+    p.color,
+    p.favorite,
+    p.datecreated,
+    p.deadline,
+    p.priority;
