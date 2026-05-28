@@ -17,8 +17,8 @@ pub const SCHEMA_SQL: &str = r#"
 
     CREATE TABLE IF NOT EXISTS tasks (
         id              TEXT PRIMARY KEY,
-        parentprojectid TEXT NOT NULL REFERENCES projects(id),
-        parenttaskid    TEXT REFERENCES tasks(id),
+        parentprojectid TEXT NOT NULL,
+        parenttaskid    TEXT,
         parentid        TEXT NOT NULL,
         name            TEXT NOT NULL,
         favorite        INTEGER NOT NULL DEFAULT 0 CHECK (favorite IN (0, 1)),
@@ -27,7 +27,9 @@ pub const SCHEMA_SQL: &str = r#"
         laststarted     TEXT,
         active          INTEGER NOT NULL DEFAULT 0 CHECK (active IN (0, 1)),
         minutesworked   INTEGER NOT NULL DEFAULT 0,
-        priority        TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high'))
+        priority        TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high')),
+        FOREIGN KEY (parenttaskid) REFERENCES tasks (id) ON DELETE CASCADE,
+        FOREIGN KEY (parentprojectid) REFERENCES projects (id) ON DELETE CASCADE
         );
 
     CREATE VIEW IF NOT EXISTS projects_with_time AS
