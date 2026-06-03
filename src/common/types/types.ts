@@ -49,6 +49,9 @@ import ChevronDown32 from "../icons/ChevronDownIcon/ChevronDown32.svelte";
 import Check16 from "../icons/CheckIcon/Check16.svelte";
 import ExpandAll16 from "../icons/ExpandAllIcon/ExpandAll16.svelte";
 import CollapseAll16 from "../icons/CollapseAllIcon/CollapseAll16.svelte";
+import PauseIcon16 from "../icons/PauseIcon/PauseIcon16.svelte";
+import PlayIcon16 from "../icons/PlayIcon/PlayIcon16.svelte";
+import StopIcon16 from "../icons/StopIcon/StopIcon16.svelte";
 
 export type  IconEnum =
     | 'edit'
@@ -69,7 +72,10 @@ export type  IconEnum =
     | 'starfilled'
     | 'check'
     | 'expandall'
-    | 'collapseall';
+    | 'collapseall'
+    | 'pause'
+    | 'play'
+    | 'stop';
 
 export type SizeEnum = 'small' | 'medium' | 'large';
 
@@ -101,6 +107,9 @@ export async function getIcon(size: SizeEnum, icon: IconEnum) {
         check:        Check16,
         expandall:    ExpandAll16,
         collapseall:  CollapseAll16,
+        pause:        PauseIcon16,
+        play:         PlayIcon16,
+        stop:         StopIcon16,
     };
 
     return iconMap[icon];

@@ -7,8 +7,6 @@
 
     let dialog: any = $state();
 
-    //TODO Change tp deleteconfirm moda all this is copied
-
     async function handleSubmit () {
         await invoke<Task[]>("delete_project", {projectId: appState.deleteNodeInfo.nodeId });
 
@@ -31,7 +29,7 @@
 </script>
 
 <dialog
-        class="modal-container"
+        class="modal-container delete"
         bind:this={dialog}
         onclose={() => handleClose()}
 >

@@ -28,6 +28,14 @@
       console.log(projects);
   }
 
+  function handleToggleChildren() {
+      appState.allExpanded = !appState.allExpanded
+
+      if (appState.allExpanded) {
+          appState.triggerTaskCardStateCheck +=1
+      }
+  }
+
   $effect(() => {
       appState.triggerUpdateProjectsList
       loadProjects();
@@ -67,7 +75,7 @@
         </div>
         <div class="home-filterbar">
             <div class="filter-right">
-                <IconButton kind="transparent" size="small" icon="expandall" toggleIcon="collapseall" isToggled={appState.allExpanded} clickAction={() => appState.allExpanded = !appState.allExpanded}></IconButton>
+                <IconButton kind="transparent" size="small" icon="expandall" toggleIcon="collapseall" isToggled={appState.allExpanded} clickAction={() => handleToggleChildren()}></IconButton>
                 <div class="divider"></div>
                 <span class="text-label">Sort</span>
                 <Chip text="None" active={sort === 'none'} clickAction={() => sort = 'none'}> </Chip>

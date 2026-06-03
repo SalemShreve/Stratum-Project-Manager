@@ -12,6 +12,7 @@
         isSelected,
         isToggled,
         isLoading,
+        isDisabled,
         showLabel,
         hasBorder,
         title,
@@ -26,6 +27,7 @@
         size: SizeEnum;
         isToggled?: boolean;
         isLoading?: boolean;
+        isDisabled?: boolean;
         isSelected?: boolean;
         showLabel?: boolean;
         hasBorder?: boolean;
@@ -52,12 +54,13 @@
         class:toggled={isToggled}
         class:labeled={showLabel}
         class:bordered={hasBorder}
+        class:reduceplayleft={icon === "play"}
 
         {title}
         onclick={() => clickAction?.()}
         onmouseenter={() => hoverAction?.()}
 
-        disabled={isLoading}
+        disabled={isDisabled || isLoading}
         data-testid={testId}
 >
     {#if isLoading}

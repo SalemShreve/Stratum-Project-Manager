@@ -6,6 +6,7 @@
     import {invoke} from "@tauri-apps/api/core";
     import {appState} from "../../../../state/appState.svelte";
     import Pill from "../../Pill/Pill.svelte";
+    import Timer from "../../Timer/Timer.svelte";
 
     let {
         id,
@@ -103,6 +104,10 @@
         children = await invoke<Task[]>("get_node_children", { parentId: id, nodeType: 1 });
     }
 
+    async function updateTimeWorked() {
+        children = await invoke<Task[]>("get_node_children", { parentId: id, nodeType: 1 });
+    }
+
     function formatDate(date: Date): string {
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
@@ -112,8 +117,9 @@
     }
 
     function handleNewTaskBtnClicked() {
-        appState.newTaskInfo.parentId = id
-        appState.newTaskInfo.parentProjectId = parentProjectId
+        appState.newTaskInfo.parentId = id;
+        appState.newTaskInfo.parentProjectId = parentProjectId;
+        appState.newTaskInfo.parentTaskId = id;
 
         appState.newTaskInfo.isNewTaskModalOpen = true;
     }
@@ -210,7 +216,8 @@
         </div>
         <div class="task-card-container-right">
             {#if children.length === 0}
-                <IconButton kind="transparent" size="small" icon="check" />
+                <Timer ></Timer>
+                <IconButton kind="transparent" size="small" icon="check" title="Complete"/>
             {/if}
             <div class="divider"></div>
             <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()}/>
