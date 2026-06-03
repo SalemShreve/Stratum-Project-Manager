@@ -1,5 +1,6 @@
 use rusqlite::{Connection, Result};
 use std::fs;
+use crate::db::queries::{Project, Task};
 
 mod db;
 
@@ -91,6 +92,18 @@ fn set_favorite(app: tauri::AppHandle, project_id: String, favorite_state: bool)
     db::queries::set_favorite(db_path.display().to_string(), project_id, favorite_state)
 }
 
+#[tauri::command]
+fn get_task(app: tauri::AppHandle, task_id: String) -> Result<Task, String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::get_task(db_path.display().to_string(), task_id)
+}
+
+#[tauri::command]
+fn get_project(app: tauri::AppHandle, project_id: String) -> Result<Project, String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    db::queries::get_project(db_path.display().to_string(), project_id)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     std::env::set_var("RUST_BACKTRACE", "1");
@@ -112,7 +125,9 @@ pub fn run() {
             create_project,
             create_task,
             set_favorite,
-            delete_project
+            delete_project,
+            get_task,
+            get_project
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
