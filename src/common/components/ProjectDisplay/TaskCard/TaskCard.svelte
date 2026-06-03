@@ -139,6 +139,13 @@
         }
     }
 
+    function handleEditBtnClicked() {
+        appState.editNodeInfo.nodeId = id
+        appState.editNodeInfo.nodeType = "task";
+        appState.editNodeInfo.isEditModalOpen = true;
+        console.log(appState.editNodeInfo)
+    }
+
     $effect(() => {
         loadTaskChildren();
     });
@@ -221,7 +228,7 @@
             {/if}
             <div class="divider"></div>
             <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()}/>
-            <IconButton kind="transparent" size="small" icon="edit" />
+            <IconButton kind="transparent" size="small" icon="edit" clickAction={() => handleEditBtnClicked()}/>
             <IconButton kind="transparent" size="small" icon="trash" />
         </div>
     </div>

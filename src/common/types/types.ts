@@ -53,7 +53,7 @@ import PauseIcon16 from "../icons/PauseIcon/PauseIcon16.svelte";
 import PlayIcon16 from "../icons/PlayIcon/PlayIcon16.svelte";
 import StopIcon16 from "../icons/StopIcon/StopIcon16.svelte";
 
-export type  IconEnum =
+export type IconEnum =
     | 'edit'
     | 'search'
     | 'home'

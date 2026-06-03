@@ -46,6 +46,12 @@
         await invoke<Task[]>("set_favorite", { projectId: id, favoriteState: isFavoriteState });
     }
 
+    function handleEditBtnClicked() {
+        appState.editNodeInfo.nodeId = id
+        appState.editNodeInfo.nodeType = "project";
+        appState.editNodeInfo.isEditModalOpen = true;
+    }
+
     function formatDate(date: Date): string {
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
@@ -131,7 +137,7 @@
         <div class="project-card-container-right">
             <div class="divider"></div>
             <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()} />
-            <IconButton kind="transparent" size="small" icon="edit" />
+            <IconButton kind="transparent" size="small" icon="edit" clickAction={() => handleEditBtnClicked()}/>
             <IconButton kind="transparent" size="small" icon="trash" clickAction={() => handleTrashBtnClicked()}/>
         </div>
     </div>

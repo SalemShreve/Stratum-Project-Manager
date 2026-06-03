@@ -11,10 +11,17 @@ type DeleteNodeInfo = {
     nodeId: string | undefined;
 };
 
+type EditNodeInfo = {
+    isEditModalOpen: boolean;
+    nodeType: "project" | "task" | "folder" | undefined;
+    nodeId: string | undefined;
+};
+
 type AppState = {
     allExpanded: boolean;
     newTaskInfo: NewTaskInfo;
     deleteNodeInfo: DeleteNodeInfo;
+    editNodeInfo: EditNodeInfo;
     triggerTaskCardStateCheck: number;
     triggerUpdateProjectsList: number;
 };
@@ -31,6 +38,11 @@ export const appState = $state<AppState>({
         isDeleteConfirmModalOpen: false,
         nodeName: undefined,
         nodeId: undefined
+    },
+    editNodeInfo: {
+        isEditModalOpen: false,
+        nodeType: undefined,
+        nodeId: undefined,
     },
     triggerTaskCardStateCheck: 0,
     triggerUpdateProjectsList: 0
