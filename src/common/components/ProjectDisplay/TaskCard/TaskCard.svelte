@@ -184,7 +184,7 @@
             <span class="task-card-name" title={name}>
                 {name}
             </span>
-            <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => isFavoriteState = !isFavoriteState} ></IconButton>
+<!--            <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => isFavoriteState = !isFavoriteState} ></IconButton>-->
             {#if children.length !== 0}
                 <Pill text="{children.length} Tasks"></Pill>
             {/if}

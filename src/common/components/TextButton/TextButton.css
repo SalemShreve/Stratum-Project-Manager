@@ -59,3 +59,11 @@
     padding: 12px 24px;
     height: 40px;
 }
+
+.text-btn[disabled] {
+    background: var(--border-strong);
+}
+
+.text-btn:hover[disabled] {
+    cursor: not-allowed;
+}

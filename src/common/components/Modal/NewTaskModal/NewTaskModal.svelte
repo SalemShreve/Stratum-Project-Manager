@@ -15,6 +15,7 @@
    async function handleSubmit () {
         await invoke<Task[]>("create_task", {parentId: appState.newTaskInfo.parentId, parentProjectId: appState.newTaskInfo.parentProjectId, parentTaskId: appState.newTaskInfo.parentTaskId,  taskName: newTaskName,  estimatedDays: newTaskEstimate, priority: newTaskPriority });
 
+       appState.triggerUpdateProjectsList += 1
        handleClose()
    }
 
@@ -29,6 +30,7 @@
         newTaskEstimate = undefined;
         newTaskPriority = undefined;
 
+        appState.triggerTaskCardStateCheck += 1
         dialog.close();
     }
 

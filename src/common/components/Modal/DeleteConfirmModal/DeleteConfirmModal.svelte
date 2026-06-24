@@ -10,6 +10,7 @@
     async function handleSubmit () {
         await invoke<Task[]>("delete_project", {projectId: appState.deleteNodeInfo.nodeId });
 
+        appState.triggerUpdateProjectsList += 1
         handleClose()
     }
 

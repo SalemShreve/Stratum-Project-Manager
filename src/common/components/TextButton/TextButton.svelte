@@ -10,6 +10,7 @@
         isLoading,
         title,
         testId,
+        isDisabled,
     } = $props<{
         clickAction?: () => {} | void;
         kind: 'bright'  | 'transparent';
@@ -17,6 +18,7 @@
         text: string;
         isToggled?: boolean;
         isLoading?: boolean;
+        isDisabled?: boolean;
         title?: string;
         testId?: string;
     }>();
@@ -29,7 +31,7 @@
 
         {title}
         onclick={() => clickAction?.()}
-        disabled={isLoading}
+        disabled={isLoading || isDisabled}
         data-testid={testId}
 >
     {text}
