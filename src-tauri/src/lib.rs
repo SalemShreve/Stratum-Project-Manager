@@ -2,7 +2,7 @@ mod db;
 mod commands;
 mod models;
 
-use commands::project_commands::{create_project, get_projects, delete_project, get_project, set_favorite};
+use commands::project_commands::{create_project, get_projects, delete_project, get_project, set_favorite, update_project};
 use commands::task_commands::{create_task, get_task, get_node_children};
 use commands::db_commands::{db_init, db_teardown, db_wipe, db_check_exists};
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -32,7 +32,8 @@ pub fn run() {
             set_favorite,
             delete_project,
             get_task,
-            get_project
+            get_project,
+            update_project
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

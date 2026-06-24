@@ -35,3 +35,9 @@ pub fn set_favorite(app: tauri::AppHandle, project_id: String, favorite_state: b
     let db_path = db::dbinit::resolve_db_path(&app)?;
     project::set_favorite(db_path.display().to_string(), project_id, favorite_state)
 }
+
+#[tauri::command]   
+pub fn update_project(app: tauri::AppHandle, project_id: String, new_name: Option<String>, new_color: Option<String>, new_deadline: Option<String>, new_priority: Option<String>) -> rusqlite::Result<(), String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    project::update_project(db_path.display().to_string(), project_id, new_name, new_color, new_deadline, new_priority)
+}

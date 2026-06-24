@@ -1,6 +1,6 @@
+use crate::models::project::Project;
 use rusqlite::{params, Connection};
 use uuid::Uuid;
-use crate::models::project::Project;
 
 pub fn get_projects(db_path: String) -> Result<Vec<Project>, String>{
     let conn = Connection::open(&db_path)
@@ -123,4 +123,36 @@ pub fn get_project(db_path: String, project_id: String) -> Result<Project, Strin
     let return_val = projects.get(0).unwrap().clone();
 
     Ok(return_val)
+}
+
+pub fn update_project(db_path: String, id: String, new_name: Option<String>, new_color: Option<String>, new_deadline: Option<String>, new_priority: Option<String>) -> Result<(), String> {
+    let fields: Vec<(&str, String)> = vec![
+        ("name = ?", new_name),
+        ("color = ?", new_color),
+        ("deadline = ?", new_deadline),
+        ("priority = ?", new_priority),
+    ]
+        .into_iter()
+        .filter_map(|(col, val)| val.map(|v| (col, v)))
+        .collect();
+
+    if fields.is_empty() {
+        return Err("All update values empty.".into());
+    }
+
+    let query = format!(
+        "UPDATE projects SET {} WHERE id = ?",
+        fields.iter().map(|(col, _)| *col).collect::<Vec<_>>().join(", ")
+    );
+
+    let mut params: Vec<&dyn rusqlite::ToSql> = fields.iter().map(|(_, v)| v as &dyn rusqlite::ToSql).collect();
+    let id_ref: &dyn rusqlite::ToSql = &id;
+    params.push(id_ref);
+
+    Connection::open(&db_path)
+        .map_err(|e| e.to_string())?
+        .execute(&query, params.as_slice())
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
 }
