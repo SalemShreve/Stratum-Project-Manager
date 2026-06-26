@@ -5,6 +5,7 @@ mod models;
 use commands::project_commands::{create_project, get_projects, delete_project, get_project, set_favorite, update_project};
 use commands::task_commands::{create_task, get_task, get_node_children};
 use commands::db_commands::{db_init, db_teardown, db_wipe, db_check_exists};
+use crate::commands::task_commands::update_task_status;
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
 //----------------------------------------
@@ -33,7 +34,8 @@ pub fn run() {
             delete_project,
             get_task,
             get_project,
-            update_project
+            update_project,
+            update_task_status
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,6 +1,7 @@
 use rusqlite::{params, Connection};
 use uuid::Uuid;
 use crate::models::task::Task;
+use crate::models::common::Status;
 
 pub fn get_node_children(db_path: String, parent_id: String) -> Result<Vec<Task>, String> {
     let conn = Connection::open(&db_path)
@@ -17,7 +18,8 @@ pub fn get_node_children(db_path: String, parent_id: String) -> Result<Vec<Task>
             laststarted,
             active,
             minutesworked,
-            priority
+            priority,
+            status
         FROM tasks
         WHERE parentid = $1;")
         .map_err(|e| e.to_string())?;
@@ -35,6 +37,7 @@ pub fn get_node_children(db_path: String, parent_id: String) -> Result<Vec<Task>
                 active: row.get(7)? ,
                 minutesworked: row.get(8)?,
                 priority: row.get(9)?,
+                status: row.get(10)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -88,7 +91,8 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
             laststarted,
             active,
             minutesworked,
-            priority
+            priority,
+            status
         FROM tasks
         WHERE id = $1;")
         .map_err(|e| e.to_string())?;
@@ -106,6 +110,7 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
                 active: row.get(7)? ,
                 minutesworked: row.get(8)?,
                 priority: row.get(9)?,
+                status: row.get(10)?
             })
         })
         .map_err(|e| e.to_string())?
@@ -115,4 +120,18 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
     let return_val = tasks.get(0).unwrap().clone();
 
     Ok(return_val)
+}
+
+
+pub fn update_task_status(db_path: String, task_id: String, status: Status) -> Result<(), String> {
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    conn.execute(
+        "UPDATE tasks SET status = ?1 WHERE id = ?2",
+        params![status, task_id],
+    )
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
 }

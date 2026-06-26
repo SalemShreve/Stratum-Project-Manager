@@ -1,3 +1,5 @@
+use crate::models::common::{Priority, Status};
+
 #[derive(serde::Serialize, Clone)]
 pub struct Task {
     pub id: String,
@@ -9,5 +11,6 @@ pub struct Task {
     pub laststarted: Option<String>,
     pub active: bool,
     pub minutesworked: u32,
-    pub priority: String,
+    pub priority: Priority,
+    pub status: Status,
 }

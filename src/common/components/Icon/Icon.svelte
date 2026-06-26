@@ -26,7 +26,7 @@
 </script>
 
 <div
-        class="custom-icon {kind}"
+        class="custom-icon {kind} {size}"
         {title}
         data-testid={testId}
 >

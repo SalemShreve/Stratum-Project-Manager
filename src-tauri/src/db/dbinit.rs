@@ -28,6 +28,7 @@ pub const SCHEMA_SQL: &str = r#"
         active          INTEGER NOT NULL DEFAULT 0 CHECK (active IN (0, 1)),
         minutesworked   INTEGER NOT NULL DEFAULT 0,
         priority        TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high')),
+        status          TEXT NOT NULL DEFAULT 'incompleted' CHECK (status IN ('completed', 'incompleted', 'blocked')),
         FOREIGN KEY (parenttaskid) REFERENCES tasks (id) ON DELETE CASCADE,
         FOREIGN KEY (parentprojectid) REFERENCES projects (id) ON DELETE CASCADE
         );

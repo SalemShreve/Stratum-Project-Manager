@@ -1,3 +1,5 @@
+use crate::models::common::Priority;
+
 #[derive(serde::Serialize, Clone)]
 pub struct Project {
     pub id: String,
@@ -7,5 +9,5 @@ pub struct Project {
     pub datecreated: String,
     pub deadline: String,
     pub minutesworked: u32,
-    pub priority: String,
+    pub priority: Priority,
 }
