@@ -55,7 +55,7 @@
     gap: 5px;
     width: 300px;
     max-width: 300px;
-    padding-right: 10px;
+    padding-right: 30px;
 }
 
 .task-card-container-right {
@@ -71,4 +71,13 @@
 }
 .task-card-container-left.expanded::before {
     border-bottom-left-radius: 6px;
+}
+
+.task-card-name.completed {
+    text-decoration: line-through;
+    color: var(--accent-green);
+}
+
+.task-card-name.blocked {
+    color: var(--accent-red);
 }

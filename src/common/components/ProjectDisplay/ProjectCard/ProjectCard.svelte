@@ -1,7 +1,7 @@
 <script lang="ts">
     import "./ProjectCard.css";
     import IconButton from "../../IconButton/IconButton.svelte";
-    import {type ColorEnum, mapTaskToProps, type Task} from "../../../types/types";
+    import {type ColorEnum, mapTaskToProps, type Priority, type Task} from "../../../types/types";
     import TaskCard from "../TaskCard/TaskCard.svelte";
     import Pill from "../../Pill/Pill.svelte";
     import {invoke} from "@tauri-apps/api/core";
@@ -25,7 +25,7 @@
         dateCreated: Date;
         deadline: Date;
         minutesWorked: number
-        priority: "low" | "medium" | "high";
+        priority: Priority;
         createdBy?: string;
     }>();
 

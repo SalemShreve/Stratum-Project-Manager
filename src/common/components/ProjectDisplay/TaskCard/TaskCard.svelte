@@ -2,11 +2,12 @@
     import "./TaskCard.css";
     import IconButton from "../../IconButton/IconButton.svelte";
     import TaskCard from "./TaskCard.svelte";
-    import {type ColorEnum, mapTaskToProps, type Task} from "../../../types/types";
+    import {type ColorEnum, mapTaskToProps, type Priority, type Status, type Task} from "../../../types/types";
     import {invoke} from "@tauri-apps/api/core";
     import {appState} from "../../../../state/appState.svelte";
     import Pill from "../../Pill/Pill.svelte";
     import Timer from "../../Timer/Timer.svelte";
+    import StatusPopover from "../../StatusPopover/StatusPopover.svelte";
 
     let {
         id,
@@ -21,6 +22,7 @@
         lastStarted,
         minutesWorked,
         priority,
+        status,
         isVisible,
         isParentLastInDepth
     } = $props<{
@@ -35,7 +37,8 @@
         active: boolean,
         lastStarted: string,
         minutesWorked: number,
-        priority: "low" | "medium" | "high";
+        priority: Priority;
+        status: Status;
         isVisible: boolean,
         isParentLastInDepth: boolean,
     }>();
@@ -154,7 +157,9 @@
         if (children.length === 0) {
             areChildrenShown = false;
         }
-        else areChildrenShown = appState.allExpanded;
+        else {
+            areChildrenShown = appState.allExpanded;
+        }
     });
 
     $effect(() => {
@@ -181,7 +186,7 @@
                 {:else}
                 <span style="width: 5px"></span>
             {/if}
-            <span class="task-card-name" title={name}>
+            <span class="task-card-name {status}" title={name}>
                 {name}
             </span>
 <!--            <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => isFavoriteState = !isFavoriteState} ></IconButton>-->
@@ -224,7 +229,7 @@
         <div class="task-card-container-right">
             {#if children.length === 0}
                 <Timer ></Timer>
-                <IconButton kind="transparent" size="small" icon="check" title="Complete"/>
+                <StatusPopover taskid={id} bind:statusState={status} ></StatusPopover>
             {/if}
             <div class="divider"></div>
             <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()}/>

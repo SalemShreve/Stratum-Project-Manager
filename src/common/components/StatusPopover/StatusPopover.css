@@ -1,0 +1,13 @@
+.status-wrap {
+    position: relative;
+}
+
+.status-popover {
+    display: flex;
+    position: absolute;
+    background-color: var(--bg-elevated);
+    border-radius: 4px;
+    border: 1px solid var(--border-base);
+    z-index: 2;
+    right: -100%;
+}

@@ -52,6 +52,13 @@ import CollapseAll16 from "../icons/CollapseAllIcon/CollapseAll16.svelte";
 import PauseIcon16 from "../icons/PauseIcon/PauseIcon16.svelte";
 import PlayIcon16 from "../icons/PlayIcon/PlayIcon16.svelte";
 import StopIcon16 from "../icons/StopIcon/StopIcon16.svelte";
+import MarkCompleted16 from "../icons/MarkCompletedIcon/MarkCompleted16.svelte";
+import MarkIncompleted16 from "../icons/MarkIncompletedIcon/MarkIncompleted16.svelte";
+import MarkBlocked16 from "../icons/MarkBlockedIcon/MarkBlocked16.svelte";
+
+export type Status = "completed" | "incompleted" | "blocked"
+
+export type Priority = "low" | "medium" | "high"
 
 export type IconEnum =
     | 'edit'
@@ -75,7 +82,10 @@ export type IconEnum =
     | 'collapseall'
     | 'pause'
     | 'play'
-    | 'stop';
+    | 'stop'
+    | 'completed'
+    | 'incompleted'
+    | 'blocked';
 
 export type SizeEnum = 'small' | 'medium' | 'large';
 
@@ -110,6 +120,9 @@ export async function getIcon(size: SizeEnum, icon: IconEnum) {
         pause:        PauseIcon16,
         play:         PlayIcon16,
         stop:         StopIcon16,
+        completed:    MarkCompleted16,
+        incompleted:  MarkIncompleted16,
+        blocked:      MarkBlocked16,
     };
 
     return iconMap[icon];
@@ -122,12 +135,12 @@ export async function sized(size: SizeEnum, s16: any, s24: any, s32: any) {
 export interface Project {
     id: string;
     name: string;
-    color: string;
+    color: ColorEnum;
     favorite: boolean;
     datecreated: string;
     deadline: string;
     minutesworked: number;
-    priority: "low" | "medium" | "high";
+    priority: Priority;
     createdby: string;
 }
 
@@ -135,7 +148,7 @@ export function mapProjectToProps(project: Project) {
     return {
         id:           project.id,
         projectName:  project.name,
-        color:        project.color as ColorEnum,
+        color:        project.color,
         isFavorite:   project.favorite,
         dateCreated:  new Date(project.datecreated),
         deadline:     new Date(project.deadline),
@@ -157,7 +170,8 @@ export interface Task {
     active: boolean,
     laststarted: string,
     minutesworked: number,
-    priority: "low" | "medium" | "high";
+    priority: Priority;
+    status: Status;
 }
 
 export function mapTaskToProps(task: Task, color: ColorEnum) {
@@ -173,6 +187,7 @@ export function mapTaskToProps(task: Task, color: ColorEnum) {
         active: task.active,
         lastStarted: task.laststarted,
         minutesWorked: task.minutesworked,
-        priority: task.priority
+        priority: task.priority,
+        status: task.status,
     };
 }
