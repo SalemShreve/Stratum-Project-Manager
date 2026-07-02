@@ -81,3 +81,15 @@
 .task-card-name.blocked {
     color: var(--accent-red);
 }
+
+.metadata-estimate {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.metadata-estimate {
+    width: 70px;
+}

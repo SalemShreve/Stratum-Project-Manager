@@ -13,6 +13,7 @@
   import {onMount} from "svelte";
   import DeleteConfirmModal from "../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
   import EditProjectModal from "../common/components/Modal/EditModal/EditProjectModal.svelte";
+  import BreadCrumbPath from "../common/BreadCrumbPath/BreadCrumbPath.svelte";
 
   let isNewProjectModalOpen = $state(false);
 
@@ -74,6 +75,9 @@
                 <Pill text="{projects.length} Projects"></Pill>
             </div>
             <TextButton kind="bright" size="medium" text="+ New Project" clickAction={() => isNewProjectModalOpen = true}> </TextButton>
+        </div>
+        <div class="projects-topbar-footer">
+            <BreadCrumbPath></BreadCrumbPath>
         </div>
         <div class="home-filterbar">
             <div class="filter-right">

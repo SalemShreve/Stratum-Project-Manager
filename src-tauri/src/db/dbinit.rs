@@ -21,7 +21,6 @@ pub const SCHEMA_SQL: &str = r#"
         parenttaskid    TEXT,
         parentid        TEXT NOT NULL,
         name            TEXT NOT NULL,
-        favorite        INTEGER NOT NULL DEFAULT 0 CHECK (favorite IN (0, 1)),
         datecreated     TEXT NOT NULL DEFAULT (CURRENT_DATE),
         estimateddays   INTEGER NOT NULL DEFAULT 0,
         laststarted     TEXT,
@@ -33,7 +32,7 @@ pub const SCHEMA_SQL: &str = r#"
         FOREIGN KEY (parentprojectid) REFERENCES projects (id) ON DELETE CASCADE
         );
 
-    CREATE VIEW IF NOT EXISTS projects_with_time AS
+    CREATE VIEW IF NOT EXISTS projects_view AS
     SELECT
         p.id,
         p.name,
@@ -42,7 +41,12 @@ pub const SCHEMA_SQL: &str = r#"
         p.datecreated,
         p.deadline,
         p.priority,
-        COALESCE(SUM(t.minutesworked), 0) AS minutesworked
+        COALESCE(SUM(t.minutesworked), 0) AS minutesworked,
+        (SELECT COUNT(*) FROM tasks t2
+            WHERE t2.parentprojectid = p.id) AS totaltasks,
+        (SELECT COUNT(*) FROM tasks t3
+            WHERE t3.parentprojectid = p.id
+            AND t3.status = 'completed') AS completedtasks
     FROM projects p
              LEFT JOIN tasks t
              ON t.parentprojectid = p.id
@@ -55,6 +59,80 @@ pub const SCHEMA_SQL: &str = r#"
         p.datecreated,
         p.deadline,
         p.priority;
+
+    CREATE VIEW IF NOT EXISTS project_card_view AS
+    SELECT
+        p.id,
+        p.name,
+        p.color,
+        p.favorite,
+        p.deadline,
+        p.priority,
+        (SELECT COUNT(*) FROM tasks t2
+            WHERE t2.parentprojectid = p.id) AS totaltasks,
+        (SELECT COUNT(*) FROM tasks t3
+            WHERE t3.parentprojectid = p.id
+            AND t3.status = 'completed') AS completedtasks
+    FROM projects p
+    GROUP BY
+        p.id,
+        p.name,
+        p.color,
+        p.favorite,
+        p.datecreated,
+        p.deadline,
+        p.priority;
+
+    CREATE VIEW IF NOT EXISTS tasks_view AS
+    SELECT
+        p.id,
+        p.parentprojectid,
+        p.parenttaskid,
+        p.name,
+        p.datecreated,
+        p.estimateddays,
+        p.priority,
+        p.laststarted,
+        p.active,
+        p.status,
+        COALESCE(SUM(t.minutesworked), 0) AS minutesworked,
+        (SELECT COUNT(*) FROM tasks t2
+            WHERE t2.parenttaskid = p.id) AS totaltasks,
+        (SELECT COUNT(*) FROM tasks t3
+            WHERE t3.parenttaskid = p.id
+            AND t3.status = 'completed') AS completedtasks
+    FROM tasks p
+             LEFT JOIN tasks t
+             ON t.parenttaskid = p.id
+             AND NOT EXISTS ( SELECT 1 FROM tasks child WHERE child.parenttaskid = t.id )
+    GROUP BY
+        p.id,
+        p.name,
+        p.datecreated,
+        p.priority
+
+    CREATE VIEW IF NOT EXISTS tasks_card_view AS
+    SELECT
+        p.id,
+        p.parentprojectid,
+        p.parentid,
+        p.name,
+        p.priority,
+        p.active,
+        p.status,
+        (SELECT COUNT(*) FROM tasks t2
+            WHERE t2.parenttaskid = p.id) AS totaltasks,
+        (SELECT COUNT(*) FROM tasks t3
+            WHERE t3.parenttaskid = p.id
+            AND t3.status = 'completed') AS completedtasks,
+        (SELECT color FROM projects t4
+            WHERE t4.id = p.parentprojectid) AS color
+    FROM tasks p
+    GROUP BY
+        p.id,
+        p.name,
+        p.datecreated,
+        p.priority
 "#;
 
 pub fn check_db_initialized(db_path: &str) -> bool {

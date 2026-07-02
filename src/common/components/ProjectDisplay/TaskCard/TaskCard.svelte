@@ -11,32 +11,32 @@
 
     let {
         id,
-        parentProjectId,
-        parentId,
+        parentprojectid,
+        parentid,
         name,
         color,
-        isFavorite,
-        dateCreated,
-        estimatedDays,
+        favorite,
+        datecreated,
+        estimateddays,
         active,
-        lastStarted,
-        minutesWorked,
+        laststarted,
+        minutesworked,
         priority,
         status,
         isVisible,
         isParentLastInDepth
     } = $props<{
         id: string,
-        parentProjectId: string,
-        parentId: string,
+        parentprojectid: string,
+        parentid: string,
         name: string,
-        color: ColorEnum,
-        isFavorite: boolean,
-        dateCreated: Date,
-        estimatedDays: number,
+        color: ColorEnum | undefined,
+        favorite: boolean,
+        datecreated: Date,
+        estimateddays: number,
         active: boolean,
-        lastStarted: string,
-        minutesWorked: number,
+        laststarted: string,
+        minutesworked: number,
         priority: Priority;
         status: Status;
         isVisible: boolean,
@@ -44,7 +44,7 @@
     }>();
 
     let areChildrenShown = $state(appState.allExpanded);
-    let isFavoriteState = $derived(isFavorite);
+    let isFavoriteState = $derived(favorite);
     let isLastCard = $state(false)
     let isLastInDepth = $state(false)
     let isSiblingAboveExtended = $state(false)
@@ -104,11 +104,7 @@
     }
 
     async function loadTaskChildren() {
-        children = await invoke<Task[]>("get_node_children", { parentId: id, nodeType: 1 });
-    }
-
-    async function updateTimeWorked() {
-        children = await invoke<Task[]>("get_node_children", { parentId: id, nodeType: 1 });
+        children = await invoke<Task[]>("get_tasks", { parentId: id, nodeType: 1 });
     }
 
     function formatDate(date: Date): string {
@@ -121,7 +117,7 @@
 
     function handleNewTaskBtnClicked() {
         appState.newTaskInfo.parentId = id;
-        appState.newTaskInfo.parentProjectId = parentProjectId;
+        appState.newTaskInfo.parentProjectId = parentprojectid;
         appState.newTaskInfo.parentTaskId = id;
 
         appState.newTaskInfo.isNewTaskModalOpen = true;
@@ -147,6 +143,16 @@
         appState.editNodeInfo.nodeType = "task";
         appState.editNodeInfo.isEditModalOpen = true;
         console.log(appState.editNodeInfo)
+    }
+
+    async function handleTrashBtnClicked() {
+        appState.deleteNodeInfo.nodeId = id
+        appState.deleteNodeInfo.nodeName = name
+        appState.deleteNodeInfo.nodeType = "task";
+
+        appState.deleteNodeInfo.isDeleteConfirmModalOpen = true;
+
+        // await invoke<Task[]>("delete_task", { taskId: id});
     }
 
     $effect(() => {
@@ -196,45 +202,36 @@
         </div>
         <div class="project-card-container-middle">
             <div class="metadata-priority">
-                <Pill text={priority} state={priority} kind="container"></Pill>
+                <Pill text={priority} state={priority}></Pill>
             </div>
+            {#if children.length === 0}
+                <StatusPopover taskid={id} bind:statusState={status} ></StatusPopover>
+                <Timer></Timer>
+            {/if}
             <div class="divider"></div>
-            <div class="metadata-timeworked">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                {(minutesWorked / 60).toFixed(2)} hr
-            </div>
-            <div class="divider"></div>
-            <div class="metadata-createddate">
+            <div class="metadata-createddate" title="Date Created">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                     <rect x="2" y="4" width="20" height="18" rx="2"/>
                     <line x1="2" y1="10" x2="22" y2="10"/>
                     <line x1="7" y1="2" x2="7" y2="6"/>
                     <line x1="17" y1="2" x2="17" y2="6"/>
                 </svg>
-                created {formatDate(dateCreated)}
+                {formatDate(datecreated)}
             </div>
-            <div class="divider"></div>
-            <div class="metadata-deadline">
+            <div class="metadata-estimate" title="Task Estimate">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="12" y1="8" x2="12" y2="12"/>
                     <line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
-                estimate {estimatedDays} days
+                {estimateddays} days
             </div>
         </div>
         <div class="task-card-container-right">
-            {#if children.length === 0}
-                <Timer ></Timer>
-                <StatusPopover taskid={id} bind:statusState={status} ></StatusPopover>
-            {/if}
             <div class="divider"></div>
             <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()}/>
             <IconButton kind="transparent" size="small" icon="edit" clickAction={() => handleEditBtnClicked()}/>
-            <IconButton kind="transparent" size="small" icon="trash" />
+            <IconButton kind="transparent" size="small" icon="trash" clickAction={() => handleTrashBtnClicked()}/>
         </div>
     </div>
     <div class="task-container" class:hidden={!areChildrenShown || children.length === 0} >

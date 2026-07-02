@@ -26,6 +26,7 @@
     }
 
     async function getProject () {
+        if (!appState.editNodeInfo.nodeId) return;
         targetProject = await invoke<Project>("get_project", {projectId: appState.editNodeInfo.nodeId });
         console.log(targetProject);
 
@@ -58,8 +59,10 @@
     }
 
     $effect(() => {
-        getProject()
-        if (appState.editNodeInfo.isEditModalOpen && appState.editNodeInfo.nodeType == "project") dialog.showModal();
+        if (appState.editNodeInfo.isEditModalOpen && appState.editNodeInfo.nodeType == "project") {
+            getProject()
+            dialog.showModal()
+        }
     });
 </script>
 

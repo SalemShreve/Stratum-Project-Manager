@@ -28,8 +28,11 @@
 </script>
 
 <div class="status-wrap">
-<!--    <Icon kind="transparent" size="small" icon={statusState}></Icon>-->
-    <IconButton kind="transparent" size="small" icon={statusState} title="Status Select" clickAction={() => isPopoverOpened = !isPopoverOpened} />
+    <button class="status-popover-btn {statusState}" onclick={() => isPopoverOpened = !isPopoverOpened}>
+<!--        <Icon kind="transparent" size="small" icon={statusState}></Icon>-->
+        <span>{statusState.charAt(0).toUpperCase() + statusState.slice(1)}</span>
+        <Icon kind="transparent" size="small" icon="chevrondown"></Icon>
+    </button>
     {#if isPopoverOpened }
         <div class="status-popover">
             <IconButton kind="transparent" size="small" icon="completed" title="Complete" clickAction={() => {newStatus = "completed";  stateChanged()}} />

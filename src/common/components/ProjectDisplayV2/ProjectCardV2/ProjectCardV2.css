@@ -1,0 +1,112 @@
+.projectv2-card {
+    background: var(--bg-surface);
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    transition: background .2s, color .2s;
+}
+
+.projectv2-card:hover {
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+    cursor: pointer;
+
+    .projectv2-progress-bar {
+        background: var(--bg-overlay);
+    }
+}
+
+.projectv2-card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .projectv2-header-right,
+    .projectv2-header-left {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+    }
+
+    .projectv2-header-right {
+        gap: 0;
+    }
+
+    .projectv2-color {
+        position: relative;
+        display: flex;
+        height: 14px;
+        width: 14px;
+        background: color-mix(in srgb, var(--project-color) 10%, transparent);
+        border-radius: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .projectv2-color::after {
+        content: '';
+        position: absolute;
+        height: 8px;
+        width: 8px;
+        background: var(--project-color);
+        border-radius: 10px;
+    }
+
+    .projectv2-name {
+        font-size: 14px;
+    }
+}
+
+.projectv2-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .projectv2-tasks-completed {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: baseline;
+
+        .projectv2-percentage {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .projectv2-number {
+            color: var(--text-muted);
+        }
+    }
+
+    .projectv2-progress-bar {
+        height: 6px;
+        width: 100%;
+        background: var(--bg-elevated);
+        border-radius: 10px;
+        transition: background .2s;
+    }
+
+    .projectv2-progress-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        background: var(--project-color);
+        transition: width 0.3s ease;
+    }
+}
+
+.projectv2-card-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .projectv2-deadline {
+        color: var(--text-muted);
+    }
+}

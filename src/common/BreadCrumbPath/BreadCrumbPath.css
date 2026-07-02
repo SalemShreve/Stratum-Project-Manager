@@ -1,0 +1,25 @@
+.breadcrumb-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+}
+
+.breadcrumb-link {
+    border: none;
+    background: none;
+    padding: 0;
+    transition: color .2s;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.breadcrumb-link:hover {
+    color: var(--text-link);
+    cursor: pointer;
+}
+
+.breadcrumb-separator {
+    padding: 0;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}

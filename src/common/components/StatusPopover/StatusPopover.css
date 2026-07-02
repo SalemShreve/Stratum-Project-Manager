@@ -9,5 +9,37 @@
     border-radius: 4px;
     border: 1px solid var(--border-base);
     z-index: 2;
-    right: -100%;
+    right: 0;
+}
+
+.status-popover-btn {
+    display: flex;
+    height: 25px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    padding: 0 0 0 10px;
+    font-family: var(--font-mono);
+}
+
+.status-popover-btn:hover {
+    opacity: .7;
+}
+
+.status-popover-btn.completed {
+    color: var(--accent-green);
+    background-color: var(--bg-green-tint);
+    border : 1px solid var(--border-green);
+}
+
+.status-popover-btn.incompleted {
+    color: var(--accent-amber);
+    background-color: var(--bg-amber-tint);
+    border : 1px solid var(--border-amber);
+}
+
+.status-popover-btn.blocked {
+    color: var(--accent-red);
+    background-color: var(--bg-red-tint);
+    border : 1px solid var(--border-red);
 }

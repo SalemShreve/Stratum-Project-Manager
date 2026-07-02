@@ -1,0 +1,61 @@
+.task-containerV2 {
+    background: var(--bg-surface);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    transition: background .2s, color .2s, border-color .2s;
+    font-family: var(--font-mono);
+    display: flex;
+    flex-direction: row;
+    padding: 9px;
+    border: 1px solid transparent;
+    justify-content: space-between;
+}
+
+.task-containerV2:hover {
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+    cursor: pointer;
+
+    .task-metadata {
+        color: var(--text-secondary);
+    }
+}
+
+.task-containerV2.selected {
+    color: var(--text-primary);
+    background: var(--bg-overlay);
+    border: 1px solid var(--border-strong);
+
+    .task-metadata {
+        color: var(--text-secondary);
+    }
+}
+
+.task-card-left {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.task-color {
+    height: 100%;
+    width: 5px;
+    background: var(--project-color);
+    border-radius: 10px;
+}
+
+.task-name {
+    font-size: 15px;
+}
+
+.task-metadata {
+    color: var(--text-muted);
+    transition: color .2s;
+}
+
+.task-card-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}

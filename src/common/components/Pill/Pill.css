@@ -2,7 +2,7 @@
     position: relative;
     font-size: 11px;
     padding: 2px 10px;
-    border-radius: 20px;
+    border-radius: 6px;
     border: 1px solid var(--border-subtle);
     background: var(--bg-elevated);
     color: var(--text-muted);
@@ -12,23 +12,29 @@
     font-family: var(--font-mono);
 }
 
+.pill.small {
+    font-size: 8px;
+}
+
 .pill.container {
     width: 100%;
 }
 
-
+.pill.completed,
 .pill.low {
     background: var(--bg-green-tint);
     color: var(--accent-green);
     border-color: var(--border-green);
 }
 
+.pill.incompleted,
 .pill.medium {
     background: var(--bg-amber-tint);
     color: var(--accent-amber);
     border-color: var(--border-amber);
 }
 
+.pill.blocked,
 .pill.high {
     background: var(--bg-red-tint);
     color: var(--accent-red);

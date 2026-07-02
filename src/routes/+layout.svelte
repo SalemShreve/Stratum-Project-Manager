@@ -1,12 +1,25 @@
-<script>
+<script lang="ts">
     import "../common/colors/color.css"
     import IconButton from "../common/components/IconButton/IconButton.svelte";
     import {goto,preloadData,} from "$app/navigation";
     import Icon from "../common/components/Icon/Icon.svelte";
+    import type {Breadcrumb} from "../common/types/types.ts";
+    import {appState} from "../state/appState.svelte";
 
     let { children } = $props();
 
     let isSidebarExtended = $state(false);
+
+    function handleNavigate(name: string, path:string) {
+
+        appState.breadCrumbPathArr = []
+
+        let newBreadcrumb: Breadcrumb = {name: name, path:path}
+
+        appState.breadCrumbPathArr.push(newBreadcrumb)
+
+        goto(path)
+    }
 </script>
 
 <style>
@@ -89,7 +102,15 @@
                         label="Home"
                         showLabel={isSidebarExtended}
                         hoverAction={() => preloadData("/")}
-                        clickAction={() => goto("/")}/>
+                        clickAction={() => handleNavigate("Home", "/")}/>
+                <IconButton
+                        kind="transparent"
+                        size="medium"
+                        icon="grid"
+                        label="Projects"
+                        showLabel={isSidebarExtended}
+                        hoverAction={() => preloadData("/projects")}
+                        clickAction={() => handleNavigate("Projects", "/projects")}/>
                 <IconButton
                         kind="transparent"
                         size="medium"
@@ -97,7 +118,7 @@
                         label="Gantt"
                         showLabel={isSidebarExtended}
                         hoverAction={() => preloadData("/gantt")}
-                        clickAction={() => goto("/gantt")}/>
+                        clickAction={() => handleNavigate("Gantt", "/gantt")}/>
                 <IconButton
                         kind="transparent"
                         size="medium"
@@ -105,7 +126,7 @@
                         label="Sprint"
                         showLabel={isSidebarExtended}
                         hoverAction={() => preloadData("/sprints")}
-                        clickAction={() => goto("/sprints")}/>
+                        clickAction={() => handleNavigate("Sprints", "/sprints")}/>
                 <IconButton
                         kind="transparent"
                         size="medium"
@@ -113,7 +134,7 @@
                         label="Calendar"
                         showLabel={isSidebarExtended}
                         hoverAction={() => preloadData("/calendar")}
-                        clickAction={() => goto("/calendar")}/>
+                        clickAction={() => handleNavigate("Calendar", "/calendar")}/>
             </div>
             <div class="nav-rail-footer">
                 <IconButton
@@ -122,7 +143,7 @@
                         icon="settings"
                         label="Settings"
                         showLabel={isSidebarExtended}
-                        clickAction={() => goto("/settings")}/>
+                        clickAction={() => handleNavigate("Settings", "/settings")}/>
             </div>
         </div>
         <div class="app-child-container">

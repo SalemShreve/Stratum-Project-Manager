@@ -8,7 +8,12 @@
     let dialog: any = $state();
 
     async function handleSubmit () {
-        await invoke<Task[]>("delete_project", {projectId: appState.deleteNodeInfo.nodeId });
+        if (appState.deleteNodeInfo.nodeType === "project") {
+            await invoke<Task[]>("delete_project", {projectId: appState.deleteNodeInfo.nodeId });
+        }
+        else if (appState.deleteNodeInfo.nodeType === "task") {
+            await invoke<Task[]>("delete_task", {taskId: appState.deleteNodeInfo.nodeId });
+        }
 
         appState.triggerUpdateProjectsList += 1
         handleClose()
@@ -19,6 +24,7 @@
 
         appState.deleteNodeInfo.nodeId = undefined
         appState.deleteNodeInfo.nodeName = undefined
+        appState.deleteNodeInfo.nodeType = undefined
 
 
         dialog.close();

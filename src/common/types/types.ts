@@ -55,6 +55,12 @@ import StopIcon16 from "../icons/StopIcon/StopIcon16.svelte";
 import MarkCompleted16 from "../icons/MarkCompletedIcon/MarkCompleted16.svelte";
 import MarkIncompleted16 from "../icons/MarkIncompletedIcon/MarkIncompleted16.svelte";
 import MarkBlocked16 from "../icons/MarkBlockedIcon/MarkBlocked16.svelte";
+import Grid24 from "../icons/GridIcon/Grid24.svelte";
+
+export type Breadcrumb = {
+    name: string;
+    path: string;
+}
 
 export type Status = "completed" | "incompleted" | "blocked"
 
@@ -85,7 +91,8 @@ export type IconEnum =
     | 'stop'
     | 'completed'
     | 'incompleted'
-    | 'blocked';
+    | 'blocked'
+    | 'grid';
 
 export type SizeEnum = 'small' | 'medium' | 'large';
 
@@ -123,6 +130,7 @@ export async function getIcon(size: SizeEnum, icon: IconEnum) {
         completed:    MarkCompleted16,
         incompleted:  MarkIncompleted16,
         blocked:      MarkBlocked16,
+        grid:         Grid24
     };
 
     return iconMap[icon];
@@ -141,20 +149,49 @@ export interface Project {
     deadline: string;
     minutesworked: number;
     priority: Priority;
+    totaltasks: number;
+    completedtasks: number;
     createdby: string;
+}
+
+export interface IProjectCard  {
+    id: string;
+    name: string;
+    color: ColorEnum;
+    favorite: boolean;
+    deadline: string;
+    priority: Priority;
+    totaltasks: number;
+    completedtasks: number;
+}
+
+export interface ProjectCard  {
+    id: string;
+    name: string;
+    color: ColorEnum;
+    favorite: boolean;
+    dateCreated: Date;
+    deadline: Date;
+    minutesWorked: number;
+    priority: Priority;
+    totaltasks: number;
+    completedtasks: number;
+    createdBy: string;
 }
 
 export function mapProjectToProps(project: Project) {
     return {
-        id:           project.id,
-        projectName:  project.name,
-        color:        project.color,
-        isFavorite:   project.favorite,
-        dateCreated:  new Date(project.datecreated),
-        deadline:     new Date(project.deadline),
-        minutesWorked:project.minutesworked,
-        priority:     project.priority,
-        createdBy:    project.createdby,
+        id:             project.id,
+        name:           project.name,
+        color:          project.color,
+        favorite:       project.favorite,
+        dateCreated:    new Date(project.datecreated),
+        deadline:       new Date(project.deadline),
+        minutesWorked:  project.minutesworked,
+        priority:       project.priority,
+        createdBy:      project.createdby,
+        totaltasks:     project.totaltasks,
+        completedtasks: project.completedtasks
     };
 }
 
@@ -170,24 +207,43 @@ export interface Task {
     active: boolean,
     laststarted: string,
     minutesworked: number,
-    priority: Priority;
-    status: Status;
+    priority: Priority,
+    status: Status,
+    totaltasks: number,
+    completedtasks: number,
+    createdby: string,
 }
 
-export function mapTaskToProps(task: Task, color: ColorEnum) {
+export interface ITaskCard {
+    id: string,
+    parentprojectid: string,
+    parentid: string,
+    name: string,
+    active: boolean,
+    priority: Priority,
+    status: Status,
+    totaltasks: number,
+    completedtasks: number,
+    color: ColorEnum,
+}
+
+export function mapTaskToProps(task: Task, color: ColorEnum ): Task {
     return {
         id: task.id,
-        parentProjectId: task.parentprojectid,
-        parentId: task.parentid,
+        parentprojectid: task.parentprojectid,
+        parentid: task.parentid,
         name: task.name,
         color: color,
-        isFavorite: task.favorite,
-        dateCreated: new Date(task.datecreated),
-        estimatedDays: task.estimateddays,
+        favorite: task.favorite,
+        datecreated: new Date(task.datecreated),
+        estimateddays: task.estimateddays,
         active: task.active,
-        lastStarted: task.laststarted,
-        minutesWorked: task.minutesworked,
+        laststarted: task.laststarted,
+        minutesworked: task.minutesworked,
         priority: task.priority,
         status: task.status,
+        totaltasks: task.totaltasks,
+        completedtasks: task.completedtasks,
+        createdby: task.createdby,
     };
 }

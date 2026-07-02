@@ -1,7 +1,7 @@
 <script lang="ts">
     import "./ProjectCard.css";
     import IconButton from "../../IconButton/IconButton.svelte";
-    import {type ColorEnum, mapTaskToProps, type Priority, type Task} from "../../../types/types";
+    import {mapTaskToProps, type ProjectCard, type Task} from "../../../types/types";
     import TaskCard from "../TaskCard/TaskCard.svelte";
     import Pill from "../../Pill/Pill.svelte";
     import {invoke} from "@tauri-apps/api/core";
@@ -9,33 +9,25 @@
 
     let {
         id,
-        projectName,
+        name,
         color,
-        isFavorite,
+        favorite,
         dateCreated,
         deadline,
         minutesWorked,
         priority,
+        totaltasks,
+        completedtasks,
         createdBy,
-    } = $props<{
-        id: string;
-        projectName: string;
-        color: ColorEnum;
-        isFavorite: boolean;
-        dateCreated: Date;
-        deadline: Date;
-        minutesWorked: number
-        priority: Priority;
-        createdBy?: string;
-    }>();
+    }: ProjectCard = $props();
 
     let areChildrenShown = $state(appState.allExpanded);
     let children = $state<Task[]>([]);
 
-    let isFavoriteState = $state(isFavorite);
+    let isFavoriteState = $state(favorite);
 
     async function loadProjectChildren() {
-        children = await invoke<Task[]>("get_node_children", { parentId: id, nodeType: 0 });
+        children = await invoke<Task[]>("get_tasks", { parentId: id, nodeType: 0 });
     }
 
     async function handleFavoriteToggle() {
@@ -60,6 +52,7 @@
         });
     }
 
+
     function handleNewTaskBtnClicked() {
         appState.newTaskInfo.parentId = id
         appState.newTaskInfo.parentProjectId = id
@@ -70,7 +63,8 @@
 
     function handleTrashBtnClicked() {
         appState.deleteNodeInfo.nodeId = id
-        appState.deleteNodeInfo.nodeName = projectName
+        appState.deleteNodeInfo.nodeName = name
+        appState.deleteNodeInfo.nodeType = "project"
 
         appState.deleteNodeInfo.isDeleteConfirmModalOpen = true;
     }
@@ -85,13 +79,13 @@
 
 </script>
 
-<div class="project-card" class:starred={isFavorite}>
+<div class="project-card" class:starred={favorite}>
     <div class="project-card-container" class:children-hidden={!areChildrenShown}>
         <div class="project-card-container-left"
              style="--project-color: var(--stratum-{color})">
             <IconButton kind="transparent" size="small" icon="chevronright" toggleIcon="chevrondown" isToggled={areChildrenShown} clickAction={() => areChildrenShown = !areChildrenShown}></IconButton>
-            <span class="project-card-name" title={projectName}>
-                {projectName}
+            <span class="project-card-name" title={name}>
+                {name}
             </span>
             <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => handleFavoriteToggle()} ></IconButton>
             {#if children.length !== 0}
@@ -100,7 +94,7 @@
         </div>
         <div class="project-card-container-middle">
             <div class="metadata-priority">
-                <Pill text={priority} state={priority} kind="container"></Pill>
+                <Pill text={priority} state={priority}></Pill>
             </div>
             <div class="divider"></div>
             <div class="metadata-timeworked">
@@ -111,23 +105,23 @@
                 {(minutesWorked / 60).toFixed(2)} hr
             </div>
             <div class="divider"></div>
-            <div class="metadata-createddate">
+            <div class="metadata-createddate" title="Date Created">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                     <rect x="2" y="4" width="20" height="18" rx="2"/>
                     <line x1="2" y1="10" x2="22" y2="10"/>
                     <line x1="7" y1="2" x2="7" y2="6"/>
                     <line x1="17" y1="2" x2="17" y2="6"/>
                 </svg>
-                created {formatDate(dateCreated)}
+                {formatDate(dateCreated)}
             </div>
             <div class="divider"></div>
-            <div class="metadata-deadline">
+            <div class="metadata-deadline" title="Deadline">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="12" y1="8" x2="12" y2="12"/>
                     <line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
-                due {formatDate(deadline)}
+                {formatDate(deadline)}
             </div>
             {#if createdBy}
                 <div class="divider"></div>
