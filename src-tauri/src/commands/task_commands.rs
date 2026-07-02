@@ -1,7 +1,7 @@
 use crate::db;
 use crate::db::queries::task;
 use crate::models::common::Status;
-use crate::models::task::Task;
+use crate::models::task::{Task, TaskCard};
 
 #[tauri::command]
 pub fn create_task(app: tauri::AppHandle, parent_id: String, parent_project_id: String, parent_task_id: Option<String>, task_name: String, estimated_days: u16, priority: String ) -> Result< (), String > {
@@ -18,9 +18,15 @@ pub fn delete_task(app: tauri::AppHandle, task_id: String)  -> rusqlite::Result<
 }
 
 #[tauri::command]
-pub fn get_node_children(app: tauri::AppHandle, parent_id: String) -> rusqlite::Result<Vec<Task>, String> {
+pub fn get_tasks(app: tauri::AppHandle, parent_id: String) -> rusqlite::Result<Vec<Task>, String> {
     let db_path = db::dbinit::resolve_db_path(&app)?;
-    task::get_node_children(db_path.display().to_string(), parent_id)
+    task::get_tasks(db_path.display().to_string(), parent_id)
+}
+
+#[tauri::command]
+pub fn get_tasks_v2(app: tauri::AppHandle, parent_id: String) -> rusqlite::Result<Vec<TaskCard>, String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    task::get_tasks_v2(db_path.display().to_string(), parent_id)
 }
 
 #[tauri::command]

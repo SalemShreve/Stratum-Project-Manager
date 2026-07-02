@@ -1,9 +1,9 @@
 use rusqlite::{params, Connection};
 use uuid::Uuid;
-use crate::models::task::Task;
 use crate::models::common::Status;
+use crate::models::task::{Task, TaskCard};
 
-pub fn get_node_children(db_path: String, parent_id: String) -> Result<Vec<Task>, String> {
+pub fn get_tasks(db_path: String, parent_id: String) -> Result<Vec<Task>, String> {
     let conn = Connection::open(&db_path)
         .map_err(|e| e.to_string())?;
 
@@ -11,16 +11,18 @@ pub fn get_node_children(db_path: String, parent_id: String) -> Result<Vec<Task>
         .prepare("SELECT
             id,
             parentprojectid,
+            parentid,
             name,
-            favorite,
             datecreated,
             estimateddays,
             laststarted,
             active,
             minutesworked,
             priority,
-            status
-        FROM tasks
+            status,
+            totaltasks,
+            completedtasks
+        FROM tasks_view
         WHERE parentid = $1;")
         .map_err(|e| e.to_string())?;
 
@@ -29,8 +31,8 @@ pub fn get_node_children(db_path: String, parent_id: String) -> Result<Vec<Task>
             Ok(Task {
                 id: row.get(0)?,
                 parentprojectid: row.get(1)?,
-                name: row.get(2)?,
-                favorite: row.get::<_, u8>(3)? != 0,
+                parentid: row.get(2)?,
+                name: row.get(3)?,
                 datecreated: row.get(4)?,
                 estimateddays: row.get(5)?,
                 laststarted: row.get(6)?,
@@ -38,6 +40,50 @@ pub fn get_node_children(db_path: String, parent_id: String) -> Result<Vec<Task>
                 minutesworked: row.get(8)?,
                 priority: row.get(9)?,
                 status: row.get(10)?,
+                totaltasks: row.get(11)?,
+                completedtasks: row.get(12)?,
+            })
+        })
+        .map_err(|e| e.to_string())?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())?;
+
+    Ok(tasks)
+}
+
+pub fn get_tasks_v2(db_path: String, parent_id: String) -> Result<Vec<TaskCard>, String> {
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("SELECT
+            id,
+            parentprojectid,
+            parentid,
+            name,
+            active,
+            priority,
+            status,
+            totaltasks,
+            completedtasks,
+            color
+        FROM tasks_card_view
+        WHERE parentid = $1;")
+        .map_err(|e| e.to_string())?;
+
+    let tasks = stmt
+        .query_map([&parent_id], |row| {
+            Ok(TaskCard {
+                id: row.get(0)?,
+                parentprojectid: row.get(1)?,
+                parentid: row.get(2)?,
+                name: row.get(3)?,
+                active: row.get(4)? ,
+                priority: row.get(5)?,
+                status: row.get(6)?,
+                totaltasks: row.get(7)?,
+                completedtasks: row.get(8)?,
+                color: row.get(9)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -84,16 +130,18 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
         .prepare("SELECT
             id,
             parentprojectid,
+            parentid,
             name,
-            favorite,
             datecreated,
             estimateddays,
             laststarted,
             active,
             minutesworked,
             priority,
-            status
-        FROM tasks
+            status,
+            totaltasks,
+            completedtasks
+        FROM tasks_view
         WHERE id = $1;")
         .map_err(|e| e.to_string())?;
 
@@ -102,15 +150,17 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
             Ok(Task {
                 id: row.get(0)?,
                 parentprojectid: row.get(1)?,
-                name: row.get(2)?,
-                favorite: row.get::<_, u8>(3)? != 0,
+                parentid: row.get(2)?,
+                name: row.get(3)?,
                 datecreated: row.get(4)?,
                 estimateddays: row.get(5)?,
                 laststarted: row.get(6)?,
                 active: row.get(7)? ,
                 minutesworked: row.get(8)?,
                 priority: row.get(9)?,
-                status: row.get(10)?
+                status: row.get(10)?,
+                totaltasks: row.get(11)?,
+                completedtasks: row.get(12)?,
             })
         })
         .map_err(|e| e.to_string())?

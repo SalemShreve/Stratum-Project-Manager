@@ -1,4 +1,4 @@
-use crate::models::project::Project;
+use crate::models::project::{Project, ProjectCard};
 use rusqlite::{params, Connection};
 use uuid::Uuid;
 
@@ -15,21 +15,25 @@ pub fn get_projects(db_path: String) -> Result<Vec<Project>, String>{
             CAST(datecreated AS VARCHAR),
             CAST(deadline AS VARCHAR),
             minutesworked,
-            priority
-        FROM projects_with_time;")
+            priority,
+            totaltasks,
+            completedtasks
+        FROM projects_view;")
         .map_err(|e| e.to_string())?;
 
     let projects = stmt
         .query_map([], |row| {
             Ok(Project {
-                id:           row.get(0)?,
-                name:         row.get(1)?,
-                color:        row.get(2)?,
-                favorite:     row.get(3)?,
-                datecreated:  row.get(4)?,
-                deadline:     row.get(5)?,
-                minutesworked:row.get(6)?,
-                priority:     row.get(7)?,
+                id:             row.get(0)?,
+                name:           row.get(1)?,
+                color:          row.get(2)?,
+                favorite:       row.get(3)?,
+                datecreated:    row.get(4)?,
+                deadline:       row.get(5)?,
+                minutesworked:  row.get(6)?,
+                priority:       row.get(7)?,
+                totaltasks:     row.get(8)?,
+                completedtasks: row.get(9)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -38,6 +42,44 @@ pub fn get_projects(db_path: String) -> Result<Vec<Project>, String>{
 
     Ok(projects)
 }
+
+pub fn get_projects_v2(db_path: String) -> Result<Vec<ProjectCard>, String>{
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("SELECT
+            id,
+            name,
+            color,
+            favorite,
+            CAST(deadline AS VARCHAR),
+            priority,
+            totaltasks,
+            completedtasks
+        FROM projects_view;")
+        .map_err(|e| e.to_string())?;
+
+    let projects = stmt
+        .query_map([], |row| {
+            Ok(ProjectCard {
+                id:             row.get(0)?,
+                name:           row.get(1)?,
+                color:          row.get(2)?,
+                favorite:       row.get(3)?,
+                deadline:       row.get(4)?,
+                priority:       row.get(5)?,
+                totaltasks:     row.get(6)?,
+                completedtasks: row.get(7)?,
+            })
+        })
+        .map_err(|e| e.to_string())?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())?;
+
+    Ok(projects)
+}
+
 pub fn create_project(db_path: String, name: String, color: String, deadline: String, priority: String ) -> Result<(), String>{
 
     let new_uuid = Uuid::new_v4().to_string();
@@ -98,22 +140,26 @@ pub fn get_project(db_path: String, project_id: String) -> Result<Project, Strin
             CAST(datecreated AS VARCHAR),
             CAST(deadline AS VARCHAR),
             minutesworked,
-            priority
-        FROM projects_with_time
+            priority,
+            totaltasks,
+            completedtasks
+        FROM projects_view
         WHERE id = $1;")
         .map_err(|e| e.to_string())?;
 
     let projects = stmt
         .query_map([&project_id], |row| {
             Ok(Project {
-                id:           row.get(0)?,
-                name:         row.get(1)?,
-                color:        row.get(2)?,
-                favorite:     row.get(3)?,
-                datecreated:  row.get(4)?,
-                deadline:     row.get(5)?,
-                minutesworked:row.get(6)?,
-                priority:     row.get(7)?,
+                id:             row.get(0)?,
+                name:           row.get(1)?,
+                color:          row.get(2)?,
+                favorite:       row.get(3)?,
+                datecreated:    row.get(4)?,
+                deadline:       row.get(5)?,
+                minutesworked:  row.get(6)?,
+                priority:       row.get(7)?,
+                totaltasks:     row.get(8)?,
+                completedtasks: row.get(9)?,
             })
         })
         .map_err(|e| e.to_string())?

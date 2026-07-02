@@ -1,6 +1,6 @@
 use crate::db;
 use crate::db::queries::project;
-use crate::models::project::Project;
+use crate::models::project::{Project, ProjectCard};
 
 #[tauri::command]
 pub fn create_project(app: tauri::AppHandle, project_name: String, color: String, deadline: String, priority: String)  -> Result< (), String > {
@@ -22,6 +22,12 @@ pub fn delete_project(app: tauri::AppHandle, project_id: String)  -> Result< (),
 pub fn get_projects(app: tauri::AppHandle, ) -> rusqlite::Result<Vec<Project>, String> {
     let db_path = db::dbinit::resolve_db_path(&app)?;
     project::get_projects(db_path.display().to_string())
+}
+
+#[tauri::command]
+pub fn get_projects_v2(app: tauri::AppHandle, ) -> rusqlite::Result<Vec<ProjectCard>, String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    project::get_projects_v2(db_path.display().to_string())
 }
 
 #[tauri::command]
