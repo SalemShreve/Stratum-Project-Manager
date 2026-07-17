@@ -4,7 +4,6 @@
     import type {ITaskCard} from "../../../types/types";
     import IconButton from "../../IconButton/IconButton.svelte";
     import Pill from "../../Pill/Pill.svelte";
-    import {TaskPageState} from "../../../../state/appState.svelte";
 
     let {
         id,
@@ -15,7 +14,8 @@
         status,
         totaltasks,
         completedtasks,
-    }: ITaskCard = $props();
+        selectedTaskId = $bindable()
+    }: ITaskCard & { selectedTaskId?: string } = $props();
 
     function getCompletionPercent() {
         if (totaltasks > 0) {
@@ -24,24 +24,23 @@
     }
 
     function handleTaskSelected() {
-        if (TaskPageState.selectedTask === id) {
-            TaskPageState.selectedTask = undefined;
+        if (selectedTaskId === id) {
+            selectedTaskId = undefined;
         }
-        else TaskPageState.selectedTask = id
+        else selectedTaskId = id
     }
 
 </script>
 
 <div class="task-containerV2"
-     class:selected={TaskPageState.selectedTask === id}
+     class:selected={selectedTaskId === id}
      role="none"
-     onclick={() => handleTaskSelected()}
->
+     onclick={() => handleTaskSelected()}>
     <div class="task-card-left">
         <div class="task-color" style="--project-color: var(--stratum-{color})"></div>
         <div class="task-priority-bubble"></div>
         <div class="task-info">
-            <div class="task-name">{name}</div>
+            <div class="task-name {status}">{name}</div>
             <div class="task-metadata">
                 <span class="task-priority">{priority.charAt(0).toUpperCase() + priority.slice(1)}</span>
                 -

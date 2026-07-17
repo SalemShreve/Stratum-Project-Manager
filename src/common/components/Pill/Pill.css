@@ -10,10 +10,11 @@
     max-height: 15px;
     text-wrap:nowrap;
     font-family: var(--font-mono);
+    transition: background .2s, color .2s, border-color .2s;
 }
 
 .pill.small {
-    font-size: 8px;
+    font-size: 9px;
 }
 
 .pill.container {
@@ -41,15 +42,14 @@
     border-color: var(--border-red);
 }
 
-.pill:hover {
-    .pill-tooltip {
-        visibility: visible;
-    }
+.pill.bright {
+    border-color: var(--border-base);
+    background: var(--bg-overlay);
+    color: var(--text-secondary);
 }
 
-.pill-tooltip{
-    position: absolute;
-    top: 150%;
-    left: 50%;
-    visibility: hidden;
+.pill.group {
+    background: var(--bg-purple-tint);
+    color: var(--accent-purple);
+    border-color: var(--border-purple);
 }

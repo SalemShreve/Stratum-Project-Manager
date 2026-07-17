@@ -18,8 +18,8 @@
     z-index: 2;
     top: 0;
     backdrop-filter: blur(2px);
-    /*border-bottom: 1px solid var(--border-subtle);*/
 }
+
 .projects-topbar::after {
     content: '';
     position: absolute;

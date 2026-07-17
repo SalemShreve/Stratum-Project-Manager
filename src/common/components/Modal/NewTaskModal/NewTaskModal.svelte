@@ -54,8 +54,8 @@
                 <input class="modal-input" id="taskname" type="text" placeholder="Project Name" bind:value={newTaskName}/>
             </div>
             <div class="form-group">
-                <label for="taskest">Estimated Days</label>
-                <input class="modal-input" id="taskest" type="number" min="0" placeholder="Estimated Days" bind:value={newTaskEstimate}/>
+                <label for="taskest">Estimated Hours</label>
+                <input class="modal-input" id="taskest" type="number" min="0" placeholder="Estimated Hours" bind:value={newTaskEstimate}/>
             </div>
             <div class="form-group">
                 <label for="taskpriority">Priority</label>

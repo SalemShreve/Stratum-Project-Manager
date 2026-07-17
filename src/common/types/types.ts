@@ -159,6 +159,7 @@ export interface IProjectCard  {
     name: string;
     color: ColorEnum;
     favorite: boolean;
+    datecreated: string;
     deadline: string;
     priority: Priority;
     totaltasks: number;
@@ -227,13 +228,13 @@ export interface ITaskCard {
     color: ColorEnum,
 }
 
-export function mapTaskToProps(task: Task, color: ColorEnum ): Task {
+export function mapTaskToProps(task: Task ): Task {
     return {
         id: task.id,
         parentprojectid: task.parentprojectid,
         parentid: task.parentid,
         name: task.name,
-        color: color,
+        color: task.color,
         favorite: task.favorite,
         datecreated: new Date(task.datecreated),
         estimateddays: task.estimateddays,

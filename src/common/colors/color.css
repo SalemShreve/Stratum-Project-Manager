@@ -14,6 +14,71 @@
     --stratum-sky:      #00AAFF;
     --stratum-rose:     #CC0066;
 
+    /* Blue */
+    --accent-stratum-blue: #4A8FFF;
+    --bg-stratum-blue: #0A1A2E;
+    --border-stratum-blue: #0A2A6B;
+
+    /* Red */
+    --accent-stratum-red: #FF4A4A;
+    --bg-stratum-red: #2E0A0A;
+    --border-stratum-red: #6B0A0A;
+
+    /* Green */
+    --accent-stratum-green: #3DD68C;
+    --bg-stratum-green: #0A2E1A;
+    --border-stratum-green: #0A5A2A;
+
+    /* Purple */
+    --accent-stratum-purple: #A87AFF;
+    --bg-stratum-purple: #1A0A2E;
+    --border-stratum-purple: #3A0A6B;
+
+    /* Orange */
+    --accent-stratum-orange: #FF9A4A;
+    --bg-stratum-orange: #2E1A0A;
+    --border-stratum-orange: #6B3A0A;
+
+    /* Yellow */
+    --accent-stratum-yellow: #FFE066;
+    --bg-stratum-yellow: #2A2200;
+    --border-stratum-yellow: #6B5A00;
+
+    /* Teal */
+    --accent-stratum-teal: #3DD6D6;
+    --bg-stratum-teal: #0A2A2A;
+    --border-stratum-teal: #0A5A5A;
+
+    /* Pink */
+    --accent-stratum-pink: #FF6FA3;
+    --bg-stratum-pink: #2E0A1A;
+    --border-stratum-pink: #6B0A2E;
+
+    /* Indigo */
+    --accent-stratum-indigo: #7A5AFF;
+    --bg-stratum-indigo: #150A2E;
+    --border-stratum-indigo: #2D0A6B;
+
+    /* Lime */
+    --accent-stratum-lime: #AAEE44;
+    --bg-stratum-lime: #1A2A00;
+    --border-stratum-lime: #3A5A00;
+
+    /* Coral */
+    --accent-stratum-coral: #FF8080;
+    --bg-stratum-coral: #2E0F0F;
+    --border-stratum-coral: #7A1F1F;
+
+    /* Sky */
+    --accent-stratum-sky: #4AC8FF;
+    --bg-stratum-sky: #0A1E2E;
+    --border-stratum-sky: #0A4A6B;
+
+    /* Rose */
+    --accent-stratum-rose: #FF4DA6;
+    --bg-stratum-rose: #2A0A1A;
+    --border-stratum-rose: #660033;
+
     --bg-page: #0F1117;
     --bg-surface: #161B27;
     --bg-elevated: #1E2535;

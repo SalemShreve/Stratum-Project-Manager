@@ -10,6 +10,7 @@
     import DeleteConfirmModal from "../../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
     import EditProjectModal from "../../common/components/Modal/EditModal/EditProjectModal.svelte";
     import BreadCrumbPath from "../../common/BreadCrumbPath/BreadCrumbPath.svelte";
+    import NewTaskModal from "../../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
 
     let isNewProjectModalOpen = $state(false);
 
@@ -31,6 +32,7 @@
     <NewProjectModal bind:isNewProjectModalOpen ></NewProjectModal>
     <DeleteConfirmModal></DeleteConfirmModal>
     <EditProjectModal></EditProjectModal>
+    <NewTaskModal></NewTaskModal>
     <div class="projects-topbar">
         <div class="projects-actionsbar">
             <div class="projects-actionsbar-left">

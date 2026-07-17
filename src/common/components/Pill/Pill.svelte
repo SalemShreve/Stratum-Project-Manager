@@ -4,11 +4,13 @@
     let {
         text,
         state,
-        size
+        size,
+        hover
     } = $props<{
         text: string;
-        state?: "low" | "medium" | "high" | "completed" | "incompleted" | "blocked"
+        state?: "low" | "medium" | "high" | "completed" | "incompleted" | "blocked" | "group" | "normal" | "bright"
         size?: "small"
+        hover?: boolean
     }>();
 </script>
 

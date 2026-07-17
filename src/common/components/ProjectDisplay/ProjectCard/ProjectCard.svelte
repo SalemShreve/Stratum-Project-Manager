@@ -137,7 +137,7 @@
     </div>
     <div class="task-container" class:hidden={!areChildrenShown || children.length === 0} >
         {#each children as task}
-            {@const props = mapTaskToProps(task, color)}
+            {@const props = mapTaskToProps(task)}
             <TaskCard {...props} isVisible={areChildrenShown} isParentLastInDepth={true} />
         {/each}
     </div>

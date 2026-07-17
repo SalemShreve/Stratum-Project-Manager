@@ -48,6 +48,10 @@
     font-size: 15px;
 }
 
+.task-name.completed {
+    text-decoration: line-through;
+}
+
 .task-metadata {
     color: var(--text-muted);
     transition: color .2s;

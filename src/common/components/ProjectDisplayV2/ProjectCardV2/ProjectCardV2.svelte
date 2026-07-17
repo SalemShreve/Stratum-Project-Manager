@@ -12,6 +12,7 @@
         name,
         color,
         favorite,
+        datecreated,
         deadline,
         priority,
         totaltasks,
@@ -34,6 +35,14 @@
         } else return "0%";
     }
 
+    function handleNewTaskBtnClicked() {
+        appState.newTaskInfo.parentId = id;
+        appState.newTaskInfo.parentProjectId = id;
+        appState.newTaskInfo.parentTaskId = undefined;
+
+        appState.newTaskInfo.isNewTaskModalOpen = true;
+    }
+
     function handleEditBtnClicked() {
         appState.editNodeInfo.nodeId = id
         appState.editNodeInfo.nodeType = "project";
@@ -43,6 +52,7 @@
     function handleTrashBtnClicked() {
         appState.deleteNodeInfo.nodeId = id
         appState.deleteNodeInfo.nodeName = name
+        appState.deleteNodeInfo.nodeType = "project"
 
         appState.deleteNodeInfo.isDeleteConfirmModalOpen = true;
     }
@@ -68,10 +78,10 @@
 
 </script>
 
-<div class="projectv2-card"
+<div class="projectv2-card {totaltasks > 0 ? 'haschildren' : undefined}"
      role="button"
      tabindex="0"
-     onclick={() => handleNavigate()}
+     onclick={totaltasks > 0 ? () => handleNavigate() : () => console.log("none")}
      onkeydown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -87,6 +97,7 @@
             </span>
         </div>
         <div class="projectv2-header-right" role="none" onclick={(e) => e.stopPropagation()}>
+            <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()}/>
             <IconButton kind="transparent" size="small" icon="edit" clickAction={() => handleEditBtnClicked()}/>
             <IconButton kind="transparent" size="small" icon="trash" clickAction={() => handleTrashBtnClicked()}/>
         </div>
@@ -102,6 +113,10 @@
     </div>
     <div class="projectv2-card-footer">
         <Pill state={priority} text={priority}></Pill>
-        <div class="projectv2-deadline">{formatDate(deadline)}</div>
+        <div class="projectv2-footer-dates">
+            <div class="projectv2-created">Created { formatDate(datecreated)}</div>
+            -
+            <div class="projectv2-deadline">Due {formatDate(deadline)}</div>
+        </div>
     </div>
 </div>
