@@ -53,6 +53,7 @@ pub fn get_projects_v2(db_path: String) -> Result<Vec<ProjectCard>, String>{
             name,
             color,
             favorite,
+            CAST(datecreated AS VARCHAR),
             CAST(deadline AS VARCHAR),
             priority,
             totaltasks,
@@ -67,10 +68,11 @@ pub fn get_projects_v2(db_path: String) -> Result<Vec<ProjectCard>, String>{
                 name:           row.get(1)?,
                 color:          row.get(2)?,
                 favorite:       row.get(3)?,
-                deadline:       row.get(4)?,
-                priority:       row.get(5)?,
-                totaltasks:     row.get(6)?,
-                completedtasks: row.get(7)?,
+                datecreated:    row.get(4)?,
+                deadline:       row.get(5)?,
+                priority:       row.get(6)?,
+                totaltasks:     row.get(7)?,
+                completedtasks: row.get(8)?,
             })
         })
         .map_err(|e| e.to_string())?

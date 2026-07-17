@@ -21,8 +21,9 @@ pub fn get_tasks(db_path: String, parent_id: String) -> Result<Vec<Task>, String
             priority,
             status,
             totaltasks,
-            completedtasks
-        FROM tasks_view
+            completedtasks,
+            color
+        FROM tasks_info_view
         WHERE parentid = $1;")
         .map_err(|e| e.to_string())?;
 
@@ -42,6 +43,7 @@ pub fn get_tasks(db_path: String, parent_id: String) -> Result<Vec<Task>, String
                 status: row.get(10)?,
                 totaltasks: row.get(11)?,
                 completedtasks: row.get(12)?,
+                color: row.get(13)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -140,8 +142,9 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
             priority,
             status,
             totaltasks,
-            completedtasks
-        FROM tasks_view
+            completedtasks,
+            color
+        FROM tasks_info_view
         WHERE id = $1;")
         .map_err(|e| e.to_string())?;
 
@@ -161,6 +164,7 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
                 status: row.get(10)?,
                 totaltasks: row.get(11)?,
                 completedtasks: row.get(12)?,
+                color: row.get(13)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -180,6 +184,19 @@ pub fn update_task_status(db_path: String, task_id: String, status: Status) -> R
     conn.execute(
         "UPDATE tasks SET status = ?1 WHERE id = ?2",
         params![status, task_id],
+    )
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+pub fn update_task_active(db_path: String, task_id: String, active: bool, last_started: String) -> Result<(), String> {
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    conn.execute(
+        "UPDATE tasks SET active = ?1, laststarted = ?2 WHERE id = ?3",
+        params![active, last_started, task_id],
     )
         .map_err(|e| e.to_string())?;
 

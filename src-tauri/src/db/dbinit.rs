@@ -83,11 +83,11 @@ pub const SCHEMA_SQL: &str = r#"
         p.deadline,
         p.priority;
 
-    CREATE VIEW IF NOT EXISTS tasks_view AS
+    CREATE VIEW IF NOT EXISTS tasks_info_view AS
     SELECT
         p.id,
         p.parentprojectid,
-        p.parenttaskid,
+        p.parentid,
         p.name,
         p.datecreated,
         p.estimateddays,
@@ -100,7 +100,9 @@ pub const SCHEMA_SQL: &str = r#"
             WHERE t2.parenttaskid = p.id) AS totaltasks,
         (SELECT COUNT(*) FROM tasks t3
             WHERE t3.parenttaskid = p.id
-            AND t3.status = 'completed') AS completedtasks
+            AND t3.status = 'completed') AS completedtasks,
+        (SELECT color FROM projects t4
+            WHERE t4.id = p.parentprojectid) AS color
     FROM tasks p
              LEFT JOIN tasks t
              ON t.parenttaskid = p.id

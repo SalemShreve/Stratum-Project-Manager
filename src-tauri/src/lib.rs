@@ -6,7 +6,7 @@ use commands::project_commands::{create_project, get_projects, delete_project, g
 use commands::task_commands::{create_task, get_task, get_tasks};
 use commands::db_commands::{db_init, db_teardown, db_wipe, db_check_exists};
 use crate::commands::project_commands::get_projects_v2;
-use crate::commands::task_commands::{delete_task, get_tasks_v2, update_task_status};
+use crate::commands::task_commands::{delete_task, get_tasks_v2, update_task_status, update_task_active};
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
 //----------------------------------------
@@ -37,9 +37,10 @@ pub fn run() {
             get_project,
             update_project,
             update_task_status,
+            update_task_active,
             delete_task,
             get_tasks_v2,
-            get_projects_v2
+            get_projects_v2,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

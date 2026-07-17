@@ -14,7 +14,8 @@ pub struct Task {
     pub priority: Priority,
     pub status: Status,
     pub totaltasks: u32,
-    pub completedtasks: u32
+    pub completedtasks: u32,
+    pub color: String,
 }
 
 #[derive(serde::Serialize, Clone)]

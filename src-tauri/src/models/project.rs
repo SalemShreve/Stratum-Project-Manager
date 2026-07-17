@@ -20,6 +20,7 @@ pub struct ProjectCard {
     pub name: String,
     pub color: String,
     pub favorite: bool,
+    pub datecreated: String,
     pub deadline: String,
     pub priority: Priority,
     pub totaltasks: u32,

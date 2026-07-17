@@ -40,3 +40,9 @@ pub fn update_task_status(app: tauri::AppHandle, task_id: String, status: Status
     let db_path = db::dbinit::resolve_db_path(&app)?;
     task::update_task_status(db_path.display().to_string(), task_id, status)
 }
+
+#[tauri::command]
+pub fn update_task_active(app: tauri::AppHandle, task_id: String, active: bool, last_started: String) -> rusqlite::Result<(), String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    task::update_task_active(db_path.display().to_string(), task_id, active, last_started)
+}

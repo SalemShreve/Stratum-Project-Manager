@@ -11,7 +11,7 @@
     transition: background .2s, color .2s;
 }
 
-.projectv2-card:hover {
+.projectv2-card.haschildren:hover {
     color: var(--text-primary);
     background: var(--bg-elevated);
     cursor: pointer;
@@ -20,6 +20,17 @@
         background: var(--bg-overlay);
     }
 }
+
+.projectv2-card:hover {
+    color: var(--text-primary);
+    background: var(--bg-elevated);
+
+    .projectv2-progress-bar {
+        background: var(--bg-overlay);
+    }
+}
+
+
 
 .projectv2-card-header {
     display: flex;
@@ -106,7 +117,14 @@
     flex-direction: row;
     justify-content: space-between;
 
+    .projectv2-created,
     .projectv2-deadline {
         color: var(--text-muted);
     }
+}
+
+.projectv2-footer-dates {
+    color: var(--text-muted);
+    display: flex;
+    gap: 10px;
 }
