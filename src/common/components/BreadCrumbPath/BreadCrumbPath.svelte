@@ -1,8 +1,8 @@
 <script lang="ts">
     import "./BreadCrumbPath.css"
     import {goto} from "$app/navigation";
-    import {appState} from "../../state/appState.svelte";
-    import type {Breadcrumb} from "../types/types";
+    import {appState} from "../../../state/appState.svelte.js";
+    import type {Breadcrumb} from "../../types/types";
 
     function handlePathBtnClicked( path: Breadcrumb ) {
         goto(path.path)

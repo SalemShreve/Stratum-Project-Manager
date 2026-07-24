@@ -202,7 +202,7 @@
         </div>
         <div class="project-card-container-middle">
             <div class="metadata-priority">
-                <Pill text={priority} state={priority}></Pill>
+                <Pill text={priority} pillstate={priority}></Pill>
             </div>
             {#if children.length === 0}
                 <StatusPopover taskid={id} bind:statusState={status} ></StatusPopover>

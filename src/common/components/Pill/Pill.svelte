@@ -1,19 +1,32 @@
 <script lang="ts">
     import "./Pill.css"
+    import {getIcon, type IconEnum} from "../../types/types";
 
     let {
         text,
-        state,
+        pillstate,
         size,
-        hover
+        icon,
     } = $props<{
         text: string;
-        state?: "low" | "medium" | "high" | "completed" | "incompleted" | "blocked" | "group" | "normal" | "bright"
+        pillstate?: "low" | "medium" | "high" | "completed" | "incompleted" | "blocked" | "group" | "normal" | "bright"
         size?: "small"
-        hover?: boolean
+        icon?: IconEnum;
     }>();
+
+    let IconComponent = $state<any>(null);
+
+    $effect(() => {
+        getIcon('small', icon).then(c => IconComponent = c);
+    });
+
 </script>
 
-<div class="pill {state} {size}" >
+<div class="pill {pillstate} {size}" >
+    {#if IconComponent}
+        <div>
+            <IconComponent />
+        </div>
+    {/if}
     {text.charAt(0).toUpperCase() + text.slice(1)}
 </div>

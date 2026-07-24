@@ -37,3 +37,28 @@
     gap: 3px;
     flex: 1;
 }
+
+.tasks-filterbar {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-subtle);
+
+    .filter-right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+    }
+
+    .filter-search {
+    }
+}
+
+.projects-topbar-footer {
+    padding-bottom: 10px;
+}

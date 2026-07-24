@@ -4,13 +4,13 @@
     import {invoke} from "@tauri-apps/api/core";
     import {
         type ITaskCard,
-        type Project
+        type Project, type SortEnum
     } from "../../../common/types/types";
     import {appState} from "../../../state/appState.svelte";
     import Pill from "../../../common/components/Pill/Pill.svelte";
     import TextButton from "../../../common/components/TextButton/TextButton.svelte";
     import NewTaskModal from "../../../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
-    import BreadCrumbPath from "../../../common/BreadCrumbPath/BreadCrumbPath.svelte";
+    import BreadCrumbPath from "../../../common/components/BreadCrumbPath/BreadCrumbPath.svelte";
     import TaskDisplayPanel from "../../../common/components/ProjectDisplayV2/TaskDisplayPanel/TaskDisplayPanel.svelte";
     import DeleteConfirmModal from "../../../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
     import TaskRow from "../../../common/components/ProjectDisplayV2/TaskRow/TaskRow.svelte";
@@ -21,15 +21,13 @@
     const id = $derived(page.params.parentId);
     let project = $state<Project>();
     let tasks = $state<ITaskCard[]>();
+    let filteredTasks = $state<ITaskCard[]>();
 
     let selectedTaskId = $state<string | undefined>();
     let allExtended = $state(false)
 
-    let sort = $state<'none' | 'starred' | 'created' | 'deadline' | 'name'>('none');
-    let activeFilter = $state(false)
-    let lowFilter = $state(false)
-    let mediumFilter = $state(false)
-    let highFilter = $state(false)
+    let sort = $state<SortEnum>(undefined);
+    let activeFilters = $state<string[]>([])
 
     async function loadProjectData() {
         project = await invoke<Project>("get_project" , { projectId: id});
@@ -37,6 +35,7 @@
 
     async function loadTaskData() {
         tasks = await invoke<ITaskCard[]>("get_tasks_v2" , { parentId: id});
+        filteredTasks = tasks
     }
 
     function handleNewTaskBtnClicked() {
@@ -45,6 +44,40 @@
         appState.newTaskInfo.parentTaskId = undefined
 
         appState.newTaskInfo.isNewTaskModalOpen = true;
+    }
+
+    function manageFilters(filter: string) {
+        if (activeFilters.includes(filter)) {
+            activeFilters = activeFilters.filter(activeFilter => activeFilter !== filter);
+        } else if (!(activeFilters.includes(filter))) {
+            activeFilters.push(filter);
+        }
+
+        if (activeFilters.length > 0) {
+            filteredTasks = tasks?.filter(tasks => activeFilters.includes(tasks.priority));
+        } else {
+            filteredTasks = tasks
+        }
+
+        appState.filterUpdateTrigger +=1
+    }
+
+    function manageSort(sortType: SortEnum) {
+        if (sort === sortType) {
+            sort = undefined
+            return
+        }
+
+        sort = sortType
+
+        if (sort === "name") {
+            filteredTasks = tasks?.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        else if (sort === "created") {
+            filteredTasks = tasks?.sort((a, b) => a.datecreated.getTime() - b.datecreated.getTime());
+        }
+
+        appState.filterUpdateTrigger +=1
     }
 
     $effect(() => {
@@ -70,22 +103,22 @@
         <div class="projects-topbar-footer">
             <BreadCrumbPath></BreadCrumbPath>
         </div>
-        <div class="home-filterbar">
+        <div class="tasks-filterbar">
             <div class="filter-right">
                 <IconButton kind="transparent" size="small" icon="expandall" toggleIcon="collapseall" isToggled={allExtended} clickAction={() => allExtended = !allExtended}></IconButton>
                 <div class="divider"></div>
                 <span class="text-label">Sort</span>
-                <Chip text="None" active={sort === 'none'} clickAction={() => sort = 'none'}> </Chip>
-                <Chip text="★ Starred" starred active={sort === 'starred'} clickAction={() => sort = 'starred'}> </Chip>
-                <Chip text="Name" active={sort === 'name'} clickAction={() => sort = 'name'}> </Chip>
-                <Chip text="Date Created" active={sort === 'created'} clickAction={() => sort = 'created'}> </Chip>
-                <Chip text="Deadline" active={sort === 'deadline'} clickAction={() => sort = 'deadline'}> </Chip>
+                <Chip text="None" active={sort === undefined} clickAction={() => manageSort(undefined)}> </Chip>
+                <Chip text="Name" active={sort === 'name'} clickAction={() => manageSort('name')}> </Chip>
+                <Chip text="Created" active={sort === 'created'} clickAction={() => manageSort('created')}> </Chip>
+                <Chip text="Priority" active={sort === 'priority'} clickAction={() => manageSort('priority')}> </Chip>
+                <Chip text="Status" active={sort === 'state'} clickAction={() => manageSort('state')}> </Chip>
                 <div class="divider"></div>
                 <span class="text-label">Filter</span>
-                <Chip text="Active" active={activeFilter} clickAction={() => activeFilter = !activeFilter}> </Chip>
-                <Chip text="Low" priority="low" active={lowFilter} clickAction={() => lowFilter = !lowFilter}> </Chip>
-                <Chip text="Medium" priority="medium" active={mediumFilter} clickAction={() => mediumFilter = !mediumFilter}> </Chip>
-                <Chip text="High" priority="high" active={highFilter} clickAction={() => highFilter = !highFilter}> </Chip>
+                <Chip text="Active" active={activeFilters.includes("active")} clickAction={() => manageFilters("active")}> </Chip>
+                <Chip text="Low" priority="low" active={activeFilters.includes("low")} clickAction={() => manageFilters("low")}> </Chip>
+                <Chip text="Medium" priority="medium" active={activeFilters.includes("medium")} clickAction={() => manageFilters("medium")}> </Chip>
+                <Chip text="High" priority="high" active={activeFilters.includes("high")} clickAction={() => manageFilters("high")}> </Chip>
             </div>
             <div class="filter-search">
                 <input type="search">
@@ -97,8 +130,8 @@
             <!--{#each tasks as task}-->
             <!--    <TaskCardV2 bind:selectedTaskId={selectedTaskId} {...task} />-->
             <!--{/each}-->
-            {#each tasks as task}
-                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} {...task} />
+            {#each filteredTasks as task}
+                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} activeFilters={activeFilters} {...task} />
             {/each}
         </div>
         {#if selectedTaskId !== undefined }

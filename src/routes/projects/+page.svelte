@@ -9,7 +9,7 @@
     import NewProjectModal from "../../common/components/Modal/NewProjectModal/NewProjectModal.svelte";
     import DeleteConfirmModal from "../../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
     import EditProjectModal from "../../common/components/Modal/EditModal/EditProjectModal.svelte";
-    import BreadCrumbPath from "../../common/BreadCrumbPath/BreadCrumbPath.svelte";
+    import BreadCrumbPath from "../../common/components/BreadCrumbPath/BreadCrumbPath.svelte";
     import NewTaskModal from "../../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
 
     let isNewProjectModalOpen = $state(false);

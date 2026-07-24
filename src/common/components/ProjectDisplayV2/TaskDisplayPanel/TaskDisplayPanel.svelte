@@ -7,26 +7,21 @@
     import {untrack} from "svelte";
     import IconButton from "../../IconButton/IconButton.svelte";
     import Stopwatch from "../../Stopwatch/Stopwatch.svelte";
+    import StatusPopover from "../../StatusPopover/StatusPopover.svelte";
 
     let {
         taskid,
     } = $props<{
-        taskid: string;
+        taskid: string | undefined;
     }>();
 
     let task = $state<Task>();
     let project = $state<Project>();
 
-    let taskStopwatchActive = $state<boolean>();
-    let taskStopwatchLastStarted = $state<string>();
+    let active = $state(true);
 
     async function loadTaskData() {
         task = await invoke<Task>("get_task" , { taskId: taskid });
-
-        taskStopwatchActive = task.active
-        taskStopwatchLastStarted = task.laststarted
-
-        console.log($state.snapshot(taskStopwatchActive));
 
         project = await invoke<Project>("get_project" , { projectId: task.parentprojectid });
     }
@@ -34,11 +29,11 @@
     $effect(() => {
         if (taskid !== undefined ) {
             untrack(() => {
-                    loadTaskData()
-                    console.log(task)
+                loadTaskData()
+                active = true
                 }
             );
-        }
+        } else { active = false}
     });
 
     function formatDate(date: Date): string {
@@ -99,14 +94,19 @@
             </div>
             <h1 class="tdp-header-task-name">{task.name.charAt(0).toUpperCase() + task.name.slice(1)}</h1>
             <div class="tdp-header-info">
-                <Pill text={task.priority + " Priority"} state={task.priority}></Pill>
-                <Pill text={task.status} state={task.status}></Pill>
-                <Pill text={task.totaltasks > 0 ? "group" : "task"} state={task.totaltasks > 0 ? "group" : undefined}></Pill>
+                <Pill text={task.priority + " Priority"} pillstate={task.priority}></Pill>
+                {#if task.totaltasks > 0}
+                    <Pill text={task.status} pillstate={task.status} ></Pill>
+                    {:else }
+                    <StatusPopover taskid={task.id} statusState={task.status}></StatusPopover>
+                {/if}
+
+                <Pill text={task.totaltasks > 0 ? "group" : "task"} pillstate={task.totaltasks > 0 ? "group" : undefined}></Pill>
             </div>
         </div>
         <div class="tdp-content">
             {#if task.totaltasks <= 0}
-                <Stopwatch taskid={task.id} isTimerRunning={taskStopwatchActive} lastStarted={taskStopwatchLastStarted}></Stopwatch>
+                <Stopwatch taskid={task.id}></Stopwatch>
             {/if}
             <div class="tdp-progress">
                 <div class="tdp-progress-header">
@@ -122,12 +122,12 @@
             </div>
             <div class="tdp-info-grid">
                 <div class="tdp-info-square top left">
-                    <span class="info-label">Due Date</span>
-                    <span class="info-value">{formatDate(new Date(project.deadline))}</span>
-                </div>
-                <div class="tdp-info-square top">
                     <span class="info-label">Created</span>
                     <span class="info-value">{formatDate(new Date(task.datecreated))}</span>
+                </div>
+                <div class="tdp-info-square top">
+                    <span class="info-label">Due Date</span>
+                    <span class="info-value">{formatDate(new Date(project.deadline))}</span>
                 </div>
                 <div class="tdp-info-square left">
                     <span class="info-label">Estimate</span>

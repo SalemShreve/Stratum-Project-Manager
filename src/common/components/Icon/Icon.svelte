@@ -8,7 +8,6 @@
         size,
         title,
         testId
-
     } = $props<{
         kind: 'normal' | 'toggle' | 'destroy' | 'transparent';
         icon: IconEnum;

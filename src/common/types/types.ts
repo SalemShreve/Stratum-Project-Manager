@@ -96,6 +96,8 @@ export type IconEnum =
 
 export type SizeEnum = 'small' | 'medium' | 'large';
 
+export type SortEnum = "name" | "deadline" | "priority" | "state" | "created" | undefined
+
 export const COLOR_VALUES = [
     'red', 'green', 'blue', 'purple', 'orange', 'yellow',
     'teal', 'pink', 'indigo', 'lime', 'coral', 'sky', 'rose'
@@ -226,6 +228,7 @@ export interface ITaskCard {
     totaltasks: number,
     completedtasks: number,
     color: ColorEnum,
+    datecreated: Date,
 }
 
 export function mapTaskToProps(task: Task ): Task {

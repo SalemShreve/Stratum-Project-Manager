@@ -3,23 +3,33 @@
 }
 
 .status-popover {
-    display: flex;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 5px;
     position: absolute;
     background-color: var(--bg-elevated);
     border-radius: 4px;
     border: 1px solid var(--border-base);
     z-index: 2;
     right: 0;
+    padding: 5px;
 }
 
 .status-popover-btn {
+    all: unset;
     display: flex;
-    height: 25px;
+    flex-direction: row;
+    gap: 10px;
+    height: 15px;
     align-items: center;
     justify-content: center;
     border-radius: 6px;
-    padding: 0 0 0 10px;
+    padding: 2px 10px;
     font-family: var(--font-mono);
+    font-size: 11px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-elevated);
+    color: var(--text-muted);
 }
 
 .status-popover-btn:hover {
@@ -42,4 +52,13 @@
     color: var(--accent-red);
     background-color: var(--bg-red-tint);
     border : 1px solid var(--border-red);
+}
+
+.popover-pill-btn {
+    background: transparent;
+    border: none;
+}
+
+.popover-pill-btn:hover {
+    opacity: .7;
 }

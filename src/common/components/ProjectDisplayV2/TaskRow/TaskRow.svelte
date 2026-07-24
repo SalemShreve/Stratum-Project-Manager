@@ -3,7 +3,7 @@
     import TaskRow from "./TaskRow.svelte";
     import {type ITaskCard} from "../../../types/types";
     import {invoke} from "@tauri-apps/api/core";
-    import {appState} from "../../../../state/appState.svelte";
+    import {appState, TaskUpdateTrigger} from "../../../../state/appState.svelte";
     import IconButton from "../../IconButton/IconButton.svelte";
     import Pill from "../../Pill/Pill.svelte";
 
@@ -17,16 +17,33 @@
         status,
         totaltasks,
         completedtasks,
+        activeFilters,
         selectedTaskId = $bindable(),
         allExtended = $bindable()
-    }: ITaskCard & { selectedTaskId?: string, allExtended: boolean } = $props();
+    }: ITaskCard & {activeFilters: string[], selectedTaskId?: string, allExtended: boolean } = $props();
 
     let areChildrenShown = $state(false);
 
     let children = $state<ITaskCard[]>();
+    let filteredChildren = $state<ITaskCard[]>();
 
     async function getTaskChildren() {
         children = await invoke<ITaskCard[]>("get_tasks_v2" , { parentId: id});
+        filteredChildren = children;
+    }
+
+    async function updateTaskInfo() {
+        let updatedTask = await invoke<ITaskCard>("get_task" , { taskId: id});
+        status = updatedTask.status
+        console.log(updatedTask);
+    }
+
+    function applyFilters() {
+        if (activeFilters.length > 0) {
+            filteredChildren = children?.filter(children => activeFilters.includes(children.priority));
+        } else {
+            filteredChildren = children
+        }
     }
 
     function handleTaskExtended() {
@@ -72,6 +89,19 @@
 
     });
 
+    $effect(() => {
+        appState.filterUpdateTrigger
+        applyFilters()
+    });
+
+    $effect(() => {
+        if (TaskUpdateTrigger.taskUpdateIdTrigger === id) {
+            console.log("Update task:", name);
+            updateTaskInfo()
+            TaskUpdateTrigger.taskUpdateIdTrigger = undefined;
+        }
+    });
+
 </script>
 
 <div class="task-row-container">
@@ -89,10 +119,10 @@
             <div class="task-info">
                 <div class="task-name {status}">{name.charAt(0).toUpperCase() + name.slice(1)}</div>
                 <div class="task-metadata">
-                    <Pill text={priority.charAt(0).toUpperCase() + priority.slice(1)} state={selectedTaskId === id ? priority : "normal"}></Pill>
-                    <Pill text={status.charAt(0).toUpperCase() + status.slice(1)} state={selectedTaskId === id ? status : "normal"}></Pill>
+                    <Pill text={priority.charAt(0).toUpperCase() + priority.slice(1)} pillstate={selectedTaskId === id ? priority : "normal"}></Pill>
+                    <Pill text={status.charAt(0).toUpperCase() + status.slice(1)} pillstate={selectedTaskId === id ? status : "normal"}></Pill>
                     {#if totaltasks > 0 }
-                        <Pill text={totaltasks + " Subtasks"} state={selectedTaskId === id ? "bright" : "normal"}></Pill>
+                        <Pill text={totaltasks + " Subtasks"} pillstate={selectedTaskId === id ? "bright" : "normal"}></Pill>
                     {/if}
                 </div>
             </div>
@@ -106,8 +136,8 @@
     </div>
     {#if areChildrenShown && children !== undefined && children?.length > 0}
         <div class="task-row-list" class:hidden={!areChildrenShown || children?.length === 0} >
-            {#each children as task}
-                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} {...task}  />
+            {#each filteredChildren as task}
+                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} activeFilters={activeFilters} {...task}  />
             {/each}
         </div>
     {/if}

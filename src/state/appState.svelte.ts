@@ -28,6 +28,8 @@ type AppState = {
     editNodeInfo: EditNodeInfo;
     triggerTaskCardStateCheck: number;
     triggerUpdateProjectsList: number;
+    filterUpdateTrigger: number;
+    sortUpdateTrigger: number;
 };
 
 export const appState = $state<AppState>({
@@ -51,13 +53,14 @@ export const appState = $state<AppState>({
         nodeId: undefined,
     },
     triggerTaskCardStateCheck: 0,
-    triggerUpdateProjectsList: 0
+    triggerUpdateProjectsList: 0,
+    filterUpdateTrigger: 0,
+    sortUpdateTrigger: 0
 })
 
-type TaskPageState = {
-    selectedTask: string | undefined
+type TaskUpdateTrigger = {
+    taskUpdateIdTrigger: string | undefined
 };
-
-export const TaskPageState = $state<TaskPageState>({
-    selectedTask: undefined,
+export const TaskUpdateTrigger = $state<TaskUpdateTrigger>({
+    taskUpdateIdTrigger: undefined,
 })

@@ -18,12 +18,27 @@
     background: var(--bg-elevated);
     color: var(--text-primary);
     cursor: pointer;
+
+    .task-name.completed {
+        color: var(--text-secondary);
+    }
+
 }
 
 .task-info {
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+
+.task-name {
+    font-size: 15px;
+    transition: color .2s;
+}
+
+.task-name.completed {
+    text-decoration: line-through;
+    color: var(--text-muted);
 }
 
 .task-metadata {
@@ -44,6 +59,10 @@
 
     .task-row-divider {
         background: var(--border-base);
+    }
+
+    .task-name.completed {
+        color: var(--text-primary);
     }
 }
 
