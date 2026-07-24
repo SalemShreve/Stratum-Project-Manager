@@ -68,7 +68,8 @@ pub fn get_tasks_v2(db_path: String, parent_id: String) -> Result<Vec<TaskCard>,
             status,
             totaltasks,
             completedtasks,
-            color
+            color,
+            datecreated
         FROM tasks_card_view
         WHERE parentid = $1;")
         .map_err(|e| e.to_string())?;
@@ -86,6 +87,7 @@ pub fn get_tasks_v2(db_path: String, parent_id: String) -> Result<Vec<TaskCard>,
                 totaltasks: row.get(7)?,
                 completedtasks: row.get(8)?,
                 color: row.get(9)?,
+                datecreated: row.get(10)?,
             })
         })
         .map_err(|e| e.to_string())?

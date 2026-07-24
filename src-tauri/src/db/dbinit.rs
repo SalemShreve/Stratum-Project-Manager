@@ -122,6 +122,7 @@ pub const SCHEMA_SQL: &str = r#"
         p.priority,
         p.active,
         p.status,
+        p.datecreated,
         (SELECT COUNT(*) FROM tasks t2
             WHERE t2.parenttaskid = p.id) AS totaltasks,
         (SELECT COUNT(*) FROM tasks t3

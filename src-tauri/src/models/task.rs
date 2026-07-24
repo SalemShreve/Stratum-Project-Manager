@@ -30,4 +30,5 @@ pub struct TaskCard {
     pub totaltasks: u32,
     pub completedtasks: u32,
     pub color: String,
+    pub datecreated: String,
 }
