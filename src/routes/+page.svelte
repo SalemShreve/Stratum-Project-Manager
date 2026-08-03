@@ -12,7 +12,7 @@
   import Pill from "../common/components/Pill/Pill.svelte";
   import {onMount} from "svelte";
   import DeleteConfirmModal from "../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
-  import EditProjectModal from "../common/components/Modal/EditModal/EditProjectModal.svelte";
+  import EditProjectModal from "../common/components/Modal/EditProjectModal/EditProjectModal.svelte";
   import BreadCrumbPath from "../common/components/BreadCrumbPath/BreadCrumbPath.svelte";
 
   let isNewProjectModalOpen = $state(false);

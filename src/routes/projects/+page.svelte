@@ -8,7 +8,7 @@
     import TextButton from "../../common/components/TextButton/TextButton.svelte";
     import NewProjectModal from "../../common/components/Modal/NewProjectModal/NewProjectModal.svelte";
     import DeleteConfirmModal from "../../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
-    import EditProjectModal from "../../common/components/Modal/EditModal/EditProjectModal.svelte";
+    import EditProjectModal from "../../common/components/Modal/EditProjectModal/EditProjectModal.svelte";
     import BreadCrumbPath from "../../common/components/BreadCrumbPath/BreadCrumbPath.svelte";
     import NewTaskModal from "../../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
 

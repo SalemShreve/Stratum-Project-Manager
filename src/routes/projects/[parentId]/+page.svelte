@@ -14,7 +14,7 @@
     import TaskDisplayPanel from "../../../common/components/ProjectDisplayV2/TaskDisplayPanel/TaskDisplayPanel.svelte";
     import DeleteConfirmModal from "../../../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
     import TaskRow from "../../../common/components/ProjectDisplayV2/TaskRow/TaskRow.svelte";
-    import EditProjectModal from "../../../common/components/Modal/EditModal/EditProjectModal.svelte";
+    import EditProjectModal from "../../../common/components/Modal/EditProjectModal/EditProjectModal.svelte";
     import Chip from "../../../common/components/Chip/Chip.svelte";
     import IconButton from "../../../common/components/IconButton/IconButton.svelte";
 
