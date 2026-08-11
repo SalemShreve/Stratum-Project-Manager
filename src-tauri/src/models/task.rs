@@ -7,10 +7,10 @@ pub struct Task {
     pub parentid: String,
     pub name: String,
     pub datecreated: String,
-    pub estimateddays: u16,
-    pub laststarted: Option<String>,
+    pub estimatedhours: u16,
+    pub laststarted: Option<i64>,
     pub active: bool,
-    pub minutesworked: u32,
+    pub milisecworked: i64,
     pub priority: Priority,
     pub status: Status,
     pub totaltasks: u32,
@@ -31,4 +31,13 @@ pub struct TaskCard {
     pub completedtasks: u32,
     pub color: String,
     pub datecreated: String,
+}
+
+#[derive(serde::Serialize, Clone)]
+pub struct TaskTimeInfo {
+    pub laststarted: Option<i64>,
+    pub active: bool,
+    pub milisecworked: i64,
+    pub accumulated: Option<i64>,
+
 }

@@ -8,7 +8,7 @@ pub struct Project {
     pub favorite: bool,
     pub datecreated: String,
     pub deadline: String,
-    pub minutesworked: u32,
+    pub milisecworked: i64,
     pub priority: Priority,
     pub totaltasks: u32,
     pub completedtasks: u32
