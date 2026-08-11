@@ -14,7 +14,7 @@
         favorite,
         dateCreated,
         deadline,
-        minutesWorked,
+        milisecworked,
         priority,
         totaltasks,
         completedtasks,
@@ -102,7 +102,7 @@
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                 </svg>
-                {(minutesWorked / 60).toFixed(2)} hr
+                {(milisecworked/1000 / 60).toFixed(2)} hr
             </div>
             <div class="divider"></div>
             <div class="metadata-createddate" title="Date Created">

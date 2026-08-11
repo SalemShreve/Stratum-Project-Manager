@@ -17,10 +17,10 @@
         color,
         favorite,
         datecreated,
-        estimateddays,
+        estimatedhours,
         active,
         laststarted,
-        minutesworked,
+        milisecworked,
         priority,
         status,
         isVisible,
@@ -33,10 +33,10 @@
         color: ColorEnum | undefined,
         favorite: boolean,
         datecreated: Date,
-        estimateddays: number,
+        estimatedhours: number,
         active: boolean,
         laststarted: string,
-        minutesworked: number,
+        milisecworked: number,
         priority: Priority;
         status: Status;
         isVisible: boolean,
@@ -224,7 +224,7 @@
                     <line x1="12" y1="8" x2="12" y2="12"/>
                     <line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
-                {estimateddays} days
+                {estimatedhours} days
             </div>
         </div>
         <div class="task-card-container-right">

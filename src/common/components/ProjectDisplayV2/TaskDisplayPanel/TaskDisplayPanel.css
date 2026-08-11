@@ -7,7 +7,7 @@
     height: fit-content;
     max-height: calc(100dvh - 116px);
     position: sticky;
-    top: 121.2px;
+    top: 132px;
     display: flex;
     flex-direction: column;
     gap: 20px;

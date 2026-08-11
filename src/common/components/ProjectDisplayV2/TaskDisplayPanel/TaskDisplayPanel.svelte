@@ -23,6 +23,8 @@
     async function loadTaskData() {
         task = await invoke<Task>("get_task" , { taskId: taskid });
 
+        console.log(task.milisecworked);
+
         project = await invoke<Project>("get_project" , { projectId: task.parentprojectid });
     }
 
@@ -44,6 +46,18 @@
         });
     }
 
+    function format(ms: number) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return (
+            String(hours).padStart(2, '0') + ':' +
+            String(minutes).padStart(2, '0') + ':' +
+            String(seconds).padStart(2, '0')
+        );
+    }
+
     function getCompletionPercent() {
         if (task !== undefined) {
             if (task.totaltasks > 0) {
@@ -61,10 +75,8 @@
     }
 
     function handleEditBtnClicked() {
-        appState.editNodeInfo.nodeId = taskid
-        appState.editNodeInfo.nodeType = "task";
-        appState.editNodeInfo.isEditModalOpen = true;
-        console.log(appState.editNodeInfo)
+        appState.editTaskInfo.taskId = taskid
+        appState.editTaskInfo.isEditTaskModalOpen = true;
     }
 
     async function handleTrashBtnClicked() {
@@ -121,31 +133,30 @@
                 </div>
             </div>
             <div class="tdp-info-grid">
-                <div class="tdp-info-square top left">
+                <div class="tdp-info-square left top">
+                    <span class="info-label">Estimate</span>
+                    <span class="info-value">{task.estimatedhours}h</span>
+                </div>
+                <div class="tdp-info-square top">
                     <span class="info-label">Created</span>
                     <span class="info-value">{formatDate(new Date(task.datecreated))}</span>
                 </div>
-                <div class="tdp-info-square top">
+                <div class="tdp-info-square left">
+                    <span class="info-label">Time Worked</span>
+                    <span class="info-value">{format(task.milisecworked)}</span>
+                </div>
+                <div class="tdp-info-square">
                     <span class="info-label">Due Date</span>
                     <span class="info-value">{formatDate(new Date(project.deadline))}</span>
                 </div>
-                <div class="tdp-info-square left">
-                    <span class="info-label">Estimate</span>
-                    <span class="info-value">{task.estimateddays}h</span>
-                </div>
-                <div class="tdp-info-square">
-                    <span class="info-label">Time Worked</span>
-                    <span class="info-value">{task.minutesworked}h</span>
-                </div>
-                <div class="tdp-info-square bottom left">
+                <div class="tdp-info-square left bottom">
                     <span class="info-label">Remaining</span>
-                    <span class="info-value">{Math.abs(task.estimateddays - task.minutesworked)}h</span>
+                    <span class="info-value">{format(Math.abs((task.estimatedhours * 3600000) - task.milisecworked))}</span>
                 </div>
                 <div class="tdp-info-square bottom">
                     <span class="info-label">Subtasks</span>
                     <span class="info-value">{task.totaltasks}</span>
                 </div>
-
             </div>
         </div>
         <div class="tdp-subtasks"></div>

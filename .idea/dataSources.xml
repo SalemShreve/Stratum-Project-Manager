@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="stratumprojectorganizer.db" uuid="d407e7fc-2088-45be-860e-da3f389cd4c6">
+    <data-source source="LOCAL" name="stratumprojectorganizer.db" uuid="eefe46e2-3085-4589-b760-526f68e91836">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$USER_HOME$/AppData/Local/StratumProjectOrganizer/stratumprojectorganizer.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\sshreve\AppData\Local\StratumProjectOrganizer\stratumprojectorganizer.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

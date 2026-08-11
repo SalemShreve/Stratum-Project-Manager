@@ -70,9 +70,8 @@
     }
 
     function handleEditBtnClicked() {
-        appState.editNodeInfo.nodeId = id
-        appState.editNodeInfo.nodeType = "task";
-        appState.editNodeInfo.isEditModalOpen = true;
+        appState.editTaskInfo.taskId = id
+        appState.editTaskInfo.isEditTaskModalOpen = true;
     }
 
     async function handleTrashBtnClicked() {

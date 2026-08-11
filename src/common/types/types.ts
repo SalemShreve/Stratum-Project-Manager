@@ -149,7 +149,7 @@ export interface Project {
     favorite: boolean;
     datecreated: string;
     deadline: string;
-    minutesworked: number;
+    milisecworked: number;
     priority: Priority;
     totaltasks: number;
     completedtasks: number;
@@ -175,7 +175,7 @@ export interface ProjectCard  {
     favorite: boolean;
     dateCreated: Date;
     deadline: Date;
-    minutesWorked: number;
+    milisecworked: number;
     priority: Priority;
     totaltasks: number;
     completedtasks: number;
@@ -190,7 +190,7 @@ export function mapProjectToProps(project: Project) {
         favorite:       project.favorite,
         dateCreated:    new Date(project.datecreated),
         deadline:       new Date(project.deadline),
-        minutesWorked:  project.minutesworked,
+        milisecWorked:  project.milisecworked,
         priority:       project.priority,
         createdBy:      project.createdby,
         totaltasks:     project.totaltasks,
@@ -206,15 +206,22 @@ export interface Task {
     color: ColorEnum,
     favorite: boolean,
     datecreated: Date,
-    estimateddays: number,
+    estimatedhours: number,
     active: boolean,
-    laststarted: string,
-    minutesworked: number,
+    laststarted: number,
+    milisecworked: number,
     priority: Priority,
     status: Status,
     totaltasks: number,
     completedtasks: number,
     createdby: string,
+}
+
+export interface TaskTimeInfo {
+    active: boolean,
+    laststarted: number,
+    milisecworked: number,
+    accumulated: number,
 }
 
 export interface ITaskCard {
@@ -240,10 +247,10 @@ export function mapTaskToProps(task: Task ): Task {
         color: task.color,
         favorite: task.favorite,
         datecreated: new Date(task.datecreated),
-        estimateddays: task.estimateddays,
+        estimatedhours: task.estimatedhours,
         active: task.active,
         laststarted: task.laststarted,
-        minutesworked: task.minutesworked,
+        milisecworked: task.milisecworked,
         priority: task.priority,
         status: task.status,
         totaltasks: task.totaltasks,

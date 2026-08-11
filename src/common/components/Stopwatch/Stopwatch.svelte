@@ -1,9 +1,14 @@
 <script lang="ts">
     import "./Stopwatch.css"
+    import {untrack} from "svelte";
+    import type {TaskTimeInfo} from "../../types/types";
+    import {invoke} from "@tauri-apps/api/core";
 
     let {
         taskid,
     } = $props();
+
+    let tasktimeinfo = $state<TaskTimeInfo>();
 
     let countTime = $state(0);
 
@@ -15,28 +20,30 @@
 
     async function start() {
         isTimerRunning = true;
-        startTime = performance.now();
+
+        if (tasktimeinfo?.laststarted !== undefined && tasktimeinfo?.active) {
+            startTime = tasktimeinfo.laststarted;
+        } else  startTime = Date.now();
+
         intervalId = setInterval(() => {
-            countTime = accumulated + (performance.now() - startTime);
+            countTime = accumulated + (Date.now() - startTime);
         }, 250);
 
-        let now = new Date(Date.now())
-        let past = new Date(Date.UTC(2020,1))
-
-        console.log("start time: ", formatDuration(now.getTime() - past.getTime()));
-
-        // await invoke<Project>("update_task_active" , { taskId: taskid, active: isTimerRunning, lastStarted: startTime });
+        if (!(tasktimeinfo?.active)) {
+            await invoke("update_task_active" , { taskId: taskid, active: true, lastStarted:  Math.floor(startTime) });
+        }
     }
 
     async function pause() {
         if (!isTimerRunning) return;
         isTimerRunning = false;
-        accumulated += performance.now() - startTime;
+        accumulated += Date.now() - startTime;
         countTime = accumulated;
         clearInterval(intervalId);
         intervalId = undefined;
+        startTime = 0
 
-        console.log("accumulated: ", accumulated);
+        await invoke("update_task_pause_time", {taskId: taskid, accumulated: Math.floor(accumulated)})
     }
 
     async function toggleStopwatch() {
@@ -48,12 +55,41 @@
         }
     }
 
-    async function reset() {
+    function resetLocal() {
         isTimerRunning = false;
         clearInterval(intervalId);
         intervalId = undefined;
+        startTime = 0;
         countTime = 0;
         accumulated = 0;
+    }
+
+    async function reset() {
+        resetLocal();
+        await invoke("update_task_time_reset", { taskId: taskid });
+
+        await loadAndSync();
+    }
+
+    async function submit() {
+        if (tasktimeinfo) {
+            await invoke("update_task_time_worked" , { taskId: taskid, newTimeWorked: tasktimeinfo.milisecworked + Math.floor(accumulated) });
+        }
+        await reset()
+    }
+
+    async function loadAndSync() {
+        resetLocal();
+        await loadTaskTimeData();
+
+        console.log(tasktimeinfo?.accumulated);
+        if (tasktimeinfo?.accumulated !== undefined && tasktimeinfo?.accumulated !== null) {
+            accumulated = tasktimeinfo?.accumulated;
+            countTime = accumulated;
+        }
+        if (tasktimeinfo?.active === true) {
+            await start();
+        }
     }
 
     function format(ms: number) {
@@ -68,17 +104,20 @@
         );
     }
 
-    function formatDuration(ms: number): string {
-        const totalSeconds = Math.floor(Math.abs(ms) / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const years = Math.floor(days / 365);
-        const remainingDays = days % 365;
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-
-        return `${years}y ${remainingDays}d ${hours}h ${minutes}m ${seconds}s`;
+    async function loadTaskTimeData() {
+        tasktimeinfo = await invoke<TaskTimeInfo>("get_task_time_info" , { taskId: taskid });
     }
+
+    $effect(() => {
+        if (taskid !== undefined) {
+            untrack(() => {
+                loadAndSync();
+                $inspect(tasktimeinfo)
+                $inspect(isTimerRunning)
+                console.log( countTime );
+            });
+        }
+    });
 
 
 </script>
@@ -94,7 +133,7 @@
             {isTimerRunning ? 'Stop' : 'Start'}
         </button>
         <div class="stopwatch-actions-bottom">
-            <button class="stopwatch-btn secondary" disabled={isTimerRunning || countTime === 0}>
+            <button class="stopwatch-btn secondary" disabled={isTimerRunning || countTime === 0} onclick={submit}>
                 Submit
             </button>
             <button class="stopwatch-btn secondary" disabled={isTimerRunning || (countTime === 0)} onclick={reset}>

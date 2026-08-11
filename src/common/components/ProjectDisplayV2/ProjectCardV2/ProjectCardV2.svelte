@@ -112,7 +112,7 @@
         </div>
     </div>
     <div class="projectv2-card-footer">
-        <Pill state={priority} text={priority}></Pill>
+        <Pill pillstate={priority} text={priority}></Pill>
         <div class="projectv2-footer-dates">
             <div class="projectv2-created">Created { formatDate(datecreated)}</div>
             -

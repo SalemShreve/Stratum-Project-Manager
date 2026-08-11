@@ -14,9 +14,9 @@
     import TaskDisplayPanel from "../../../common/components/ProjectDisplayV2/TaskDisplayPanel/TaskDisplayPanel.svelte";
     import DeleteConfirmModal from "../../../common/components/Modal/DeleteConfirmModal/DeleteConfirmModal.svelte";
     import TaskRow from "../../../common/components/ProjectDisplayV2/TaskRow/TaskRow.svelte";
-    import EditProjectModal from "../../../common/components/Modal/EditProjectModal/EditProjectModal.svelte";
     import Chip from "../../../common/components/Chip/Chip.svelte";
     import IconButton from "../../../common/components/IconButton/IconButton.svelte";
+    import EditTaskModal from "../../../common/components/Modal/EditTaskModal/EditTaskModal.svelte";
 
     const id = $derived(page.params.parentId);
     let project = $state<Project>();
@@ -90,7 +90,7 @@
 
 <main class="tasks-page">
     <DeleteConfirmModal></DeleteConfirmModal>
-    <EditProjectModal></EditProjectModal>
+    <EditTaskModal></EditTaskModal>
     <NewTaskModal></NewTaskModal>
     <div class="tasks-topbar">
         <div class="projects-actionsbar">

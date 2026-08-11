@@ -13,7 +13,7 @@
     let newTaskPriority = $state<undefined | 'low' | 'medium' | 'high'>(undefined);
 
    async function handleSubmit () {
-        await invoke<Task[]>("create_task", {parentId: appState.newTaskInfo.parentId, parentProjectId: appState.newTaskInfo.parentProjectId, parentTaskId: appState.newTaskInfo.parentTaskId,  taskName: newTaskName,  estimatedDays: newTaskEstimate, priority: newTaskPriority });
+        await invoke<Task[]>("create_task", {parentId: appState.newTaskInfo.parentId, parentProjectId: appState.newTaskInfo.parentProjectId, parentTaskId: appState.newTaskInfo.parentTaskId,  taskName: newTaskName,  estimatedHours: newTaskEstimate, priority: newTaskPriority });
 
        appState.triggerUpdateProjectsList += 1
        handleClose()

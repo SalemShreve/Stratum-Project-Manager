@@ -20,13 +20,20 @@ type EditNodeInfo = {
     nodeId: string | undefined;
 };
 
+type EditTaskInfo = {
+    isEditTaskModalOpen: boolean;
+    taskId: string | undefined;
+};
+
 type AppState = {
     breadCrumbPathArr: Array<Breadcrumb>,
     allExpanded: boolean;
     newTaskInfo: NewTaskInfo;
     deleteNodeInfo: DeleteNodeInfo;
     editNodeInfo: EditNodeInfo;
+    editTaskInfo: EditTaskInfo;
     triggerTaskCardStateCheck: number;
+    triggerUpdateTask: string | undefined,
     triggerUpdateProjectsList: number;
     filterUpdateTrigger: number;
     sortUpdateTrigger: number;
@@ -52,7 +59,12 @@ export const appState = $state<AppState>({
         nodeType: undefined,
         nodeId: undefined,
     },
+    editTaskInfo: {
+        isEditTaskModalOpen: false,
+        taskId: undefined,
+    },
     triggerTaskCardStateCheck: 0,
+    triggerUpdateTask: undefined,
     triggerUpdateProjectsList: 0,
     filterUpdateTrigger: 0,
     sortUpdateTrigger: 0
