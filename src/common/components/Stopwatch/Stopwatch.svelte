@@ -6,7 +6,11 @@
 
     let {
         taskid,
-    } = $props();
+        onSubmit
+    } = $props<{
+        onSubmit: () => void;
+        taskid: string;
+    }>();
 
     let tasktimeinfo = $state<TaskTimeInfo>();
 
@@ -75,6 +79,7 @@
         if (tasktimeinfo) {
             await invoke("update_task_time_worked" , { taskId: taskid, newTimeWorked: tasktimeinfo.milisecworked + Math.floor(accumulated) });
         }
+        onSubmit()
         await reset()
     }
 
@@ -112,9 +117,6 @@
         if (taskid !== undefined) {
             untrack(() => {
                 loadAndSync();
-                $inspect(tasktimeinfo)
-                $inspect(isTimerRunning)
-                console.log( countTime );
             });
         }
     });

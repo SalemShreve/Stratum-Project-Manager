@@ -2,7 +2,7 @@
     import TextButton from "../../TextButton/TextButton.svelte";
     import {type Task} from "../../../types/types";
     import {invoke} from "@tauri-apps/api/core";
-    import {appState, TaskUpdateTrigger} from "../../../../state/appState.svelte";
+    import {appState, appStateV2, TaskUpdateTrigger} from "../../../../state/appState.svelte";
     import Chip from "../../Chip/Chip.svelte";
 
     let dialog: any = $state();
@@ -20,6 +20,10 @@
 
         await invoke("update_task", {taskId: appState.editTaskInfo.taskId, newName: newTaskName, newEstimate: newTaskEstimate, newPriority: newTaskPriority });
 
+
+        if (appState.editTaskInfo.taskId !== undefined) {
+            appStateV2.triggerUpdateTask(appState.editTaskInfo.taskId)
+        }
         handleClose()
     }
 

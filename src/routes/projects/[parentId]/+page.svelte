@@ -6,7 +6,7 @@
         type ITaskCard,
         type Project, type SortEnum
     } from "../../../common/types/types";
-    import {appState} from "../../../state/appState.svelte";
+    import {appState, appStateV2} from "../../../state/appState.svelte";
     import Pill from "../../../common/components/Pill/Pill.svelte";
     import TextButton from "../../../common/components/TextButton/TextButton.svelte";
     import NewTaskModal from "../../../common/components/Modal/NewTaskModal/NewTaskModal.svelte";
@@ -27,7 +27,6 @@
     let allExtended = $state(false)
 
     let sort = $state<SortEnum>(undefined);
-    let activeFilters = $state<string[]>([])
 
     async function loadProjectData() {
         project = await invoke<Project>("get_project" , { projectId: id});
@@ -47,19 +46,17 @@
     }
 
     function manageFilters(filter: string) {
-        if (activeFilters.includes(filter)) {
-            activeFilters = activeFilters.filter(activeFilter => activeFilter !== filter);
-        } else if (!(activeFilters.includes(filter))) {
-            activeFilters.push(filter);
+        if (appStateV2.activeFilters.includes(filter)) {
+            appStateV2.activeFilters = appStateV2.activeFilters.filter(activeFilter => activeFilter !== filter);
+        } else if (!(appStateV2.activeFilters.includes(filter))) {
+            appStateV2.activeFilters.push(filter);
         }
 
-        if (activeFilters.length > 0) {
-            filteredTasks = tasks?.filter(tasks => activeFilters.includes(tasks.priority));
+        if (appStateV2.activeFilters.length > 0) {
+            filteredTasks = tasks?.filter(tasks => appStateV2.activeFilters.includes(tasks.priority));
         } else {
             filteredTasks = tasks
         }
-
-        appState.filterUpdateTrigger +=1
     }
 
     function manageSort(sortType: SortEnum) {
@@ -76,8 +73,6 @@
         else if (sort === "created") {
             filteredTasks = tasks?.sort((a, b) => a.datecreated.getTime() - b.datecreated.getTime());
         }
-
-        appState.filterUpdateTrigger +=1
     }
 
     $effect(() => {
@@ -108,17 +103,16 @@
                 <IconButton kind="transparent" size="small" icon="expandall" toggleIcon="collapseall" isToggled={allExtended} clickAction={() => allExtended = !allExtended}></IconButton>
                 <div class="divider"></div>
                 <span class="text-label">Sort</span>
-                <Chip text="None" active={sort === undefined} clickAction={() => manageSort(undefined)}> </Chip>
                 <Chip text="Name" active={sort === 'name'} clickAction={() => manageSort('name')}> </Chip>
                 <Chip text="Created" active={sort === 'created'} clickAction={() => manageSort('created')}> </Chip>
                 <Chip text="Priority" active={sort === 'priority'} clickAction={() => manageSort('priority')}> </Chip>
                 <Chip text="Status" active={sort === 'state'} clickAction={() => manageSort('state')}> </Chip>
                 <div class="divider"></div>
                 <span class="text-label">Filter</span>
-                <Chip text="Active" active={activeFilters.includes("active")} clickAction={() => manageFilters("active")}> </Chip>
-                <Chip text="Low" priority="low" active={activeFilters.includes("low")} clickAction={() => manageFilters("low")}> </Chip>
-                <Chip text="Medium" priority="medium" active={activeFilters.includes("medium")} clickAction={() => manageFilters("medium")}> </Chip>
-                <Chip text="High" priority="high" active={activeFilters.includes("high")} clickAction={() => manageFilters("high")}> </Chip>
+                <Chip text="Active" active={appStateV2.activeFilters.includes("active")} clickAction={() => manageFilters("active")}> </Chip>
+                <Chip text="Low" priority="low" active={appStateV2.activeFilters.includes("low")} clickAction={() => manageFilters("low")}> </Chip>
+                <Chip text="Medium" priority="medium" active={appStateV2.activeFilters.includes("medium")} clickAction={() => manageFilters("medium")}> </Chip>
+                <Chip text="High" priority="high" active={appStateV2.activeFilters.includes("high")} clickAction={() => manageFilters("high")}> </Chip>
             </div>
             <div class="filter-search">
                 <input type="search">
@@ -131,7 +125,7 @@
             <!--    <TaskCardV2 bind:selectedTaskId={selectedTaskId} {...task} />-->
             <!--{/each}-->
             {#each filteredTasks as task}
-                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} activeFilters={activeFilters} {...task} />
+                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} {...task} />
             {/each}
         </div>
         {#if selectedTaskId !== undefined }

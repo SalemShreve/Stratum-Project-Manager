@@ -98,6 +98,10 @@ export type SizeEnum = 'small' | 'medium' | 'large';
 
 export type SortEnum = "name" | "deadline" | "priority" | "state" | "created" | undefined
 
+export type UpdateTaskStateKeyEnum = "Task Row" | "Task Display Panel"
+
+export type UpdateTaskStateEnum = "ready" | "working" | "finished"
+
 export const COLOR_VALUES = [
     'red', 'green', 'blue', 'purple', 'orange', 'yellow',
     'teal', 'pink', 'indigo', 'lime', 'coral', 'sky', 'rose'

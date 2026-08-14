@@ -3,9 +3,10 @@
     import TaskRow from "./TaskRow.svelte";
     import {type ITaskCard} from "../../../types/types";
     import {invoke} from "@tauri-apps/api/core";
-    import {appState, TaskUpdateTrigger} from "../../../../state/appState.svelte";
+    import {appState, appStateV2} from "../../../../state/appState.svelte";
     import IconButton from "../../IconButton/IconButton.svelte";
     import Pill from "../../Pill/Pill.svelte";
+    import {untrack} from "svelte";
 
     let {
         id,
@@ -17,15 +18,18 @@
         status,
         totaltasks,
         completedtasks,
-        activeFilters,
         selectedTaskId = $bindable(),
         allExtended = $bindable()
-    }: ITaskCard & {activeFilters: string[], selectedTaskId?: string, allExtended: boolean } = $props();
+    }: ITaskCard & { selectedTaskId?: string, allExtended: boolean } = $props();
 
     let areChildrenShown = $state(false);
 
     let children = $state<ITaskCard[]>();
-    let filteredChildren = $state<ITaskCard[]>();
+    let filteredChildren = $derived(
+        appStateV2.activeFilters.length > 0
+            ? children?.filter(c => appStateV2.activeFilters.includes(c.priority))
+            : children
+    );
 
     async function getTaskChildren() {
         children = await invoke<ITaskCard[]>("get_tasks_v2" , { parentId: id});
@@ -35,15 +39,11 @@
     async function updateTaskInfo() {
         let updatedTask = await invoke<ITaskCard>("get_task" , { taskId: id});
         status = updatedTask.status
-        console.log(updatedTask);
-    }
+        priority = updatedTask.priority
+        name = updatedTask.name
 
-    function applyFilters() {
-        if (activeFilters.length > 0) {
-            filteredChildren = children?.filter(children => activeFilters.includes(children.priority));
-        } else {
-            filteredChildren = children
-        }
+        appStateV2.setUpdateTaskStateFinished("Task Row")
+        appStateV2.resetUpdateTask()
     }
 
     function handleTaskExtended() {
@@ -85,19 +85,14 @@
     $effect(() => {
         getTaskChildren();
         areChildrenShown = allExtended
-
     });
 
     $effect(() => {
-        appState.filterUpdateTrigger
-        applyFilters()
-    });
-
-    $effect(() => {
-        if (TaskUpdateTrigger.taskUpdateIdTrigger === id) {
-            console.log("Update task:", name);
-            updateTaskInfo()
-            TaskUpdateTrigger.taskUpdateIdTrigger = undefined;
+        if (appStateV2.updateTask !== undefined && appStateV2.updateTask === id && appStateV2.getUpdateTaskStateValue("Task Row"))  {
+            untrack(() => {
+                appStateV2.setUpdateTaskStateWorking("Task Row")
+                updateTaskInfo();
+            });
         }
     });
 
@@ -136,7 +131,7 @@
     {#if areChildrenShown && children !== undefined && children?.length > 0}
         <div class="task-row-list" class:hidden={!areChildrenShown || children?.length === 0} >
             {#each filteredChildren as task}
-                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} activeFilters={activeFilters} {...task}  />
+                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} {...task}  />
             {/each}
         </div>
     {/if}

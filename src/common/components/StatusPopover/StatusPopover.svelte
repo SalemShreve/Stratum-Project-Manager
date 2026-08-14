@@ -2,15 +2,17 @@
     import "./StatusPopover.css"
     import {getIcon, type IconEnum, type Status, type Task} from "../../types/types";
     import {invoke} from "@tauri-apps/api/core";
-    import {TaskUpdateTrigger} from "../../../state/appState.svelte";
+    import {appStateV2} from "../../../state/appState.svelte";
     import Pill from "../Pill/Pill.svelte";
 
     let {
         statusState = $bindable<Status>('incompleted'),
-        taskid
+        taskid,
+        parenttaskid
     } = $props<{
         statusState: Status;
         taskid: string;
+        parenttaskid: string;
     }>();
 
     let isPopoverOpened = $state<boolean>(false);
@@ -22,7 +24,7 @@
             console.log(newStatus);
             await invoke<Task[]>("update_task_status", { taskId: taskid, status: newStatus });
             statusState = newStatus
-            TaskUpdateTrigger.taskUpdateIdTrigger = taskid
+            appStateV2.triggerUpdateTask(parenttaskid)
         }
         isPopoverOpened = false;
     }

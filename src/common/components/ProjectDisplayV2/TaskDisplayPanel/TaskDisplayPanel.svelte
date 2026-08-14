@@ -1,7 +1,7 @@
 <script lang="ts">
     import "./TaskDisplayPanel.css"
     import type {Project, Task} from "../../../types/types";
-    import {appState} from "../../../../state/appState.svelte";
+    import {appState, appStateV2} from "../../../../state/appState.svelte";
     import Pill from "../../Pill/Pill.svelte";
     import {invoke} from "@tauri-apps/api/core";
     import {untrack} from "svelte";
@@ -18,24 +18,33 @@
     let task = $state<Task>();
     let project = $state<Project>();
 
-    let active = $state(true);
-
     async function loadTaskData() {
         task = await invoke<Task>("get_task" , { taskId: taskid });
-
-        console.log(task.milisecworked);
-
         project = await invoke<Project>("get_project" , { projectId: task.parentprojectid });
     }
+
+    async function updateTaskInfo() {
+        task = await invoke<Task>("get_task" , { taskId: taskid });
+        appStateV2.setUpdateTaskStateFinished("Task Display Panel")
+        appStateV2.resetUpdateTask()
+    }
+
+    $effect(() => {
+        if (appStateV2.updateTask !== undefined && appStateV2.updateTask === taskid) {
+            untrack(() => {
+                appStateV2.setUpdateTaskStateWorking("Task Display Panel")
+                updateTaskInfo();
+            });
+        }
+    });
 
     $effect(() => {
         if (taskid !== undefined ) {
             untrack(() => {
                 loadTaskData()
-                active = true
                 }
             );
-        } else { active = false}
+        }
     });
 
     function formatDate(date: Date): string {
@@ -110,7 +119,7 @@
                 {#if task.totaltasks > 0}
                     <Pill text={task.status} pillstate={task.status} ></Pill>
                     {:else }
-                    <StatusPopover taskid={task.id} statusState={task.status}></StatusPopover>
+                    <StatusPopover taskid={task.id} parenttaskid={task.parentid} statusState={task.status}></StatusPopover>
                 {/if}
 
                 <Pill text={task.totaltasks > 0 ? "group" : "task"} pillstate={task.totaltasks > 0 ? "group" : undefined}></Pill>
@@ -118,7 +127,7 @@
         </div>
         <div class="tdp-content">
             {#if task.totaltasks <= 0}
-                <Stopwatch taskid={task.id}></Stopwatch>
+                <Stopwatch onSubmit={() => loadTaskData()} taskid={task.id}></Stopwatch>
             {/if}
             <div class="tdp-progress">
                 <div class="tdp-progress-header">
