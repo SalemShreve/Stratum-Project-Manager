@@ -146,6 +146,23 @@ pub const SCHEMA_SQL: &str = r#"
         milisecworked,
         accumulated
     FROM tasks;
+
+    CREATE TRIGGER IF NOT EXISTS sync_parent_status
+    AFTER UPDATE OF status ON tasks
+    WHEN NEW.parenttaskid IS NOT NULL AND NEW.status != OLD.status
+    BEGIN
+        UPDATE tasks
+        SET status = CASE
+            WHEN NOT EXISTS (
+                SELECT 1 FROM tasks
+                WHERE parenttaskid = NEW.parenttaskid
+                  AND status != 'completed'
+            ) THEN 'completed'
+            ELSE 'incompleted'
+        END
+        WHERE id = NEW.parenttaskid
+          AND status IN ('completed', 'incompleted');
+    END;
 "#;
 
 pub fn check_db_initialized(db_path: &str) -> bool {
