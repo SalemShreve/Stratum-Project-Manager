@@ -103,38 +103,38 @@
                         showLabel={isSidebarExtended}
                         hoverAction={() => preloadData("/")}
                         clickAction={() => handleNavigate("Home", "/")}/>
-                <IconButton
-                        kind="transparent"
-                        size="medium"
-                        icon="grid"
-                        label="Projects"
-                        showLabel={isSidebarExtended}
-                        hoverAction={() => preloadData("/projects")}
-                        clickAction={() => handleNavigate("Projects", "/projects")}/>
-                <IconButton
-                        kind="transparent"
-                        size="medium"
-                        icon="gantt"
-                        label="Gantt"
-                        showLabel={isSidebarExtended}
-                        hoverAction={() => preloadData("/gantt")}
-                        clickAction={() => handleNavigate("Gantt", "/gantt")}/>
-                <IconButton
-                        kind="transparent"
-                        size="medium"
-                        icon="sprint"
-                        label="Sprint"
-                        showLabel={isSidebarExtended}
-                        hoverAction={() => preloadData("/sprints")}
-                        clickAction={() => handleNavigate("Sprints", "/sprints")}/>
-                <IconButton
-                        kind="transparent"
-                        size="medium"
-                        icon="calendar"
-                        label="Calendar"
-                        showLabel={isSidebarExtended}
-                        hoverAction={() => preloadData("/calendar")}
-                        clickAction={() => handleNavigate("Calendar", "/calendar")}/>
+<!--                <IconButton-->
+<!--                        kind="transparent"-->
+<!--                        size="medium"-->
+<!--                        icon="grid"-->
+<!--                        label="Projects"-->
+<!--                        showLabel={isSidebarExtended}-->
+<!--                        hoverAction={() => preloadData("/projects")}-->
+<!--                        clickAction={() => handleNavigate("Projects", "/projects")}/>-->
+<!--                <IconButton-->
+<!--                        kind="transparent"-->
+<!--                        size="medium"-->
+<!--                        icon="gantt"-->
+<!--                        label="Gantt"-->
+<!--                        showLabel={isSidebarExtended}-->
+<!--                        hoverAction={() => preloadData("/gantt")}-->
+<!--                        clickAction={() => handleNavigate("Gantt", "/gantt")}/>-->
+<!--                <IconButton-->
+<!--                        kind="transparent"-->
+<!--                        size="medium"-->
+<!--                        icon="sprint"-->
+<!--                        label="Sprint"-->
+<!--                        showLabel={isSidebarExtended}-->
+<!--                        hoverAction={() => preloadData("/sprints")}-->
+<!--                        clickAction={() => handleNavigate("Sprints", "/sprints")}/>-->
+<!--                <IconButton-->
+<!--                        kind="transparent"-->
+<!--                        size="medium"-->
+<!--                        icon="calendar"-->
+<!--                        label="Calendar"-->
+<!--                        showLabel={isSidebarExtended}-->
+<!--                        hoverAction={() => preloadData("/calendar")}-->
+<!--                        clickAction={() => handleNavigate("Calendar", "/calendar")}/>-->
             </div>
             <div class="nav-rail-footer">
                 <IconButton
