@@ -37,13 +37,11 @@
     }
 
     async function updateTaskInfo() {
-        let updatedTask = await invoke<ITaskCard>("get_task" , { taskId: id});
+        let updatedTask = await invoke<ITaskCard>("get_task" , { taskId: id})
+
         status = updatedTask.status
         priority = updatedTask.priority
         name = updatedTask.name
-
-        appStateV2.setUpdateTaskStateFinished("Task Row")
-        appStateV2.resetUpdateTask()
     }
 
     function handleTaskExtended() {
@@ -88,12 +86,10 @@
     });
 
     $effect(() => {
-        if (appStateV2.updateTask !== undefined && appStateV2.updateTask === id && appStateV2.getUpdateTaskStateValue("Task Row"))  {
-            untrack(() => {
-                appStateV2.setUpdateTaskStateWorking("Task Row")
-                updateTaskInfo();
-            });
-        }
+        appStateV2.updateTask
+        untrack(() => {
+            updateTaskInfo();
+        });
     });
 
 </script>

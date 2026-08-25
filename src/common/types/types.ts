@@ -98,7 +98,12 @@ export type SizeEnum = 'small' | 'medium' | 'large';
 
 export type SortEnum = "name" | "deadline" | "priority" | "state" | "created" | undefined
 
-export type UpdateTaskStateKeyEnum = "Task Row" | "Task Display Panel"
+export type UpdateTaskTypeEnum = "task row" | "task display panel"
+
+export interface UpdateMapValues {
+    elemType: UpdateTaskTypeEnum;
+    taskState: UpdateTaskStateEnum
+}
 
 export type UpdateTaskStateEnum = "ready" | "working" | "finished"
 

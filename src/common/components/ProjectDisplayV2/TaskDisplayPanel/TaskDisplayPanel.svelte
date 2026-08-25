@@ -21,21 +21,21 @@
     async function loadTaskData() {
         task = await invoke<Task>("get_task" , { taskId: taskid });
         project = await invoke<Project>("get_project" , { projectId: task.parentprojectid });
+
+        if (task.totaltasks > 0) {
+            task.milisecworked = await invoke("get_total_time_worked", {taskId: taskid})
+        }
     }
 
     async function updateTaskInfo() {
         task = await invoke<Task>("get_task" , { taskId: taskid });
-        appStateV2.setUpdateTaskStateFinished("Task Display Panel")
-        appStateV2.resetUpdateTask()
     }
 
     $effect(() => {
-        if (appStateV2.updateTask !== undefined && appStateV2.updateTask === taskid) {
-            untrack(() => {
-                appStateV2.setUpdateTaskStateWorking("Task Display Panel")
-                updateTaskInfo();
-            });
-        }
+        appStateV2.updateTask
+        untrack(() => {
+            updateTaskInfo();
+        });
     });
 
     $effect(() => {

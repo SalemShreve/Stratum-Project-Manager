@@ -1,6 +1,6 @@
 <script lang="ts">
     import "./StatusPopover.css"
-    import {getIcon, type IconEnum, type Status, type Task} from "../../types/types";
+    import {getIcon, type IconEnum, type Status} from "../../types/types";
     import {invoke} from "@tauri-apps/api/core";
     import {appStateV2} from "../../../state/appState.svelte";
     import Pill from "../Pill/Pill.svelte";
@@ -22,9 +22,15 @@
     async function stateChanged() {
         if (statusState != newStatus) {
             console.log(newStatus);
-            await invoke<Task[]>("update_task_status", { taskId: taskid, status: newStatus });
-            statusState = newStatus
-            appStateV2.triggerUpdateTask(parenttaskid)
+            let updateStatus = await invoke<boolean>("update_task_status", { taskId: taskid, status: newStatus });
+
+            console.log(updateStatus);
+
+            if (updateStatus === true ) {
+                statusState = newStatus
+
+                appStateV2.triggerUpdateTask()
+            }
         }
         isPopoverOpened = false;
     }

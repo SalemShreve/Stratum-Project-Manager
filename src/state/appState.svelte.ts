@@ -1,4 +1,7 @@
-import type {Breadcrumb, SortEnum, UpdateTaskStateEnum, UpdateTaskStateKeyEnum} from "../common/types/types";
+import type {
+    Breadcrumb,
+    SortEnum
+} from "../common/types/types";
 
 type NewTaskInfo = {
     isNewTaskModalOpen: boolean;
@@ -82,34 +85,9 @@ class AppStateV2 {
         this.updateProjectsList++;
     }
 
-    updateTask= $state<string | undefined>(undefined);
-    updateTaskStateMap= $state<Map<string,UpdateTaskStateEnum>>(new Map([["Task Row","ready"],["Task Display Panel", "ready"]]));
-    triggerUpdateTask(taskId: string) {
-        this.updateTask = taskId;
-
-        console.log("Update Triggered")
-    }
-    getUpdateTaskStateValue(key: UpdateTaskStateKeyEnum) {
-        return this.updateTaskStateMap.get(key);
-    }
-    setUpdateTaskStateWorking(key: UpdateTaskStateKeyEnum) {
-        this.updateTaskStateMap.set(key,"working")
-    }
-    setUpdateTaskStateFinished(key: UpdateTaskStateKeyEnum) {
-        this.updateTaskStateMap.set(key,"finished")
-        console.log("Update task state finished on: ", key);
-    }
-    resetUpdateTask() {
-        console.log("Reset Called")
-        console.log(this.updateTaskStateMap)
-        console.log(this.updateTaskStateMap.values().toArray().every(() =>"finished"))
-
-        if (this.updateTaskStateMap.values().toArray().every(() =>"finished")) {
-            this.updateTask = undefined;
-            console.log("Reset Executed")
-
-            this.updateTaskStateMap.forEach((value, key,map) => { map.set(key,"ready") })
-        } else console.log("Not all updates finished")
+    updateTask= $state<number>(0);
+    triggerUpdateTask() {
+        this.updateTask++
     }
 }
 
