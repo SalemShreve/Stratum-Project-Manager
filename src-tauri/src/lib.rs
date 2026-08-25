@@ -3,6 +3,7 @@ mod commands;
 mod models;
 mod types;
 
+use rusqlite::Connection;
 use commands::project_commands::{create_project, get_projects, delete_project, get_project, set_favorite, update_project};
 use commands::task_commands::{create_task, get_task, get_tasks};
 use commands::db_commands::{db_init, db_teardown, db_wipe, db_check_exists};
@@ -23,6 +24,13 @@ pub fn run() {
     
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .setup(|app| {
+            let path = db::dbinit::resolve_db_path(app.handle())?;
+            let conn = Connection::open(&path)?;
+            conn.execute_batch(db::dbinit::SCHEMA_SQL)?;
+            println!("db ready at {}", path.display());
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             db_init,
             db_teardown,

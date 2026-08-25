@@ -1,6 +1,6 @@
 [package]
-name = "stratum-project-manager"
-version = "0.1.0"
+name = "Stratum-Project-Manager"
+version = "1.0.0"
 description = "A Project manager and organizer"
 authors = ["Salem Shreve"]
 edition = "2021"
@@ -21,6 +21,5 @@ tauri-build = { version = "2.3.1", features = [] }
 tauri = { version = "2.3.1", features = [] }
 tauri-plugin-opener = "2.3.1"
 serde = { version = "1", features = ["derive"] }
-duckdb = { version = "1.1", features = ["bundled"] }
-rusqlite = { version = "0.39", features = ["bundled"] }
+rusqlite = { version = "0.40.2", features = ["bundled"] }
 uuid = { version = "1.10", features = ["v4"] }

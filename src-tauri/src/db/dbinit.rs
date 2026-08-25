@@ -1,5 +1,5 @@
 use std::path::{Path, PathBuf};
-use duckdb::Connection;
+use rusqlite::Connection;
 use tauri::Manager;
 
 pub const SCHEMA_SQL: &str = r#"
