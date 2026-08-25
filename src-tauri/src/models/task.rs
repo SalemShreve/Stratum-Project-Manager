@@ -39,5 +39,4 @@ pub struct TaskTimeInfo {
     pub active: bool,
     pub milisecworked: i64,
     pub accumulated: Option<i64>,
-
 }

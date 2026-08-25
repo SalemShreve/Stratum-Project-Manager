@@ -123,6 +123,8 @@ pub fn create_task(db_path: String, parent_id: String, parent_project_id: String
     stmt.execute(params![ &new_uuid, &parent_project_id, &parent_task_id, &parent_id, &name, &estimated_days.to_string(), &priority])
         .map_err(|e| e.to_string())?;
 
+    run_task_status_sync(db_path, new_uuid).expect("Finished");
+
     Ok(())
 }
 
@@ -149,9 +151,13 @@ pub fn update_task(db_path: String, task_id: String, new_name: Option<String>, n
     let id_ref: &dyn rusqlite::ToSql = &task_id;
     params.push(id_ref);
 
-    Connection::open(&db_path)
-        .map_err(|e| e.to_string())?
-        .execute(&query, params.as_slice())
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+    conn.pragma_update(None, "recursive_triggers", true).map_err(|e| e.to_string())?;
+
+    conn.execute(
+        &query,params.as_slice(),
+    )
         .map_err(|e| e.to_string())?;
 
     Ok(())
@@ -210,7 +216,7 @@ pub fn get_task(db_path: String, task_id: String) -> Result<Task, String> {
 }
 
 
-pub fn update_task_status(db_path: String, task_id: String, status: Status) -> Result<(), String> {
+pub fn update_task_status(db_path: String, task_id: String, status: Status) -> Result<bool, String> {
     let conn = Connection::open(&db_path)
         .map_err(|e| e.to_string())?;
 
@@ -220,7 +226,9 @@ pub fn update_task_status(db_path: String, task_id: String, status: Status) -> R
     )
         .map_err(|e| e.to_string())?;
 
-    Ok(())
+    run_task_status_sync(db_path, task_id).expect("Finished");
+
+    Ok(true)
 }
 
 pub fn update_task_active(db_path: String, task_id: String, active: bool, last_started: i64) -> Result<(), String> {
@@ -306,4 +314,71 @@ pub fn get_task_time_info(db_path: String, task_id: String) -> Result<TaskTimeIn
     let return_val = tasks.get(0).unwrap().clone();
 
     Ok(return_val)
+}
+
+pub fn get_total_time_worked(db_path: String, task_id: String) -> Result<i64, String> {
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("with recursive descendants as (
+                    select id, milisecworked
+                    from tasks_info_view
+                    where parentid = $1
+                    union all
+                    select t.id, t.milisecworked
+                    from tasks_info_view t
+                             join descendants d on t.parentid = d.id
+                )
+                select cast(total(milisecworked) as integer) as total_all_descendants
+                from descendants;")
+        .map_err(|e| e.to_string())?;
+
+    let tasks = stmt
+        .query_map([&task_id], |row| {
+            Ok(row.get::<_, i64>(0)?)
+        })
+        .map_err(|e| e.to_string())?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())?;
+
+    let return_val = tasks.get(0).unwrap().clone();
+
+    Ok(return_val)
+}
+
+fn run_task_status_sync(db_path: String, task_id: String) -> Result<String, String> {
+    let conn = Connection::open(&db_path)
+        .map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare(
+            "WITH RECURSIVE
+                    chain(id, parentid, depth) AS (
+                        SELECT id, parentid, 0 FROM tasks WHERE id = ?1
+                        UNION ALL
+                        SELECT t.id, t.parentid, c.depth + 1
+                        FROM tasks t JOIN chain c ON t.id = c.parentid
+                    ),
+                    blocked(id) AS (
+                        SELECT t.parentid
+                        FROM tasks t
+                        WHERE t.parentid IS NOT NULL
+                          AND t.status <> 'completed'
+                          AND NOT EXISTS (SELECT 1 FROM tasks k WHERE k.parentid = t.id)
+                        UNION
+                        SELECT t.parentid
+                        FROM tasks t JOIN blocked b ON t.id = b.id
+                        WHERE t.parentid IS NOT NULL
+                    )
+                UPDATE tasks
+                SET status = CASE WHEN tasks.id IN (SELECT id FROM blocked)
+                                      THEN 'incompleted' ELSE 'completed' END
+                WHERE id IN (SELECT id FROM chain WHERE depth > 0);")
+        .map_err(|e| e.to_string())?;
+
+    stmt.execute(params![ &task_id ])
+        .map_err(|e| e.to_string())?;
+
+    Ok("Finished".to_string())
 }

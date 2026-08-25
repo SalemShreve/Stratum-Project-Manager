@@ -38,11 +38,11 @@ pub fn get_task(app: tauri::AppHandle, task_id: String) -> rusqlite::Result<Task
 #[tauri::command]
 pub fn update_task(app: tauri::AppHandle, task_id: String, new_name: Option<String>, new_estimate: Option<u16>, new_priority: Option<String>) -> rusqlite::Result<(), String> {
     let db_path = db::dbinit::resolve_db_path(&app)?;
-    task::update_task(db_path.display().to_string(), task_id, new_name, new_estimate, new_priority  )
+    task::update_task(db_path.display().to_string(), task_id, new_name, new_estimate, new_priority)
 }
 
 #[tauri::command]
-pub fn update_task_status(app: tauri::AppHandle, task_id: String, status: Status) -> rusqlite::Result<(), String> {
+pub fn update_task_status(app: tauri::AppHandle, task_id: String, status: Status) -> rusqlite::Result<bool, String> {
     let db_path = db::dbinit::resolve_db_path(&app)?;
     task::update_task_status(db_path.display().to_string(), task_id, status)
 }
@@ -76,4 +76,10 @@ pub fn update_task_time_reset(app: tauri::AppHandle, task_id: String) -> rusqlit
 pub fn get_task_time_info(app: tauri::AppHandle, task_id: String) -> rusqlite::Result<TaskTimeInfo, String> {
     let db_path = db::dbinit::resolve_db_path(&app)?;
     task::get_task_time_info(db_path.display().to_string(), task_id)
+}
+
+#[tauri::command]
+pub fn get_total_time_worked(app: tauri::AppHandle, task_id: String) -> rusqlite::Result<i64, String> {
+    let db_path = db::dbinit::resolve_db_path(&app)?;
+    task::get_total_time_worked(db_path.display().to_string(), task_id)
 }
