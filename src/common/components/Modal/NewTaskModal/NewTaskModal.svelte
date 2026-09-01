@@ -51,7 +51,7 @@
         <div class="modal-content">
             <div class="form-group">
                 <label for="taskname">Task Name</label>
-                <input class="modal-input" id="taskname" type="text" placeholder="Project Name" bind:value={newTaskName}/>
+                <input class="modal-input" id="taskname" type="text" placeholder="Task Name" bind:value={newTaskName}/>
             </div>
             <div class="form-group">
                 <label for="taskest">Estimated Hours</label>
