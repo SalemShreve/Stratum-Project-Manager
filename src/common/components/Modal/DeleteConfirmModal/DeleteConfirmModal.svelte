@@ -8,7 +8,7 @@
     let {
         selectedTaskId = $bindable(),
     } = $props<{
-        selectedTaskId: string | undefined;
+        selectedTaskId?: string | undefined;
     }>();
 
     let dialog: any = $state();

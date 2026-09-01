@@ -91,7 +91,7 @@
     <div class="projectv2-card-header">
         <div class="projectv2-header-left">
             <div class="projectv2-color" style="--project-color: var(--stratum-{color})"> </div>
-            <div class="projectv2-name">{name}</div>
+            <div class="projectv2-name">{name.charAt(0).toUpperCase() + name.slice(1)}</div>
             <span role="none" onclick={(e) => e.stopPropagation()}>
                 <IconButton kind="transparent" size="small" icon="star" toggleIcon="starfilled" isToggled={isFavoriteState} clickAction={() => handleFavoriteToggle()} ></IconButton>
             </span>

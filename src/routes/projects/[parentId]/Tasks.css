@@ -62,3 +62,12 @@
 .projects-topbar-footer {
     padding-bottom: 10px;
 }
+
+.no-tasks {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 50px
+}

@@ -42,13 +42,15 @@
             </div>
             <TextButton kind="bright" size="medium" text="+ New Project" clickAction={() => isNewProjectModalOpen = true}> </TextButton>
         </div>
-        <div class="projects-topbar-footer">
-            <BreadCrumbPath></BreadCrumbPath>
+        <BreadCrumbPath></BreadCrumbPath>
+    </div>
+    {#if projects !== undefined && projects.length > 0}
+        <div class="projects-container">
+            {#each projects as project}
+                <ProjectCardV2 {...project} />
+            {/each}
         </div>
-    </div>
-    <div class="projects-container">
-        {#each projects as project}
-            <ProjectCardV2 {...project} />
-        {/each}
-    </div>
+    {:else}
+        <div class="no-tasks">No Projects</div>
+    {/if}
 </main>

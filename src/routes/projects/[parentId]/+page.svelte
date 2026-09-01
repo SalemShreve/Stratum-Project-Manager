@@ -119,17 +119,18 @@
             </div>
         </div>
     </div>
-    <div class="tasks-container">
-        <div class="task-list">
-            <!--{#each tasks as task}-->
-            <!--    <TaskCardV2 bind:selectedTaskId={selectedTaskId} {...task} />-->
-            <!--{/each}-->
-            {#each filteredTasks as task}
-                <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} {...task} />
-            {/each}
+    {#if filteredTasks !== undefined && filteredTasks.length > 0}
+        <div class="tasks-container">
+            <div class="task-list">
+                {#each filteredTasks as task}
+                    <TaskRow bind:selectedTaskId={selectedTaskId} bind:allExtended={allExtended} {...task} />
+                {/each}
+            </div>
+            {#if selectedTaskId !== undefined }
+                <TaskDisplayPanel selectedTaskId={selectedTaskId} ></TaskDisplayPanel>
+            {/if}
         </div>
-        {#if selectedTaskId !== undefined }
-            <TaskDisplayPanel selectedTaskId={selectedTaskId} ></TaskDisplayPanel>
-        {/if}
-    </div>
+        {:else}
+        <div class="no-tasks">No Tasks</div>
+    {/if}
 </main>
