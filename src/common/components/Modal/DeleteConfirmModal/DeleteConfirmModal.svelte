@@ -5,6 +5,12 @@
     import {invoke} from "@tauri-apps/api/core";
     import {appState} from "../../../../state/appState.svelte";
 
+    let {
+        selectedTaskId = $bindable(),
+    } = $props<{
+        selectedTaskId: string | undefined;
+    }>();
+
     let dialog: any = $state();
 
     async function handleSubmit () {
@@ -12,6 +18,11 @@
             await invoke<Task[]>("delete_project", {projectId: appState.deleteNodeInfo.nodeId });
         }
         else if (appState.deleteNodeInfo.nodeType === "task") {
+
+            if (selectedTaskId !== undefined && selectedTaskId === appState.deleteNodeInfo.nodeId) {
+                selectedTaskId = undefined;
+            }
+
             await invoke<Task[]>("delete_task", {taskId: appState.deleteNodeInfo.nodeId });
         }
 

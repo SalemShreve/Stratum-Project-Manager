@@ -111,7 +111,7 @@ pub fn delete_task(db_path: String, task_id: String) -> Result<(), String>{
     Ok(())
 }
 
-pub fn create_task(db_path: String, parent_id: String, parent_project_id: String, parent_task_id: Option<String> , name: String, estimated_days: u16, priority: String ) -> Result<(), String>{
+pub fn create_task(db_path: String, parent_id: String, parent_project_id: String, parent_task_id: Option<String> , name: String, estimated_days: Option<u16>, priority: String ) -> Result<(), String>{
 
     let new_uuid = Uuid::new_v4().to_string();
 
@@ -120,7 +120,7 @@ pub fn create_task(db_path: String, parent_id: String, parent_project_id: String
     let mut stmt = conn
         .prepare("INSERT INTO tasks ( id, parentprojectid, parenttaskid, parentid, name, estimatedhours, priority) VALUES ($1, $2, $3, $4, $5, $6, $7);")
         .map_err(|e| e.to_string())?;
-    stmt.execute(params![ &new_uuid, &parent_project_id, &parent_task_id, &parent_id, &name, &estimated_days.to_string(), &priority])
+    stmt.execute(params![ &new_uuid, &parent_project_id, &parent_task_id, &parent_id, &name, &estimated_days.unwrap_or(0), &priority])
         .map_err(|e| e.to_string())?;
 
     run_task_status_sync(db_path, new_uuid).expect("Finished");

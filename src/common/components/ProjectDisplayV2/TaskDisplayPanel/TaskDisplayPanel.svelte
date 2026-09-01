@@ -10,25 +10,25 @@
     import StatusPopover from "../../StatusPopover/StatusPopover.svelte";
 
     let {
-        taskid,
+        selectedTaskId,
     } = $props<{
-        taskid: string | undefined;
+        selectedTaskId: string | undefined;
     }>();
 
     let task = $state<Task>();
     let project = $state<Project>();
 
     async function loadTaskData() {
-        task = await invoke<Task>("get_task" , { taskId: taskid });
+        task = await invoke<Task>("get_task" , { taskId: selectedTaskId });
         project = await invoke<Project>("get_project" , { projectId: task.parentprojectid });
 
         if (task.totaltasks > 0) {
-            task.milisecworked = await invoke("get_total_time_worked", {taskId: taskid})
+            task.milisecworked = await invoke("get_total_time_worked", {taskId: selectedTaskId})
         }
     }
 
     async function updateTaskInfo() {
-        task = await invoke<Task>("get_task" , { taskId: taskid });
+        task = await invoke<Task>("get_task" , { taskId: selectedTaskId });
     }
 
     $effect(() => {
@@ -39,7 +39,7 @@
     });
 
     $effect(() => {
-        if (taskid !== undefined ) {
+        if (selectedTaskId !== undefined ) {
             untrack(() => {
                 loadTaskData()
                 }
@@ -76,20 +76,20 @@
     }
 
     function handleNewTaskBtnClicked() {
-        appState.newTaskInfo.parentId = taskid;
+        appState.newTaskInfo.parentId = selectedTaskId;
         appState.newTaskInfo.parentProjectId = task?.parentprojectid;
-        appState.newTaskInfo.parentTaskId = taskid;
+        appState.newTaskInfo.parentTaskId = selectedTaskId;
 
         appState.newTaskInfo.isNewTaskModalOpen = true;
     }
 
     function handleEditBtnClicked() {
-        appState.editTaskInfo.taskId = taskid
+        appState.editTaskInfo.taskId = selectedTaskId
         appState.editTaskInfo.isEditTaskModalOpen = true;
     }
 
     async function handleTrashBtnClicked() {
-        appState.deleteNodeInfo.nodeId = taskid
+        appState.deleteNodeInfo.nodeId = selectedTaskId
         appState.deleteNodeInfo.nodeName = task?.name
         appState.deleteNodeInfo.nodeType = "task";
 
@@ -143,16 +143,16 @@
             </div>
             <div class="tdp-info-grid">
                 <div class="tdp-info-square left top">
-                    <span class="info-label">Estimate</span>
-                    <span class="info-value">{task.estimatedhours}h</span>
+                    <span class="info-label">Time Worked</span>
+                    <span class="info-value">{format(task.milisecworked)}</span>
                 </div>
                 <div class="tdp-info-square top">
                     <span class="info-label">Created</span>
                     <span class="info-value">{formatDate(new Date(task.datecreated))}</span>
                 </div>
                 <div class="tdp-info-square left">
-                    <span class="info-label">Time Worked</span>
-                    <span class="info-value">{format(task.milisecworked)}</span>
+                    <span class="info-label">Estimate</span>
+                    <span class="info-value">{task.estimatedhours === 0 ? '--' : task.estimatedhours +'h'}</span>
                 </div>
                 <div class="tdp-info-square">
                     <span class="info-label">Due Date</span>
@@ -160,7 +160,7 @@
                 </div>
                 <div class="tdp-info-square left bottom">
                     <span class="info-label">Remaining</span>
-                    <span class="info-value">{format(Math.abs((task.estimatedhours * 3600000) - task.milisecworked))}</span>
+                    <span class="info-value">{task.estimatedhours === 0 ? '--' : format(Math.abs((task.estimatedhours * 3600000) - task.milisecworked))}</span>
                 </div>
                 <div class="tdp-info-square bottom">
                     <span class="info-label">Subtasks</span>

@@ -4,7 +4,7 @@ use crate::models::common::Status;
 use crate::models::task::{Task, TaskCard, TaskTimeInfo};
 
 #[tauri::command]
-pub fn create_task(app: tauri::AppHandle, parent_id: String, parent_project_id: String, parent_task_id: Option<String>, task_name: String, estimated_hours: u16, priority: String ) -> Result< (), String > {
+pub fn create_task(app: tauri::AppHandle, parent_id: String, parent_project_id: String, parent_task_id: Option<String>, task_name: String, estimated_hours: Option<u16>, priority: String ) -> Result< (), String > {
     let db_path = db::dbinit::resolve_db_path(&app)?;
     task::create_task(db_path.display().to_string(), parent_id, parent_project_id, parent_task_id, task_name, estimated_hours, priority)
 }

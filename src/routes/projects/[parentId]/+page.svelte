@@ -84,7 +84,7 @@
 </script>
 
 <main class="tasks-page">
-    <DeleteConfirmModal></DeleteConfirmModal>
+    <DeleteConfirmModal  bind:selectedTaskId={selectedTaskId} ></DeleteConfirmModal>
     <EditTaskModal></EditTaskModal>
     <NewTaskModal></NewTaskModal>
     <div class="tasks-topbar">
@@ -129,7 +129,7 @@
             {/each}
         </div>
         {#if selectedTaskId !== undefined }
-            <TaskDisplayPanel taskid={selectedTaskId}></TaskDisplayPanel>
+            <TaskDisplayPanel selectedTaskId={selectedTaskId} ></TaskDisplayPanel>
         {/if}
     </div>
 </main>
