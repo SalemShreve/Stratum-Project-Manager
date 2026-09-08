@@ -42,7 +42,7 @@ type AppState = {
 };
 
 export const appState = $state<AppState>({
-    breadCrumbPathArr: new Array<Breadcrumb>({name: "Projects", path: "/projects"}),
+    breadCrumbPathArr: new Array<Breadcrumb>({name: "Home", path: "/"}),
     allExpanded: false,
     newTaskInfo: {
         isNewTaskModalOpen: false,

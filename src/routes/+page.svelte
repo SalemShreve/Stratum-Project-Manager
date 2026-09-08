@@ -37,7 +37,7 @@
     <div class="projects-topbar">
         <div class="projects-actionsbar">
             <div class="projects-actionsbar-left">
-                <h1 style="font-family: var(--font-mono); margin: 0; color: var(--text-primary)">Projects</h1>
+                <h1 style="font-family: var(--font-mono); margin: 0; color: var(--text-primary)">Home</h1>
                 <Pill text="{projects?.length} Projects"></Pill>
             </div>
             <TextButton kind="bright" size="medium" text="+ New Project" clickAction={() => isNewProjectModalOpen = true}> </TextButton>
