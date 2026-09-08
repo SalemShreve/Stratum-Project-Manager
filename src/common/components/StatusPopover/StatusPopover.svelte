@@ -4,6 +4,7 @@
     import {invoke} from "@tauri-apps/api/core";
     import {appStateV2} from "../../../state/appState.svelte";
     import Pill from "../Pill/Pill.svelte";
+    import {capitalize} from "../../utils/utils";
 
     let {
         statusState = $bindable<Status>('incompleted'),
@@ -51,7 +52,7 @@
 
 <div class="status-wrap">
     <button class="status-popover-btn {statusState}" onclick={() => isPopoverOpened = !isPopoverOpened}>
-        {statusState.charAt(0).toUpperCase() + statusState.slice(1)}
+        {capitalize(statusState)}
         {#if IconComponent}
             <IconComponent />
         {/if}

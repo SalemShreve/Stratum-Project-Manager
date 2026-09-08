@@ -4,6 +4,7 @@
     import type {ITaskCard} from "../../../types/types";
     import IconButton from "../../IconButton/IconButton.svelte";
     import Pill from "../../Pill/Pill.svelte";
+    import {capitalize} from "../../../utils/utils";
 
     let {
         id,
@@ -42,13 +43,13 @@
         <div class="task-info">
             <div class="task-name {status}">{name}</div>
             <div class="task-metadata">
-                <span class="task-priority">{priority.charAt(0).toUpperCase() + priority.slice(1)}</span>
+                <span class="task-priority">{capitalize(priority)}</span>
                 -
                 <span class="task-priority">
                     {#if completedtasks > 0 }
                         {getCompletionPercent()} done
                     {:else}
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                        {capitalize(status)}
                     {/if }
                 </span>
             </div>

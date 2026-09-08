@@ -36,6 +36,7 @@
     flex-direction: column;
     gap: 3px;
     flex: 1;
+    min-width: 0
 }
 
 .tasks-filterbar {

@@ -3,6 +3,7 @@
     import {goto} from "$app/navigation";
     import {appState} from "../../../state/appState.svelte.js";
     import type {Breadcrumb} from "../../types/types";
+    import {capitalize} from "../../utils/utils";
 
     function handlePathBtnClicked( path: Breadcrumb ) {
         goto(path.path)
@@ -22,7 +23,7 @@
         {#if appState.breadCrumbPathArr.indexOf(path) > 0}
             <span class="breadcrumb-separator">/</span>
         {/if}
-        <button class="breadcrumb-link" onclick={() => handlePathBtnClicked(path)}>{path.name}</button>
+        <button class="breadcrumb-link" onclick={() => handlePathBtnClicked(path)}>{capitalize(path.name)}</button>
     {/each}
 </div>
 

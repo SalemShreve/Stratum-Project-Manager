@@ -29,11 +29,19 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    min-width: 0;     /* same reason, one level down */
+    flex: 1 1 auto;
 }
 
 .task-name {
     font-size: 15px;
     transition: color .2s;
+    display: block;
+    width: 100%;      /* not 70% — the parent is already the right size now */
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .task-name.completed {
@@ -66,13 +74,24 @@
     }
 }
 
-.task-row-right,
 .task-row-left {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 5px;
     height: 100%;
+    flex: 1 1 auto;   /* take the leftover space... */
+    min-width: 0;     /* ...but be allowed to shrink */
+    overflow: hidden;
+}
+
+.task-row-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    height: 100%;
+    flex: 0 0 auto;   /* never shrink the buttons */
 }
 
 .task-row-color {

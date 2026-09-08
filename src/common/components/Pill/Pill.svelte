@@ -1,6 +1,7 @@
 <script lang="ts">
     import "./Pill.css"
     import {getIcon, type IconEnum} from "../../types/types";
+    import {capitalize} from "../../utils/utils";
 
     let {
         text,
@@ -28,5 +29,5 @@
             <IconComponent />
         </div>
     {/if}
-    {text.charAt(0).toUpperCase() + text.slice(1)}
+    {capitalize(text)}
 </div>

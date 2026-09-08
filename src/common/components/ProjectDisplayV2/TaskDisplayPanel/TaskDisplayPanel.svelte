@@ -8,6 +8,7 @@
     import IconButton from "../../IconButton/IconButton.svelte";
     import Stopwatch from "../../Stopwatch/Stopwatch.svelte";
     import StatusPopover from "../../StatusPopover/StatusPopover.svelte";
+    import {capitalize} from "../../../utils/utils";
 
     let {
         selectedTaskId,
@@ -105,7 +106,7 @@
                 <div class="tdp-header-project-name"
                      style="background: var(--bg-stratum-{task.color}); border: 1px solid var(--accent-stratum-{task.color});">
                     <div class="tdp-project-name-swatch" style="background: var(--stratum-{task.color})"></div>
-                    <div class="tdp-project-name">{project.name.charAt(0).toUpperCase() + project.name.slice(1)}</div>
+                    <div class="tdp-project-name">{capitalize(project.name)}</div>
                 </div>
                 <div class="tdp-header-actions">
                     <IconButton kind="transparent" size="small" icon="add" clickAction={() => handleNewTaskBtnClicked()}/>
@@ -113,7 +114,7 @@
                     <IconButton kind="transparent" size="small" icon="trash" clickAction={() => handleTrashBtnClicked()}/>
                 </div>
             </div>
-            <h1 class="tdp-header-task-name">{task.name.charAt(0).toUpperCase() + task.name.slice(1)}</h1>
+            <h1 class="tdp-header-task-name">{capitalize(task.name)}</h1>
             <div class="tdp-header-info">
                 <Pill text={task.priority + " Priority"} pillstate={task.priority}></Pill>
                 {#if task.totaltasks > 0}

@@ -7,6 +7,7 @@
     import IconButton from "../../IconButton/IconButton.svelte";
     import Pill from "../../Pill/Pill.svelte";
     import {untrack} from "svelte";
+    import {capitalize} from "../../../utils/utils";
 
     let {
         id,
@@ -107,10 +108,10 @@
                 {/if}
             </div>
             <div class="task-info">
-                <div class="task-name {status}">{name.charAt(0).toUpperCase() + name.slice(1)}</div>
+                <div class="task-name {status}">{capitalize(name)}</div>
                 <div class="task-metadata">
-                    <Pill text={priority.charAt(0).toUpperCase() + priority.slice(1)} pillstate={selectedTaskId === id ? priority : "normal"}></Pill>
-                    <Pill text={status.charAt(0).toUpperCase() + status.slice(1)} pillstate={selectedTaskId === id ? status : "normal"}></Pill>
+                    <Pill text={capitalize(priority)} pillstate={selectedTaskId === id ? priority : "normal"}></Pill>
+                    <Pill text={capitalize(status)} pillstate={selectedTaskId === id ? status : "normal"}></Pill>
                     {#if totaltasks > 0 }
                         <Pill text={totaltasks + " Subtasks"} pillstate={selectedTaskId === id ? "bright" : "normal"}></Pill>
                     {/if}
