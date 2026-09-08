@@ -50,6 +50,7 @@
     .nav-rail {
         display: flex;
         flex-direction: column;
+        flex: 0 0 45px;
         align-items: flex-start;
         justify-content: space-between;
         row-gap: 5px;
@@ -59,11 +60,10 @@
         width: 45px;
         min-width: 45px;
         margin-left: 0;
-        transition: width 0.2s ease;
+        transition: flex-basis 0.2s ease;
     }
     .nav-rail.extended {
-        width: 200px;
-        align-items: flex-start;
+        flex-basis: 150px;
         padding: 5px;
     }
 
@@ -79,7 +79,8 @@
 
     .app-child-container {
         border-left: 1px solid var(--border-subtle);
-        width: 100%;
+        flex: 1 1 auto;
+        min-width: 0;
     }
 </style>
 

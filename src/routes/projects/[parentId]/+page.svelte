@@ -102,12 +102,12 @@
             <div class="filter-right">
                 <IconButton kind="transparent" size="small" icon="expandall" toggleIcon="collapseall" isToggled={allExtended} clickAction={() => allExtended = !allExtended}></IconButton>
                 <div class="divider"></div>
-                <span class="text-label">Sort</span>
-                <Chip text="Name" active={sort === 'name'} clickAction={() => manageSort('name')}> </Chip>
-                <Chip text="Created" active={sort === 'created'} clickAction={() => manageSort('created')}> </Chip>
-                <Chip text="Priority" active={sort === 'priority'} clickAction={() => manageSort('priority')}> </Chip>
-                <Chip text="Status" active={sort === 'state'} clickAction={() => manageSort('state')}> </Chip>
-                <div class="divider"></div>
+<!--                <span class="text-label">Sort</span>-->
+<!--                <Chip text="Name" active={sort === 'name'} clickAction={() => manageSort('name')}> </Chip>-->
+<!--                <Chip text="Created" active={sort === 'created'} clickAction={() => manageSort('created')}> </Chip>-->
+<!--                <Chip text="Priority" active={sort === 'priority'} clickAction={() => manageSort('priority')}> </Chip>-->
+<!--                <Chip text="Status" active={sort === 'state'} clickAction={() => manageSort('state')}> </Chip>-->
+<!--                <div class="divider"></div>-->
                 <span class="text-label">Filter</span>
                 <Chip text="Active" active={appStateV2.activeFilters.includes("active")} clickAction={() => manageFilters("active")}> </Chip>
                 <Chip text="Low" priority="low" active={appStateV2.activeFilters.includes("low")} clickAction={() => manageFilters("low")}> </Chip>

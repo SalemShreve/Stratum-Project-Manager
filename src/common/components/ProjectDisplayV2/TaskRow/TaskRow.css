@@ -82,7 +82,6 @@
     height: 100%;
     flex: 1 1 auto;   /* take the leftover space... */
     min-width: 0;     /* ...but be allowed to shrink */
-    overflow: hidden;
 }
 
 .task-row-right {
