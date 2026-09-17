@@ -1,90 +1,41 @@
-# Tauri + SvelteKit + TypeScript
+# Stratum Project Organizer
 
-This template should help get you started developing with Tauri, SvelteKit and TypeScript in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
-
-
-# Stratum
-
-> Organize everything. At any depth.
-
-Stratum is a hierarchical project organizer built for people who think in layers. Structure your work from the top down — folders hold projects, projects hold tasks, and tasks can nest as deeply as your workflow demands.
-
----
+A desktop project management app for people who think in outlines. Projects hold tasks, tasks hold tasks, and that nesting goes as deep as the work actually goes — no artificial cap at subtasks or sub-subtasks. Built with Tauri, so it runs as a native desktop app with your data stored locally.
 
 ## Features
 
-- **Folders** — Group related projects together in a clean, organized workspace.
-- **Projects** — Each folder contains any number of projects, giving you clear scope and separation between different bodies of work.
-- **Tasks** — Projects are built from tasks, the core unit of work in Stratum.
-- **Infinite Task Depth** — Tasks can contain subtasks, which can contain their own subtasks, and so on — with no enforced limit on nesting depth. Model any workflow, no matter how complex.
+- **Projects** — create, edit, and organize the work you're tracking.
+- **Tasks** — create and edit tasks within a project.
+- **Unlimited task depth** — every task can have children, and those children can have children. Break work down as far as it's useful to break it down; the hierarchy doesn't stop you.
+- **Time tracking** — start and stop a timer on any task to record how long the work actually takes.
+- **Local-first storage** — everything lives in a SQLite database on your machine. No account, no server, no sync requirement.
 
----
+## Installation
 
-## Structure
+Download the latest Windows installer from the [Releases](https://github.com/SalemShreve/Stratum-Project-Manager/releases) page and run it. Stratum isn't code-signed yet, so Windows SmartScreen may warn you on first launch — choose **More info → Run anyway**.
 
-```
-Stratum
-└── 📁 Folder
-    └── 📋 Project
-        └── ✅ Task
-            └── ✅ Subtask
-                └── ✅ Subtask
-                    └── ✅ ... (infinite depth)
-```
+## Tech stack
 
----
-
-## Getting Started
-
-> _(Installation and setup instructions coming soon.)_
-
----
-
-## Usage
-
-1. **Create a Folder** to represent a broad area of work (e.g. *Personal*, *Work*, *Side Projects*).
-2. **Add a Project** inside the folder to define a specific goal or deliverable.
-3. **Add Tasks** to your project to break down the work.
-4. **Nest subtasks** under any task to handle complexity — go as deep as you need.
-
----
+| Layer | Used |
+| --- | --- |
+| Shell | [Tauri v2](https://v2.tauri.app/) (Rust) |
+| Frontend | [SvelteKit](https://kit.svelte.dev/) |
+| Storage | SQLite (local) |
 
 ## Roadmap
 
-- [ ] Figure out quick access to projects without having to go through home page
-
-### Home / Folder Page
-- [ ] Redo current home page for folder card display
-
-### Project Page
-- [ ] Make working timer update minutesWorked of task on submission
-- [ ] Make Separate project page a dynamic template (Taking folder name instead of Projects)
-- [ ] Drag-and-drop reordering/reparenting
-- [ ] Visual cue and/or reminder when project due date is close / estimated task time almost up
-- [ ] Sorting and Filtering
-- [ ] Shortcut to Gantt page with only selected project plotted
-
-### Gantt page
-- [ ] Implement Gantt chart to show all projects
-- [ ] Ability to show child tasks of projects
-- [ ] Integration with Project page showing only selected project
-
-### Sprint Page
-- [ ] Set custom sprint length
-- [ ] Show work load for sprints according to 
-
----
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
----
+Things on the list:
+- Projects Page
+  - Project due date / Task estimate and reminders
+  - Search and improved filtering across deep hierarchies
+- Gantt Page
+  - Implement gantt chart
+  - Ability to show child tasks individually
+  - Project page integration
+- General
+  - macOS and Linux builds
+  - Code signing and auto-updates
 
 ## License
 
-[MIT](LICENSE)
+TBD.
