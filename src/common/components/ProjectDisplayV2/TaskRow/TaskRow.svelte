@@ -108,7 +108,7 @@
                 {/if}
             </div>
             <div class="task-info">
-                <div class="task-name {status}">{capitalize(name)}</div>
+                <div class="task-name {status}" title={capitalize(name)}>{capitalize(name)}</div>
                 <div class="task-metadata">
                     <Pill text={capitalize(priority)} pillstate={selectedTaskId === id ? priority : "normal"}></Pill>
                     <Pill text={capitalize(status)} pillstate={selectedTaskId === id ? status : "normal"}></Pill>
