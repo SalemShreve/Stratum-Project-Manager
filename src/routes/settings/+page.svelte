@@ -1,6 +1,5 @@
 <script>
     import "./Settings.css";
-    import ToggleButton from "../../common/components/ToggleButton/ToggleButton.svelte";
     import TextButton from "../../common/components/TextButton/TextButton.svelte";
     import {invoke} from "@tauri-apps/api/core";
     import {onMount} from "svelte";
@@ -45,13 +44,13 @@
     <div class="settings-section">
         <div class="settings-info">
             <h4 class="setting-title"> Data Storage Settings</h4>
-            <div class="settings-option">
-                <p class="setting-desc"> Use External database</p>
-                <ToggleButton isToggled={extdbstate} clickAction={() => extdbstate = !extdbstate} />
-            </div>
+<!--            <div class="settings-option">-->
+<!--                <p class="setting-desc"> Use External database</p>-->
+<!--                <ToggleButton isToggled={extdbstate} clickAction={() => extdbstate = !extdbstate} />-->
+<!--            </div>-->
             <div class="settings-option">
                 {#if !extdbstate}
-                    <p class="setting-desc"> Set Up Local database</p>
+                    <p class="setting-desc"> Manage Local database</p>
                     {#if !localDbCreated}
                         <TextButton text="Create Local DB" kind="bright" size="small" clickAction={() => handleLocalDbCreated()} />
                     {:else}
@@ -74,11 +73,11 @@
             </div>
         </div>
     </div>
-    <div class="settings-section">
-        <div class="settings-info">
-            <h4 class="setting-title"> Setting</h4>
-            <p class="setting-desc"> Setting description</p>
-        </div>
-        <ToggleButton isToggled={toggled} clickAction={() => toggled = !toggled} />
-    </div>
+<!--    <div class="settings-section">-->
+<!--        <div class="settings-info">-->
+<!--            <h4 class="setting-title"> Setting</h4>-->
+<!--            <p class="setting-desc"> Setting description</p>-->
+<!--        </div>-->
+<!--        <ToggleButton isToggled={toggled} clickAction={() => toggled = !toggled} />-->
+<!--    </div>-->
 </main>
