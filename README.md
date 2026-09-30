@@ -35,7 +35,3 @@ Things on the list:
 - General
   - macOS and Linux builds
   - Code signing and auto-updates
-
-## License
-
-TBD.
