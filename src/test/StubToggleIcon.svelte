@@ -1,0 +1,1 @@
+<span data-testid="stub-toggle-icon">icon</span>
