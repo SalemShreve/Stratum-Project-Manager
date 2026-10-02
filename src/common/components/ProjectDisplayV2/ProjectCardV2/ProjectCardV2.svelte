@@ -63,16 +63,12 @@
 
         appState.breadCrumbPathArr.push(newBreadcrumb)
 
-        console.log(appState.breadCrumbPathArr)
-        console.log("LOG")
-
         goto(`/projects/${id}`)
     }
 
     async function handleFavoriteToggle() {
         isFavoriteState = !isFavoriteState
 
-        console.log(isFavoriteState)
 
         await invoke<Task[]>("set_favorite", { projectId: id, favoriteState: isFavoriteState });
     }
@@ -86,7 +82,6 @@
      onkeydown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          console.log("clicked");
         }
      }}>
     <div class="projectv2-card-header">

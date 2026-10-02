@@ -142,7 +142,6 @@
         appState.editNodeInfo.nodeId = id
         appState.editNodeInfo.nodeType = "task";
         appState.editNodeInfo.isEditModalOpen = true;
-        console.log(appState.editNodeInfo)
     }
 
     async function handleTrashBtnClicked() {

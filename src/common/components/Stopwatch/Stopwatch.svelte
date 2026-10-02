@@ -87,7 +87,6 @@
         resetLocal();
         await loadTaskTimeData();
 
-        console.log(tasktimeinfo?.accumulated);
         if (tasktimeinfo?.accumulated !== undefined && tasktimeinfo?.accumulated !== null) {
             accumulated = tasktimeinfo?.accumulated;
             countTime = accumulated;

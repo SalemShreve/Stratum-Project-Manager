@@ -22,10 +22,7 @@
 
     async function stateChanged() {
         if (statusState != newStatus) {
-            console.log(newStatus);
             let updateStatus = await invoke<boolean>("update_task_status", { taskId: taskid, status: newStatus });
-
-            console.log(updateStatus);
 
             if (updateStatus === true ) {
                 statusState = newStatus

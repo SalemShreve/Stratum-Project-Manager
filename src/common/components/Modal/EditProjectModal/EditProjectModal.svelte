@@ -17,9 +17,6 @@
     let errorMessage: string | undefined = $state();
 
     async function handleSubmit () {
-
-        console.log("Submit Called")
-
         await invoke<Project>("update_project", {projectId: appState.editNodeInfo.nodeId, newName: newProjectName, newColor: newProjectColor, newDeadline: newProjectDeadline, newPriority: newProjectPriority });
 
         handleClose()
@@ -28,8 +25,6 @@
     async function getProject () {
         if (!appState.editNodeInfo.nodeId) return;
         targetProject = await invoke<Project>("get_project", {projectId: appState.editNodeInfo.nodeId });
-        console.log(targetProject);
-
 
         newProjectName = targetProject.name;
         newProjectDeadline = targetProject.deadline;

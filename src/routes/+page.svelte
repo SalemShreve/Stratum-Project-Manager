@@ -19,7 +19,6 @@
 
     async function loadProjects() {
         projects = await invoke<IProjectCard[]>("get_projects_v2");
-        console.log(projects);
     }
 
     $effect(() => {

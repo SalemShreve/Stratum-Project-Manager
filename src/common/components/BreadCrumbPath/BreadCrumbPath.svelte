@@ -8,9 +8,6 @@
     function handlePathBtnClicked( path: Breadcrumb ) {
         goto(path.path)
 
-        console.log(appState.breadCrumbPathArr.length)
-        console.log(appState.breadCrumbPathArr.indexOf(path)+1)
-
         if (appState.breadCrumbPathArr.length > appState.breadCrumbPathArr.indexOf(path)+1) {
             appState.breadCrumbPathArr = appState.breadCrumbPathArr.slice(0, appState.breadCrumbPathArr.indexOf(path)+1)
         }
