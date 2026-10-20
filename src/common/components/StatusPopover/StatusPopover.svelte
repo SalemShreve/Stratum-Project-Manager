@@ -9,11 +9,9 @@
     let {
         statusState = $bindable<Status>('incompleted'),
         taskid,
-        parenttaskid
     } = $props<{
         statusState: Status;
         taskid: string;
-        parenttaskid: string;
     }>();
 
     let isPopoverOpened = $state<boolean>(false);

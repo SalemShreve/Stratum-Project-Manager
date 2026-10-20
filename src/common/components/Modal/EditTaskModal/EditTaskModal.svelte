@@ -22,7 +22,7 @@
 
 
         if (appState.editTaskInfo.taskId !== undefined) {
-            appStateV2.triggerUpdateTask(appState.editTaskInfo.taskId)
+            appStateV2.triggerUpdateTask()
         }
         handleClose()
     }
