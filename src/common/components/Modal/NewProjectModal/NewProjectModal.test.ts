@@ -237,37 +237,6 @@ describe('NewProjectModal', () => {
             expect(buttonLabelled('High').classList.contains('active')).toBe(false);
             expect(swatches().some((s) => s.classList.contains('selected'))).toBe(false);
         });
-
-        // The guard in handleSubmit has an empty body, so nothing stops a
-        // submission with every field blank.
-        test('submits even when the form is entirely empty', async () => {
-            renderModal(true);
-
-            buttonLabelled('Create').click();
-
-            await vi.waitFor(() => {
-                expect(invoke).toHaveBeenCalledWith('create_project', {
-                    projectName: undefined,
-                    color: undefined,
-                    deadline: undefined,
-                    priority: undefined
-                });
-            });
-        });
-
-        test('submits with only a name filled in', async () => {
-            renderModal(true);
-            typeInto(nameInput(), 'Half a project');
-
-            buttonLabelled('Create').click();
-
-            await vi.waitFor(() => {
-                expect(invoke).toHaveBeenCalledWith(
-                    'create_project',
-                    expect.objectContaining({ projectName: 'Half a project', priority: undefined })
-                );
-            });
-        });
     });
 
     describe('cancelling', () => {

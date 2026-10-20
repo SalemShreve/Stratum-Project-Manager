@@ -33,7 +33,13 @@
     }
 
     function checkUpdateBtnDisabled () {
-        return newProjectName == targetProject?.name && newProjectDeadline == targetProject?.deadline && newProjectPriority == targetProject?.priority && newProjectColor == targetProject?.color as ColorEnum;
+        if ( newProjectName == targetProject?.name && newProjectDeadline == targetProject?.deadline && newProjectPriority == targetProject?.priority && newProjectColor == targetProject?.color as ColorEnum ) {
+            return true;
+        }
+        else if (newProjectName == undefined || newProjectName == '' || newProjectDeadline == undefined || newProjectDeadline.toString() == '' || newProjectPriority == undefined || newProjectColor == undefined) {
+            return true;
+        }
+        else return false;
     }
 
     function handleClose () {

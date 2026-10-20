@@ -25,6 +25,10 @@
        handleClose()
    }
 
+    function checkUpdateBtnDisabled () {
+       return newProjectName == undefined || newProjectName == '' || newProjectDeadline == undefined || newProjectDeadline.toString() == '' || newProjectPriority == undefined || newProjectColor == undefined;
+    }
+
     function handleClose () {
         isNewProjectModalOpen = false;
 
@@ -83,7 +87,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <TextButton kind="bright" size="small" text="Create" clickAction={() => handleSubmit()}></TextButton>
+            <TextButton kind="bright" size="small" text="Create" clickAction={() => handleSubmit()} isDisabled={checkUpdateBtnDisabled()}></TextButton>
             <TextButton kind="transparent" size="small" text="Cancel" clickAction={() => handleClose()}></TextButton>
         </div>
     </div>
